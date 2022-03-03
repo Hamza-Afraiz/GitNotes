@@ -5,3 +5,14 @@
    
 
 }
+.searchIconWrapper{
+    padding-left: 2%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}

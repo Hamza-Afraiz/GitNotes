@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { CreateGist as CreateGistByUser } from "../../store/slices/userGists";
 import "./createGist.css";
 
-const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
+const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: "white",
   backgroundColor: "#5ACBA1",
   "&:hover": {

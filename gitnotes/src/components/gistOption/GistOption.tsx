@@ -9,7 +9,7 @@ import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
 import "./gistOptions.css";
 
 interface GistOptionProps {
-  gistId?: string;
+  gistId?: number;
   gistType?: string;
   starValue?: boolean;
 }
@@ -20,15 +20,15 @@ const GistOption = ({ gistId, gistType, starValue }: GistOptionProps) => {
 
   const handleStarIcon = () => {
     if (!starType) {
-      dispatch(StarGist(gistId));
+      dispatch(StarGist(gistId?.toString()));
       setStarValue(true);
     } else {
-      dispatch(UnStarGist(gistId));
+      dispatch(UnStarGist(gistId?.toString()));
       setStarValue(false);
     }
   };
   const handleDelete = () => {
-    dispatch(DeleteGist(gistId));
+    dispatch(DeleteGist(gistId?.toString()));
   };
   return (
     <div>

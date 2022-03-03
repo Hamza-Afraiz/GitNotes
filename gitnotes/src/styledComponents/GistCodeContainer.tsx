@@ -1,8 +1,9 @@
 import { styled } from '@mui/material/styles';
 export const GistCodeContainer = styled("div")(() => ({
     width: "100%",
+    maxWidth:"800px",
     textAlign:'start',
-    height:'100%',
+    maxHeight:700,
     marginTop:"1%",
     backgroundColor:'#FFFFFF',
     padding:'0%',

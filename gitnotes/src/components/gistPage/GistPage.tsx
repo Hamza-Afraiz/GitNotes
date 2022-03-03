@@ -2,17 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { GistCode, GistInfo } from "../../components";
 import "./gistPage.css";
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: number;
-  content?: string[];
-  time?: string;
-  description?: string;
-  id?: string;
-}
+import {GistData} from '../../types/gistData'
+
 interface GistPageProps {
   gistData: GistData | null;
   gistType: string | undefined;

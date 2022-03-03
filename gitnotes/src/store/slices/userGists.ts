@@ -1,36 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
+import { GistData } from "../../types/gistData";
+import { UserGistDataList } from "../../types/userGistDataList";
+import { createGist } from "../../types/createGist";
 
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: number;
-  content?: string[];
-  time?: string;
-  description?: string;
-  id?: string;
-}
-interface gistsDataList {
-  userGistsData: GistData[];
-  starredGists: GistData[];
-}
-
-const initialState: gistsDataList = {
+const initialState: UserGistDataList = {
   userGistsData: [],
   starredGists: [],
 };
 
-interface createGist {
-  fileContent: string;
-  fileName: string;
-  fileDescription: string;
-}
-export const CreateGist = createAsyncThunk(
-  "userGists/create",
+export const CreateGist =
   // if you type your function argument here
-  async (gistData: createGist) => {
+  (gistData: createGist) => async (dispatch: any) => {
     const GIST_FILENAME = gistData.fileName;
     const req = await fetch(`https://api.github.com/gists`, {
       method: "POST",
@@ -46,38 +27,37 @@ export const CreateGist = createAsyncThunk(
         description: gistData.fileDescription,
       }),
     });
+    dispatch(getUserGistsData());
 
     return await req;
-  }
-);
-export const StarGist = createAsyncThunk(
-  "userGists/star",
+  };
+export const StarGist =
   // if you type your function argument here
-  async (gistId: string | undefined) => {
+  (gistId: string | undefined) => async (dispatch: any) => {
     const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer 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`,
       },
     });
-
+    dispatch(getStarredGistsData());
     return await req;
-  }
-);
-export const DeleteGist = createAsyncThunk(
-  "userGists/delete",
+  };
+
+export const DeleteGist =
   // if you type your function argument here
-  async (gistId: string | undefined) => {
+  (gistId: string | undefined) => async (dispatch: any) => {
     const req = await fetch(`https://api.github.com/gists/${gistId}`, {
       method: "Delete",
       headers: {
         Authorization: `Bearer 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`,
       },
     });
+    dispatch(getUserGistsData());
 
     return await req.json();
-  }
-);
+  };
+
 export const GetStarredGists =
   // if you type your function argument here
   async () => {
@@ -91,24 +71,23 @@ export const GetStarredGists =
     return await req.json();
   };
 
-export const UnStarGist = createAsyncThunk(
-  "userGists/unStar",
+export const UnStarGist =
   // if you type your function argument here
-  async (gistId: string | undefined) => {
+  (gistId: string | undefined) => async (dispatch: any) => {
     const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer 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`,
       },
     });
+    dispatch(getStarredGistsData);
 
     return await req;
-  }
-);
+  };
+
 const fetchGistFileData =
   // if you type your function argument here
   async (gistFileUrl: string) => {
-    //console.log("fetching file from ", gistFileUrl);
     const response = await fetch(`${gistFileUrl}`);
     return await response.text();
   };
@@ -169,14 +148,6 @@ export const UserGists = createSlice({
     setUserStarredData(state, action) {
       state.starredGists = action.payload;
     },
-    DeleteGistFromYouGist(state, action) {
-      // console.log("we are deleting",action.payload,"from",state)
-      // let previousArray=state.userGistsData;
-      // var filteredArray = previousArray.filter(function(itm){
-      //   return itm.gistId !== action.payload;;
-      // });
-      // console.log('filtered array is ',filteredArray)
-    },
   },
 });
 export const getStarredGistsData = () => async (dispatch: any) => {
@@ -208,13 +179,11 @@ export const getStarredGistsData = () => async (dispatch: any) => {
 
     tempGistDataArray.push(temp);
   }
- 
+
   dispatch(setUserStarredData(tempGistDataArray));
-
-
 };
 
 // Other code such as selectors can use the imported `RootState` type
-export const { setUserGistData, setUserStarredData, DeleteGistFromYouGist } =
-  UserGists.actions;
+export const { setUserGistData, setUserStarredData } = UserGists.actions;
+
 export default UserGists.reducer;

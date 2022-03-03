@@ -1,21 +1,10 @@
 import { styled } from "@mui/material/styles";
 import React from "react";
 import { GistIntroduction, GistOption } from "../../components";
+import { GistData } from '../../types/gistData';
 import "./gistInfo.css";
 
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: string;
-  content?: string;
-  time?: string;
-  description?: string;
-  id?: string;
-  gistType?: string | undefined;
-  starValue?: boolean;
-}
+
 const GistInfoContainer = styled("div")(() => ({
   width: "100%",
 

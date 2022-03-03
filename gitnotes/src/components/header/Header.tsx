@@ -6,20 +6,19 @@ import MenuItem from "@mui/material/MenuItem";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { MutatingDots } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 import {
   getStarredGistsData,
-  getUserGistsData,
+  getUserGistsData
 } from "../../store/slices/userGists";
 import {
   ColorButton,
   SearchContainer,
-  SearchIconWrapper,
-  StyledInputBase,
+  StyledInputBase
 } from "../../styledComponents";
 import "./header.css";
 
@@ -27,6 +26,7 @@ function Header() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
   const userData = useAppSelector((state) => state.user.userData);
   const userState = useAppSelector((state) => state.user.loggedIn);
 
@@ -35,6 +35,10 @@ function Header() {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleSearch=()=>{
+    navigate(`/`, { state: { route: "search",gistId:`${searchQuery}`  }});
+
+  }
   const handleClose = (navigationScreen: string) => {
     setAnchorEl(null);
     switch (navigationScreen) {
@@ -43,12 +47,10 @@ function Header() {
         // code block
         break;
       case "starred":
-        console.log("navigated to starred profile");
         navigate(`/`, { state: { route: "starred" } });
         // code block
         break;
       case "createGist":
-        console.log("navigated to createGist profile");
         navigate(`/createGist`);
         // code block
         break;
@@ -58,8 +60,6 @@ function Header() {
   };
 
   React.useEffect(() => {
-    console.log("giving effect ");
-    console.log("user value is ", userState);
     if (userState) {
       setLoading(false);
       dispatch(getUserGistsData());
@@ -81,18 +81,28 @@ function Header() {
             EMUMBA
           </Typography>
           <SearchContainer>
-            <SearchIconWrapper>
+            <div
+              className="searchIconWrapper"
+              onClick={handleSearch}
+            >
               <SearchIcon />
-            </SearchIconWrapper>
+            </div>
+
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              value={searchQuery}
+              onChange={(
+                event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+              ) => {
+                setSearchQuery(event.target.value);
+              }}
             />
           </SearchContainer>
           {loading === true ? (
-            <MutatingDots
-              height="100"
-              width="100"
+            <Oval
+              height="30"
+              width="30"
               color="white"
               ariaLabel="loading"
             />

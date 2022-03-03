@@ -21,7 +21,6 @@ const UserProfile = () => {
     (state) => state.userGists.userGistsData
   );
 
-
   return (
     <div className="container">
       <div className="infoContainer">
@@ -39,8 +38,8 @@ const UserProfile = () => {
       </div>
       <div className="gistContainer">
         <div className="gistPage">
-          {userGistDataArray.map((item) => (
-            <GistPage gistData={item} gistType="user" />
+          {userGistDataArray.map((item, index) => (
+            <GistPage key={index} gistData={item} gistType="user" />
           ))}
         </div>
       </div>

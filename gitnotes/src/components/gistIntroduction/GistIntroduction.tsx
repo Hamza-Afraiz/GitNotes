@@ -1,17 +1,8 @@
 import React from "react";
 import { PlainText, UserNameAndFileName } from "../../styledComponents";
 import "./gistIntroduction.css";
+import {GistData} from '../../types/gistData'
 
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: number;
-  content?: string[];
-  time?: string;
-  description?: string;
-}
 
 const GistIntroduction = ({
   ownerName,
@@ -20,7 +11,7 @@ const GistIntroduction = ({
   creationDate,
   description,
 }: GistData) => {
-  console.log("descriptioon is", description);
+  
 
   return (
     <div className="gistInfoContainer">

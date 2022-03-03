@@ -26,7 +26,7 @@ function App() {
                 path="/gistPage"
                 element={<GistPage gistData={null} gistType="public" />}
               />
-              <Route path="/" element={<PublicGist />} />
+              <Route path="/"  element={<PublicGist />} />
               <Route path="/userProfile" element={<UserProfile />} />
               <Route path="/createGist" element={<CreateGist />} />
             </Routes>

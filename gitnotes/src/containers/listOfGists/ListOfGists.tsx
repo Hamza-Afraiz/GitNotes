@@ -4,16 +4,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { GistsListColumns } from "../../styledComponents";
 
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: number;
-  content?: string[];
-  time?: string;
-  description?: string;
-}
+import {GistData} from '../../types/gistData'
 interface gistsDataList {
   gistsData: GistData[];
   starValue: boolean;

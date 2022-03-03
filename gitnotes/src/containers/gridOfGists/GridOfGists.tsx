@@ -5,17 +5,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GistCode, GistIntroduction } from "../../components";
 import { GridGist, GridGistContainer } from "../../styledComponents";
+import {GistData} from '../../types/gistData'
 
-interface GistData {
-  ownerName?: string;
-  ownerAvatar?: string;
-  fileName?: string;
-  creationDate?: string;
-  gistId?: number;
-  content?: string[];
-  time?: string;
-  description?: string;
-}
 interface gistsDataList {
   gistsData: GistData[];
   starValue: boolean;
