@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import githubAuth from "../../config/authMethods";
-import {UserData} from '../../types/userData';
-import {User} from '../../types/user'
+import { User } from '../../types/user';
 
 
-// Define the initial state using that type
+// Define the initial state using that typeO
 const initialState: User = {
   userData: {},
   loggedIn: false,

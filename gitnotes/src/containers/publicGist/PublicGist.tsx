@@ -46,6 +46,7 @@ const PublicGist = () => {
         setNavigationState(false);
       }
   }
+  
 
   return (
     <div>

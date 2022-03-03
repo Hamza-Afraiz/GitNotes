@@ -1,13 +1,28 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import moment from "moment";
+import { createGist } from "../../types/createGist";
 import { GistData } from "../../types/gistData";
 import { UserGistDataList } from "../../types/userGistDataList";
-import { createGist } from "../../types/createGist";
 
 const initialState: UserGistDataList = {
   userGistsData: [],
   starredGists: [],
 };
+export const UserGists = createSlice({
+  name: "UserGists",
+  // `createSlice` will infer the state type from the `initialState` argument
+  initialState,
+  reducers: {
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    setUserGistData(state, action) {
+      
+      state.userGistsData = action.payload;
+    },
+    setUserStarredData(state, action) {
+      state.starredGists = action.payload;
+    },
+  },
+});
 
 export const CreateGist =
   // if you type your function argument here
@@ -136,20 +151,7 @@ export const getUserGistsData = () => async (dispatch: any) => {
   dispatch(setUserGistData(tempGistDataArray));
 };
 
-export const UserGists = createSlice({
-  name: "UserGists",
-  // `createSlice` will infer the state type from the `initialState` argument
-  initialState,
-  reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
-    setUserGistData(state, action) {
-      state.userGistsData = action.payload;
-    },
-    setUserStarredData(state, action) {
-      state.starredGists = action.payload;
-    },
-  },
-});
+
 export const getStarredGistsData = () => async (dispatch: any) => {
   const response = await GetStarredGists();
   let tempGistDataArray: GistData[] = [];
