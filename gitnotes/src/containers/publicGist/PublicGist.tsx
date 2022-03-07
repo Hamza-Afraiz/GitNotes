@@ -13,6 +13,7 @@ const PublicGist = () => {
   const dispatch = useDispatch();
   const [navigationState, setNavigationState] = React.useState(true);
   let publicGistData = useAppSelector((state) => state.publicGist.gistsData);
+  
   let starredGistData = useAppSelector((state) => state.userGists.starredGists);
   var starValue: boolean = false;
 

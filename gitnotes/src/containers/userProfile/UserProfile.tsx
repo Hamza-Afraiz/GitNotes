@@ -4,6 +4,7 @@ import React from "react";
 import { GistPage } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import "./userProfile.css";
+import { LoadingSpinner } from "../../components";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "black",
@@ -11,7 +12,7 @@ const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   "&:hover": {
     backgroundColor: alpha("#fff", 0.45),
   },
-  width: "100%",
+  width: "80%",
   marginTop: "5%",
 }));
 
@@ -20,6 +21,7 @@ const UserProfile = () => {
   const userGistDataArray = useAppSelector(
     (state) => state.userGists.userGistsData
   );
+  console.log('user gist dat a',userGistDataArray)
  
 
 
@@ -40,6 +42,7 @@ const UserProfile = () => {
       </div>
       <div className="gistContainer">
         <div className="gistPage">
+          {!userGistDataArray && <LoadingSpinner width="40%" height="60%" color="green"/>}
           {userGistDataArray.map((item, index) => (
             <GistPage key={index} gistData={item} gistType="user" />
           ))}

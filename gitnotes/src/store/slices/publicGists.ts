@@ -8,6 +8,7 @@ import { GistDataList } from "../../types/gistDataList";
 const initialState: GistDataList = {
   gistsData: [],
   error: "",
+  loading:false
 };
 
 
@@ -20,6 +21,9 @@ export const PublicGistsSlice = createSlice({
     setGistData(state, action) {
       state.gistsData = action.payload;
     },
+    setLoadingState(state,action){
+      state.loading=!action.payload;
+    }
   },
 });
 

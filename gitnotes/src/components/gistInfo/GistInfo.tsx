@@ -3,6 +3,7 @@ import React from "react";
 import { GistIntroduction, GistOption } from "../../components";
 import { GistData } from '../../types/gistData';
 import "./gistInfo.css";
+import { useStarStatus } from "../../Hooks";
 
 
 const GistInfoContainer = styled("div")(() => ({
@@ -24,6 +25,7 @@ const GistInfo = ({
   gistType,
   starValue,
 }: GistData) => {
+  
   
 
   return (

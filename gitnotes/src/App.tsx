@@ -5,7 +5,7 @@ import "./App.css";
 import { GistPage, Header } from "./components";
 import { PublicGist, UserProfile ,CreateGist} from "./containers";
 
-import { store } from "./store/store";
+import  store  from "./store/store";
 function App() {
   // const test = async () => {
   //   GetGists().then((r) => {

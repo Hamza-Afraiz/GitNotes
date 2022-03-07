@@ -2,7 +2,8 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { GistCode, GistInfo } from "../../components";
 import "./gistPage.css";
-import {GistData} from '../../types/gistData'
+import { GistData } from "../../types/gistData";
+import { useStarStatus } from "../../Hooks";
 
 interface GistPageProps {
   gistData: GistData | null;
@@ -16,13 +17,11 @@ const GistPage = (props: GistPageProps) => {
   var starValue;
 
   if (location?.state?.item) {
-    
     gistData = location.state.item;
-    starValue = location.state.starValue;
   } else {
     gistData = props.gistData;
   }
-
+  starValue = useStarStatus(gistData.gistId);
   return (
     <div>
       <div className="gistPageContainer">

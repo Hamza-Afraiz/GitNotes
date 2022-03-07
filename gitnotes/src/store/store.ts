@@ -4,7 +4,7 @@ import publicGistReducer from "./slices/publicGists";
 import UserSlice from "./slices/user";
 import UserGistsSlice from "./slices/userGists";
 
-export const store = configureStore({
+  const store = configureStore({
   reducer: {
     publicGist: publicGistReducer,
     user: UserSlice,
@@ -21,3 +21,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+export default store
