@@ -3,6 +3,7 @@ import { alpha, styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { AnimatedTextComponent, LoadingSpinner } from "../../components";
+import { CustomButton } from "../../styledComponents";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   CreateGist as CreateGistByUser,
@@ -11,6 +12,8 @@ import {
 import { File } from "../../types/createGist";
 import { useLocation } from "react-router-dom";
 import "./createGist.css";
+import Alert from "@mui/material/Alert";
+
 const ColorButton = styled(Button)<ButtonProps>(() => ({
   color: "white",
   backgroundColor: "#5ACBA1",
@@ -111,10 +114,17 @@ const CreateGist = () => {
   };
   return (
     <div className="createGistContainer">
-      {posted && <AnimatedTextComponent text=" Gist Posted !!!" />}
+      {posted && (
+        <Alert severity="success">
+          <AnimatedTextComponent text=" Gist Posted !!!" />
+        </Alert>
+      )}
       {!posted &&
         (files.length > 0 ? (
-          <AnimatedTextComponent text="File Added. Add More or just push the gist  !!!" />
+          <Alert severity="info">
+            {" "}
+            <AnimatedTextComponent text="File Added. Add More or just push the gist  !!!" />
+          </Alert>
         ) : null)}
       <TextField
         id="outlined-multiline-static"
@@ -147,19 +157,23 @@ const CreateGist = () => {
           setGistContent(value.target.value);
         }}
       />
-      <ColorButton
+      <CustomButton
         onClick={() => {
           AddFile();
         }}
         variant="contained"
+        colorValue="white"
+        backgroundColor="#5ACBA1"
       >
         {userState === true ? "Add File " : "Please Login First"}
-      </ColorButton>
-      <ColorButton
+      </CustomButton>
+      <CustomButton
         onClick={() => {
           postRequestOfGist();
         }}
         variant="contained"
+        colorValue="white"
+        backgroundColor="#5ACBA1"
       >
         {userState === true ? (
           loadingState === true ? (
@@ -172,7 +186,7 @@ const CreateGist = () => {
         ) : (
           "Please Login First"
         )}
-      </ColorButton>
+      </CustomButton>
     </div>
   );
 };

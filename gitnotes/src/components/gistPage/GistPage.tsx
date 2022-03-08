@@ -13,8 +13,8 @@ interface GistPageProps {
 const GistPage = (props: GistPageProps) => {
   const location: any = useLocation();
 
-  var gistData;
-  var starValue;
+  let gistData;
+  let starValue;
 
   if (location?.state?.item) {
     gistData = location.state.item;

@@ -28,3 +28,21 @@ export function usePublicGists(){
 
     return data;
 }
+export function useStarredGists(){
+   
+    const data=useAppSelector((state) => state.userGists.starredGists);
+
+
+
+
+    return data;
+}
+export function useUserGists(){
+   
+    const data=useAppSelector((state) => state.userGists.userGistsData);
+
+
+
+
+    return data;
+}

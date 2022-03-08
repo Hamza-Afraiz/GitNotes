@@ -7,10 +7,9 @@ import { GistsListColumns } from "../../styledComponents";
 import {GistData} from '../../types/gistData'
 interface gistsDataList {
   gistsData: GistData[];
-  starValue: boolean;
 }
 
-export default function ListOfGists({ gistsData, starValue }: gistsDataList) {
+export default function ListOfGists({ gistsData}: gistsDataList) {
   let navigate = useNavigate();
 
   const rows1 = gistsData.map((item, index) => {
@@ -26,9 +25,9 @@ export default function ListOfGists({ gistsData, starValue }: gistsDataList) {
   });
 
   function handleOnClick(rowData: any) {
-    console.log("push -> /roles/" + rowData.id);
+ 
     navigate(`/gistPage`, {
-      state: { item: gistsData[rowData.id], starValue: starValue },
+      state: { item: gistsData[rowData.id] },
     });
   }
   return (

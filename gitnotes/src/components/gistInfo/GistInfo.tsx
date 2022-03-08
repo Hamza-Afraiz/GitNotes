@@ -4,10 +4,12 @@ import { GistIntroduction, GistOption } from "../../components";
 import { GistData } from '../../types/gistData';
 import "./gistInfo.css";
 import { useStarStatus } from "../../Hooks";
+import Alert from "@mui/material/Alert";
+import { AnimatedTextComponent, LoadingSpinner } from "../../components";
 
 
 const GistInfoContainer = styled("div")(() => ({
-  width: "100%",
+  width: "80%",
 
   display: "flex",
   flexDirection: "row",
@@ -25,11 +27,23 @@ const GistInfo = ({
   gistType,
   starValue,
 }: GistData) => {
+  const [alertValue, setAlertValue] = React.useState<string | null>(null);
+  const handleAlertValue=(alertValueProp:string)=>{
+    setAlertValue(alertValueProp)
+
+  }
+
   
-  
+  console.log("alert value",alertValue)
 
   return (
-    <GistInfoContainer>
+    <div className="gist-info"> 
+    {alertValue !== null ? (
+                <Alert severity="success">
+                  <AnimatedTextComponent text={alertValue} />
+                </Alert>
+              ):null}
+      <GistInfoContainer>
       <GistIntroduction
         ownerName={ownerName}
         fileName={fileName}
@@ -37,8 +51,10 @@ const GistInfo = ({
         ownerAvatar={ownerAvatar}
         description={description}
       />
-      <GistOption gistId={gistId} gistType={gistType} starValue={starValue} />
+      <GistOption gistId={gistId} gistType={gistType} starValue={starValue} handleAlertValue={handleAlertValue} />
     </GistInfoContainer>
+      </div>
+    
   );
 };
 

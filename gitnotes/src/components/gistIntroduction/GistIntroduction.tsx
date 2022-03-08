@@ -16,7 +16,7 @@ const GistIntroduction = ({
   return (
     <div className="gistInfoContainer">
       <img
-        style={{ width: "20%", borderRadius: "50%" }}
+        style={{ width: "25%",height:"100%",maxHeight:'100px',maxWidth:"25%", borderRadius: "50%" }}
         src={ownerAvatar}
         alt="profile"
       />

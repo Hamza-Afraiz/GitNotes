@@ -4,4 +4,5 @@ export interface UserGistDataList {
     starredGists: GistData[];
     loading:boolean;
     workingGistId:number;
+    searchQuery:string
 }

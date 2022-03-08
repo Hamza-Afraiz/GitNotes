@@ -8,6 +8,7 @@ const initialState: UserGistDataList = {
   starredGists: [],
   loading: false,
   workingGistId: 0,
+  searchQuery:""
 };
 export const UserGists = createSlice({
   name: "UserGists",
@@ -17,6 +18,12 @@ export const UserGists = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     setUserGistData(state, action) {
       state.userGistsData = action.payload;
+    },
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
+    },
+    removeSearchQuery(state){
+      state.searchQuery=""
     },
     setUserStarredData(state, action) {
       state.starredGists = action.payload;
@@ -294,6 +301,8 @@ export const {
   deleteGistData,
   removeStarGistData,
   addStarGistFromPublic,
+  setSearchQuery,
+  removeSearchQuery
 } = UserGists.actions;
 
 export default UserGists.reducer;

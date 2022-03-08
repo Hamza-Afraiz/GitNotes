@@ -1,4 +1,4 @@
-export { ColorButton} from './ColorButton'
+export { CustomButton} from './ColorButton'
 export {SearchIconWrapper} from './SearchIconWrapper'
 export {StyledInputBase} from './StyledInputBase'
 export {SearchContainer} from './SearchContainer'

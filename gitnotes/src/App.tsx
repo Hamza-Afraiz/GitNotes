@@ -1,32 +1,27 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { useSearchQuery } from "../src/Hooks";
 import "./App.css";
 import { GistPage, Header } from "./components";
-import { PublicGist, UserProfile ,CreateGist} from "./containers";
-
-import  store  from "./store/store";
+import { CreateGist, Gists, UserProfile } from "./containers";
+import store from "./store/store";
 function App() {
-  // const test = async () => {
-  //   GetGists().then((r) => {
-  //     console.log(r);
-  //   });
-  // };
-  // useEffect(() => {
-  //   test();
-  // }, []);
+  const {setSearchQueryValue,searchQuery}=useSearchQuery();
+ 
+
   return (
     <Provider store={store}>
       <Router>
         <Fragment>
-          <Header />
+          <Header setSearchQueryValue={setSearchQueryValue} />
           <div className="App">
             <Routes>
               <Route
                 path="/gistPage"
                 element={<GistPage gistData={null} gistType="public" />}
               />
-              <Route path="/"  element={<PublicGist />} />
+              <Route path="/"  element={<Gists searchQuery={searchQuery} />} />
               <Route path="/userProfile" element={<UserProfile />} />
               <Route path="/createGist" element={<CreateGist />} />
             </Routes>

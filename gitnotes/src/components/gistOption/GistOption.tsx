@@ -1,54 +1,61 @@
+import EditIcon from "@mui/icons-material/Edit";
 import ForkIcon from "@mui/icons-material/ForkRight";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
 import StarFilledIcon from "@mui/icons-material/Star";
 import StarIcon from "@mui/icons-material/StarBorder";
-import EditIcon from "@mui/icons-material/Edit";
 import LoadingButton from "@mui/lab/LoadingButton";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../components";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import {
+  useLoadingState,
+  usePublicGists,
+  useUserState,
+  useWorkingGistId,
+} from "../../Hooks";
+import { useAppDispatch } from "../../store/hooks";
 import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
 import "./gistOptions.css";
-import { useNavigate } from "react-router-dom";
-import {
-  useWorkingGistId,
-  usePublicGists,
-  useLoadingState,
-  useUserState,
-} from "../../Hooks";
 
 interface GistOptionProps {
   gistId?: number | string;
   gistType?: string;
   starValue?: boolean;
+  handleAlertValue(alertValueProp: string): void;
 }
-const GistOption = ({ gistId, gistType, starValue }: GistOptionProps) => {
+const GistOption = ({
+  gistId,
+  gistType,
+  starValue,
+  handleAlertValue,
+}: GistOptionProps) => {
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
-
   const [starType, setStarValue] = React.useState(starValue);
+
   const userState = useUserState();
   const loadingState = useLoadingState();
   const workingGistId = useWorkingGistId();
-
   const publicGistData = usePublicGists();
 
-  React.useEffect(() => {
-    if (starValue) setStarValue(true);
-  }, []);
-
-  const handleStarIcon = () => {
+  const starGist = () => {
     if (!starType) {
       let starGistItem = publicGistData.find((gist) => gist.gistId === gistId);
       dispatch(StarGist(gistId?.toString(), gistType, starGistItem));
       setStarValue(true);
+
+      handleAlertValue("Star Successfully");
     } else {
       dispatch(UnStarGist(gistId?.toString()));
       setStarValue(false);
+
+      handleAlertValue("Unstar Successfully");
     }
   };
-  const handleDelete = () => {
+  const deleteGist = () => {
     dispatch(DeleteGist(gistId?.toString()));
+
+    handleAlertValue("DeletedSuccessfully");
   };
   const handleEdit = () => {
     navigate(`/createGist`, { state: { gistId: gistId } });
@@ -70,7 +77,7 @@ const GistOption = ({ gistId, gistType, starValue }: GistOptionProps) => {
                     loadingPosition="end"
                     variant="text"
                     onClick={() => {
-                      handleDelete();
+                      deleteGist();
                     }}
                   >
                     Delete
@@ -104,7 +111,7 @@ const GistOption = ({ gistId, gistType, starValue }: GistOptionProps) => {
                 loadingPosition="end"
                 variant="text"
                 onClick={() => {
-                  handleStarIcon();
+                  starGist();
                 }}
               >
                 {starType === true ? "UnStar" : "Star"}

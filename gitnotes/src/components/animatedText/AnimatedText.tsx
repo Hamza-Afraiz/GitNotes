@@ -14,7 +14,7 @@ export const AnimatedTextComponent = (props:any) => {
   animationType="float"
   interval={0.06}
   duration={0.8}
-  tag="p"
+  tag="h4"
   className="animated-paragraph"
   includeWhiteSpaces
   threshold={0.1}
