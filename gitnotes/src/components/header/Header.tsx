@@ -105,7 +105,7 @@ function Header(props: any) {
             variant="h6"
             
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ display: { md:'block',xs: "none", sm: "none" } }}
           >
             EMUMBA
           </Typography>
