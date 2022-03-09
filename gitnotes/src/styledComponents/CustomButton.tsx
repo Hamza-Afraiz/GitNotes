@@ -8,12 +8,13 @@ interface CustomButtonProps{
  
 
 }
-export const CustomButton = styled(Button)<CustomButtonProps>(({colorvalue,backgroundcolor,width }) => ({
+export const CustomButton = styled(Button)<CustomButtonProps>(({colorvalue,backgroundcolor,width,theme }) => ({
     color: colorvalue,
    
     backgroundColor: backgroundcolor,
     width: width,
-  marginTop: "5%",
+   marginTop: "5%",
+   
    
   
   }));

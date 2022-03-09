@@ -73,7 +73,7 @@ const CreateGist = () => {
       }
     } else {
       setPopUpText(
-        "Add some Files First Please Or make some change in Existing to Update."
+        "Add some Files First Please ."
       );
 
       return;
@@ -102,7 +102,7 @@ const CreateGist = () => {
 
   const AddFile = () => {
     if (!gistContent || !gistName) {
-      setPopUpText("Please Enter Gist Details First");
+      setPopUpText("Please Enter File Details Details First");
       return;
     }
     const createGist = {

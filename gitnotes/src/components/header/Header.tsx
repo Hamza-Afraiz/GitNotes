@@ -1,15 +1,16 @@
-import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
-import HomeIcon from "@mui/icons-material/Home";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CloseIcon from "@mui/icons-material/Close";
+import HomeIcon from "@mui/icons-material/Home";
+import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import CircularProgress from '@mui/material/CircularProgress';
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { useTheme } from '@mui/material/styles';
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-import { Oval } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Snack } from "../../components";
@@ -17,18 +18,20 @@ import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 import {
   getStarredGistsData,
-  getUserGistsData,
+  getUserGistsData
 } from "../../store/slices/userGists";
 import {
   CustomButton,
   SearchContainer,
-  StyledInputBase,
+  StyledInputBase
 } from "../../styledComponents";
 import "./header.css";
 
 function Header(props: any) {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const theme = useTheme();
+
 
   const userState = useAppSelector((state) => state.user.loggedIn);
   const userData = useAppSelector((state) => state.user.userData);
@@ -44,7 +47,7 @@ function Header(props: any) {
     setMenuElement(event.currentTarget);
   };
 
-  const handleSearch = () => {
+  const SearchGist = () => {
     props.setSearchQueryValue(searchQuery);
     navigate(`/`);
   };
@@ -101,26 +104,33 @@ function Header(props: any) {
         LogInNotification={LogInNotification}
         CloseLogInNotification={CloseLogInNotification}
       />
-      <AppBar sx={{ backgroundColor: "#5ACBA1" }} position="static">
+      <AppBar sx={{ backgroundColor: theme.color.primary, }} position="static">
         <Toolbar>
-        <ArrowBackIcon onClick={()=>{navigate(-1)}}/>
-          <HomeIcon onClick={()=>{navigate("/")}} />
-          
+          <ArrowBackIcon
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+          <HomeIcon
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+
           <Typography
             variant="h6"
-            
             component="div"
-            sx={{ display: { md:'block',xs: "none", sm: "none" },marginLeft:'2%' }}
+            sx={{
+              display: { md: "none", xs: "none", sm: "none",lg:'block' },
+              marginLeft: "2%",
+            }}
           >
             EMUMBA
           </Typography>
 
-
-
-
           {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>
-            <div className="searchIconWrapper" onClick={handleSearch}>
+            <div className="searchIconWrapper" onClick={SearchGist}>
               <SearchIcon />
             </div>
 
@@ -141,12 +151,12 @@ function Header(props: any) {
             )}
           </SearchContainer>
 
-         {/* IF USER HAS SUCCESSFULLY LOGGED IN BASED ON USER STATE PROFILE PIC LL BE SHOWN INSTEAD OF 
+          {/* IF USER HAS SUCCESSFULLY LOGGED IN BASED ON USER STATE PROFILE PIC LL BE SHOWN INSTEAD OF 
          LOGIN BUTTON AND UPON CLICKING PIC ,MENU ITEMS LL APPEAR */}
 
           {loading === true ? (
             <div className="profilePicDiv">
-              <Oval height="30" width="30" color="white" ariaLabel="loading" />
+               <CircularProgress color="success" />
             </div>
           ) : userState === true ? (
             <div className="profilePicDiv">

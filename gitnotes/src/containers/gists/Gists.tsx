@@ -36,6 +36,7 @@ const Gists = (props: any) => {
   }
 
   React.useEffect(() => {
+  
     getPublicGists();
     if (props.searchQuery) {
       filterData(props.searchQuery);
