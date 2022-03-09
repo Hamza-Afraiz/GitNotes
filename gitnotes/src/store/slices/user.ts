@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import githubAuth from "../../config/authMethods";
-import { User } from '../../types/user';
-
+import { User } from "../../types/user";
 
 // Define the initial state using that typeO
 const initialState: User = {
@@ -19,20 +18,17 @@ export const fetchUserLoginDetails = () => async (dispatch: any) => {
   dispatch(setUserData(userData));
 };
 
-// Define a type for the slice state
-export const getAuthentication =
-  // if you type your function argument here
-  async () => {
-    const response = await githubAuth();
+export const getAuthentication = async () => {
+  const response = await githubAuth();
 
-    return await response;
-  };
+  return await response;
+};
+
 export const UserSlice = createSlice({
   name: "User",
-  // `createSlice` will infer the state type from the `initialState` argument
+
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     setUserData(state, action) {
       state.userData = action.payload;
       state.loggedIn = true;
@@ -42,6 +38,6 @@ export const UserSlice = createSlice({
     },
   },
 });
-// Other code such as selectors can use the imported `RootState` type
+
 export const { setUserData, LoggedOut } = UserSlice.actions;
 export default UserSlice.reducer;

@@ -1,5 +1,4 @@
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { addStarGistFromPublic,StarGist } from "../../store/slices/userGists";
+import { useAppSelector } from "../../store/hooks";
 
 export function useWorkingGistId(){
    

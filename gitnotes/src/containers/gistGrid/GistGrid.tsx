@@ -5,37 +5,36 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { GistCode, GistIntroduction } from "../../components";
 import { GridGist, GridGistContainer } from "../../styledComponents";
-import {GistData} from '../../types/gistData'
+import {GistDataList} from '../../types/gistDataList'
+import { GistData } from "../../types/gistData";
 
 
-interface gistsDataList {
-  gistsData: GistData[];
-}
 
-const GridOfGists = ({ gistsData}: gistsDataList) => {
-  let navigate = useNavigate();
 
-  const [page, setPage] = React.useState(0);
-  const [showingGridData, setShowingGridData] = React.useState<GistData[]>([]);
+const GistGrid = ({ gistsData}: GistDataList) => {
+  const navigate = useNavigate();
 
-  const handlePaginaion = (value: number) => {
-    let showingGridDataTemp = gistsData.slice(value * 9, value * 9 + 9);
-    setShowingGridData(showingGridDataTemp);
+  const [pageNumber, setPageNumber] = React.useState(0);
+  const [gridData, setGridData] = React.useState<GistData[]>([]);
+
+  const changeGridData = (value: number) => {
+   
+    setGridData(gistsData.slice(value * 9, value * 9 + 9));
   };
 
-  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    handlePaginaion(value);
+  const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPageNumber(value);
+    changeGridData(value);
   };
 
   useEffect(() => {
-    handlePaginaion(page);
+    changeGridData(pageNumber);
   }, []);
 
   return (
     <GridGistContainer>
       <Grid container spacing={{ xs: 5 }}>
-        {showingGridData.map((item , index) => (
+        {gridData.map((item , index) => (
           <Grid item xs={4} key={index}>
             <GridGist
               onClick={() => {
@@ -59,12 +58,12 @@ const GridOfGists = ({ gistsData}: gistsDataList) => {
       <Stack sx={{ marginTop: "2%" }} spacing={2}>
         <Pagination
           count={Math.round(gistsData.length / 9)}
-          page={page}
-          onChange={handleChange}
+          page={pageNumber}
+          onChange={changePage}
         />
       </Stack>
     </GridGistContainer>
   );
 };
 
-export default GridOfGists;
+export default GistGrid;

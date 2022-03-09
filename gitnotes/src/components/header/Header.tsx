@@ -1,5 +1,5 @@
-import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -12,7 +12,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
-import { useSearchQuery } from "../../Hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 import {
   getStarredGistsData,
@@ -25,58 +24,61 @@ import {
 } from "../../styledComponents";
 import "./header.css";
 
-function Header(props:any) {
+function Header(props: any) {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const userState = useAppSelector((state) => state.user.loggedIn);
-  
-  const [loading, setLoading] = React.useState(false);
-  const [openModal, setOpenModal] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const userData = useAppSelector((state) => state.user.userData);
- 
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const userState = useAppSelector((state) => state.user.loggedIn);
+  const userData = useAppSelector((state) => state.user.userData);
+
+  const [loading, setLoading] = React.useState(false);
+  const [LogInNotification, setLogInNotification] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [menuElement, setMenuElement] = React.useState<null | HTMLElement>(
+    null
+  );
+
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuElement(event.currentTarget);
   };
+
   const handleSearch = () => {
-   
-     props.setSearchQueryValue(searchQuery)
-    //navigate(`/`, { state: { route: "search", gistId: `${searchQuery}` } });
+    props.setSearchQueryValue(searchQuery);
+    navigate(`/`);
   };
-  const handleClose = (navigationScreen: string) => {
-    setAnchorEl(null);
+
+  const closeMenu = (navigationScreen: string) => {
+    setMenuElement(null);
+
     switch (navigationScreen) {
       case "profile":
         navigate(`/userProfile`);
-        // code block
+
         break;
       case "starred":
-        navigate(`/`, { state: { route: "starred" } });
-        // code block
+        navigate(`/`);
+        props.setStarredGists(true);
+
         break;
       case "createGist":
         navigate(`/createGist`);
-        // code block
+
         break;
       default:
-      // code block
     }
   };
 
   React.useEffect(() => {
     if (userState) {
-      console.log("useEffect header")
       setLoading(false);
       dispatch(getUserGistsData());
-      // GetGists().then(console.log)
-      dispatch(getStarredGistsData());
-      setOpenModal(userState);
-    }
-  }, [userState,dispatch]);
 
-  const handleCloseModal = (
+      dispatch(getStarredGistsData());
+      setLogInNotification(userState);
+    }
+  }, [userState, dispatch]);
+
+  const CloseLogInNotification = (
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
@@ -84,26 +86,34 @@ function Header(props:any) {
       return;
     }
 
-    setOpenModal(false);
+    setLogInNotification(false);
   };
-  const ClearSearchQuery=()=>{
-    props.setSearchQueryValue("")
-    setSearchQuery("")
-  }
-  
+  const ClearSearchQuery = () => {
+    props.setSearchQueryValue("");
+    setSearchQuery("");
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Snack openModal={openModal} handleCloseModal={handleCloseModal} />
+      <Snack
+        LogInNotification={LogInNotification}
+        CloseLogInNotification={CloseLogInNotification}
+      />
       <AppBar sx={{ backgroundColor: "#5ACBA1" }} position="static">
         <Toolbar>
           <Typography
             variant="h6"
-            noWrap
+            
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
             EMUMBA
           </Typography>
+
+
+
+
+          {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>
             <div className="searchIconWrapper" onClick={handleSearch}>
               <SearchIcon />
@@ -118,13 +128,17 @@ function Header(props:any) {
               ) => {
                 setSearchQuery(event.target.value);
               }}
-              
             />
-            {searchQuery && <div className="closeIconWrapper" onClick={ClearSearchQuery}>
-              <CloseIcon />
-            </div> }
-            
+            {searchQuery && (
+              <div className="closeIconWrapper" onClick={ClearSearchQuery}>
+                <CloseIcon />
+              </div>
+            )}
           </SearchContainer>
+
+         {/* IF USER HAS SUCCESSFULLY LOGGED IN BASED ON USER STATE PROFILE PIC LL BE SHOWN INSTEAD OF 
+         LOGIN BUTTON AND UPON CLICKING PIC ,MENU ITEMS LL APPEAR */}
+
           {loading === true ? (
             <div className="profilePicDiv">
               <Oval height="30" width="30" color="white" ariaLabel="loading" />
@@ -135,14 +149,14 @@ function Header(props:any) {
                 className="profilePic"
                 src={userData.ownerAvatar}
                 alt="profile"
-                onClick={handleClick}
+                onClick={openMenu}
               />
               <Menu
                 id="demo-positioned-menu"
                 aria-labelledby="demo-positioned-button"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
+                anchorEl={menuElement}
+                open={Boolean(menuElement)}
+                onClose={closeMenu}
                 anchorOrigin={{
                   vertical: "top",
                   horizontal: "left",
@@ -152,31 +166,32 @@ function Header(props:any) {
                   horizontal: "left",
                 }}
               >
-                <MenuItem style={{justifyContent:'space-between'}}> 
-                <img
-                className="profilePic"
-                src={userData.ownerAvatar}
-                alt="profile"
-                onClick={handleClick}
-              />
-                {userData.ownerName}</MenuItem>
+                <MenuItem style={{ justifyContent: "space-between" }}>
+                  <img
+                    className="profilePic"
+                    src={userData.ownerAvatar}
+                    alt="profile"
+                    onClick={openMenu}
+                  />
+                  {userData.ownerName}
+                </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    handleClose("profile");
+                    closeMenu("profile");
                   }}
                 >
                   Your Gists
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    handleClose("starred");
+                    closeMenu("starred");
                   }}
                 >
                   Starred Gists
                 </MenuItem>
                 <MenuItem
                   onClick={() => {
-                    handleClose("createGist");
+                    closeMenu("createGist");
                   }}
                 >
                   Create A Gist
@@ -198,8 +213,9 @@ function Header(props:any) {
                   setLoading(true);
                 }}
                 variant="contained"
-                colorValue="#5ACBA1"
-                backgroundColor="white"
+                colorvalue="#5ACBA1"
+                backgroundcolor="white"
+                width="20%"
               >
                 Login
               </CustomButton>

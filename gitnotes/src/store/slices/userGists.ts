@@ -8,22 +8,21 @@ const initialState: UserGistDataList = {
   starredGists: [],
   loading: false,
   workingGistId: 0,
-  searchQuery:""
+  searchQuery: "",
 };
 export const UserGists = createSlice({
   name: "UserGists",
-  // `createSlice` will infer the state type from the `initialState` argument
+
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     setUserGistData(state, action) {
       state.userGistsData = action.payload;
     },
     setSearchQuery(state, action) {
       state.searchQuery = action.payload;
     },
-    removeSearchQuery(state){
-      state.searchQuery=""
+    removeSearchQuery(state) {
+      state.searchQuery = "";
     },
     setUserStarredData(state, action) {
       state.starredGists = action.payload;
@@ -32,32 +31,27 @@ export const UserGists = createSlice({
       state.loading = !state.loading;
       state.workingGistId = action.payload;
     },
+
+    //adding star gists froom public gists
     addStarGistFromPublic(state, action) {
       state.starredGists.push(action.payload);
     },
-    addStarGistDataFromGists(state, action) {
-      // console.log("STORE STATE IS",store.getState().user)
 
+    //adding gists to starred gists from my gists
+    addStarGistDataFromGists(state, action) {
       var temp = state.userGistsData.find(function (element) {
         console.log(action.payload === element.gistId);
         return element.gistId === action.payload;
       });
-      console.log("temp is", temp);
 
       if (temp) state.starredGists = [...state.starredGists, temp];
     },
     removeStarGistData(state, action) {
-      // var temp = state.userGistsData.find(function (element) {
-      //   console.log(action.payload === element.gistId);
-      //   return element.gistId !== action.payload;
-      // });
-      // console.log("temp removing", temp);
-
-      // if (temp) state.starredGists = [...state.starredGists, temp];
       state.starredGists = state.starredGists.filter(
         (gist) => gist.gistId !== action.payload
       );
     },
+
     deleteGistData(state, action) {
       state.userGistsData = state.userGistsData.filter(
         (gist) => gist.gistId !== action.payload
@@ -65,6 +59,10 @@ export const UserGists = createSlice({
     },
   },
 });
+
+//Basically we have created this object type for our create Gist operation
+//creating gist needs this type of object
+
 const convertArrayToObject = (array: any, key: any) => {
   const initialValue = {};
   return array.reduce((obj: any, item: any) => {
@@ -74,38 +72,40 @@ const convertArrayToObject = (array: any, key: any) => {
     };
   }, initialValue);
 };
-export const CreateGist =
-  // if you type your function argument here
-  (gistData: createGist) => async (dispatch: any) => {
-    const bodyData = gistData.files.map((item) => {
-      return {
-        fileName: item.fileName,
-        content: item.fileContent,
-      };
-    });
 
-    const filesData = convertArrayToObject(bodyData, "fileName");
+export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
+  //converting gist data to desired type for post operation
 
-    dispatch(setLoadingState(1));
-    //const GIST_FILENAME = gistData.gistName;
-    const req = await fetch(`https://api.github.com/gists`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-      body: JSON.stringify({
-        files: filesData,
+  const bodyData = gistData.files.map((item) => {
+    return {
+      fileName: item.fileName,
+      content: item.fileContent,
+    };
+  });
 
-        description: gistData.description,
-      }),
-    });
-    dispatch(getUserGistsData());
-    dispatch(setLoadingState(1));
+  const filesData = convertArrayToObject(bodyData, "fileName");
 
-    return await req;
-  };
+  //okay ! Dispatching(1) means we are not working(star,unstar ) on some gists.we are just ending the loading
+  dispatch(setLoadingState(1));
+
+  const req = await fetch(`https://api.github.com/gists`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer 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`,
+    },
+    body: JSON.stringify({
+      files: filesData,
+
+      description: gistData.description,
+    }),
+  });
+  dispatch(getUserGistsData());
+  dispatch(setLoadingState(1));
+
+  return await req;
+};
+
 export const UpdateGist =
-  // if you type your function argument here
   (gistData: createGist, gistId: string) => async (dispatch: any) => {
     const bodyData = gistData.files.map((item) => {
       return {
@@ -117,7 +117,7 @@ export const UpdateGist =
     const filesData = convertArrayToObject(bodyData, "fileName");
 
     dispatch(setLoadingState(1));
-    //const GIST_FILENAME = gistData.gistName;
+
     const req = await fetch(`https://api.github.com/gists/${gistId}`, {
       method: "PATCH",
       headers: {
@@ -134,36 +134,38 @@ export const UpdateGist =
 
     return await req;
   };
+
 export const StarGist =
-  // if you type your function argument hee
+  (
+    gistId: string | undefined,
+    gistType: string | undefined,
+    gistObject: GistData | undefined
+  ) =>
+  async (dispatch: any) => {
+    //setting loading on speicfic gist id
+    dispatch(setLoadingState(gistId));
+    const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer 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`,
+      },
+    });
 
+    //if we are going to star some our own gists
+    if (gistType === "user") {
+      dispatch(addStarGistDataFromGists(gistId));
 
-    (gistId: string | undefined, gistType: string|undefined, gistObject: GistData|undefined) =>
-    async (dispatch: any) => {
-      dispatch(setLoadingState(gistId));
-      const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer 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`,
-        },
-      });
-      //dispatch(getStarredGistsData());
-      if (gistType === "user") {
-        dispatch(addStarGistDataFromGists(gistId));
-      
-       
-      }
-      else{
-        dispatch(addStarGistFromPublic(gistObject))
-        
-      }
-      dispatch(setLoadingState(gistId));
-     
-      return await req;
-    };
+      //if we are going to star public gists
+    } else {
+      dispatch(addStarGistFromPublic(gistObject));
+    }
+
+    dispatch(setLoadingState(gistId));
+
+    return await req;
+  };
 
 export const DeleteGist =
-  // if you type your function argument here
   (gistId: string | undefined) => async (dispatch: any) => {
     dispatch(setLoadingState(gistId));
     const req = await fetch(`https://api.github.com/gists/${gistId}`, {
@@ -172,28 +174,25 @@ export const DeleteGist =
         Authorization: `Bearer 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`,
       },
     });
-    //dispatch(getUserGistsData());
+
     dispatch(deleteGistData(gistId));
     dispatch(setLoadingState(gistId));
-    console.log("delete req is", req);
+
     return await req;
   };
 
-export const GetStarredGists =
-  // if you type your function argument here
-  async () => {
-    const req = await fetch(`https://api.github.com/gists/starred`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-    });
+export const GetStarredGists = async () => {
+  const req = await fetch(`https://api.github.com/gists/starred`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer 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`,
+    },
+  });
 
-    return await req.json();
-  };
+  return await req.json();
+};
 
 export const UnStarGist =
-  // if you type your function argument here
   (gistId: string | undefined) => async (dispatch: any) => {
     dispatch(setLoadingState(gistId));
     const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
@@ -208,24 +207,24 @@ export const UnStarGist =
     return await req;
   };
 
-const fetchGistFileData =
-  // if you type your function argument here
-  async (gistFileUrl: string) => {
-    const response = await fetch(`${gistFileUrl}`);
-    return await response.text();
-  };
-export const GetGists =
-  // if you type your function argument here
-  async () => {
-    const req = await fetch(`https://api.github.com/gists`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-    });
+const fetchGistFileData = async (gistFileUrl: string) => {
+  const response = await fetch(`${gistFileUrl}`);
+  return await response.text();
+};
+export const GetGists = async () => {
+  const req = await fetch(`https://api.github.com/gists`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer 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`,
+    },
+  });
 
-    return await req.json();
-  };
+  return await req.json();
+};
+
+// getting gists objects and then extracting one object  details all we need 
+//cant go to the next object untill we completed details of one object
+//using await for one object to complete all its api calls
 
 export const getUserGistsData = () => async (dispatch: any) => {
   const response = await GetGists();
@@ -292,7 +291,7 @@ export const getStarredGistsData = () => async (dispatch: any) => {
   dispatch(setUserStarredData(tempGistDataArray));
 };
 
-// Other code such as selectors can use the imported `RootState` type
+
 export const {
   setUserGistData,
   setUserStarredData,
@@ -302,7 +301,7 @@ export const {
   removeStarGistData,
   addStarGistFromPublic,
   setSearchQuery,
-  removeSearchQuery
+  removeSearchQuery,
 } = UserGists.actions;
 
 export default UserGists.reducer;

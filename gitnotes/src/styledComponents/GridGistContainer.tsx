@@ -5,4 +5,5 @@ export const GridGistContainer = styled("div")(() => ({
     marginRight: "10%",
     marginTop: "5%",
     marginBottom: "4%",
+    overflow:'hidden'
   }));

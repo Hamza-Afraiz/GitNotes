@@ -8,40 +8,42 @@ import { GistDataList } from "../../types/gistDataList";
 const initialState: GistDataList = {
   gistsData: [],
   error: "",
-  loading:false
+  loading: false,
 };
-
 
 export const PublicGistsSlice = createSlice({
   name: "publicGist",
-  // `createSlice` will infer the state type from the `initialState` argument
+ 
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
+  
     setGistData(state, action) {
       state.gistsData = action.payload;
     },
-    setLoadingState(state,action){
-      state.loading=!action.payload;
-    }
+    setLoadingState(state, action) {
+      state.loading = !action.payload;
+    },
   },
 });
 
 const fetchPublicGists =
-  // if you type your function argument here
+  
   async () => {
     const responseNew = await axios.get(`https://api.github.com/gists`);
     return await responseNew.data;
   };
 
 const fetchGistFileData =
-  // if you type your function argument here
+  
   async (gistFileUrl: string) => {
     const response = await fetch(`${gistFileUrl}`);
     return await response.text();
   };
 
-// Define a type for the slice state
+
+// getting gists objects and then extracting one object  details all we need 
+//cant go to the next object untill we completed details of one object
+//using await for one object to complete all its api calls
 
 
 export const getGistsData = () => async (dispatch: any) => {

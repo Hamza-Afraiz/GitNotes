@@ -3,96 +3,93 @@ import GridIcon from "@mui/icons-material/Window";
 import React, { useState } from "react";
 import { Audio } from "react-loader-spinner";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { GridOfGists, ListOfGists } from "..";
-import { usePublicGists, useStarredGists } from "../../Hooks";
+import { GistGrid, GistList } from "../index";
+import { usePublicGists, useStarredGistsData } from "../../Hooks";
 import { getGistsData } from "../../store/slices/publicGists";
 import { GistsContainer } from "../../styledComponents";
 import { GistData } from "../../types/gistData";
+import { PopUpNotification } from "../../components";
 //
 const Gists = (props: any) => {
   const dispatch = useDispatch();
   let gistDataArray = usePublicGists();
-  let starredGistData = useStarredGists();
-  const location: any = useLocation();
+  const starredGistData = useStarredGistsData();
 
-  const [sortingType, setSortingType] = useState("List");
+  const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
   //filtering on searchBar
   const filterData = (gistId: string) => {
-    console.log("filtering", props.searchQuery);
     gistDataArray = gistDataArray.filter(function (itm) {
       return itm.gistId?.toString().includes(gistId);
     });
+    
     setSearchedData(gistDataArray);
-    console.log("public gist dtaa ", gistDataArray);
   };
 
-  console.log("query value is", props.searchQuery);
   const getPublicGists = () => {
     dispatch(getGistsData());
   };
   //checking whether we are on default route or we  are navigated to render public or starred Gist
-
-  if (location?.state?.route) {
+  if (props.starredGists) {
     gistDataArray = starredGistData;
   }
 
   React.useEffect(() => {
-    console.log("rendering with", props.searchQuery);
-    if (props.searchQuery) {
-      console.log("hass query");
-      filterData(props.searchQuery);
-    }
-    else{
-      setSearchedData([])
-    }
     getPublicGists();
+    if (props.searchQuery) {
+      filterData(props.searchQuery);
+    } else {
+      setSearchedData([]);
+    }
+   
   }, [props.searchQuery]);
 
   return (
     <div>
+      {props.searchQuery && (
+        <PopUpNotification popUpText={`Found ${searchedData.length} Results`} />
+      )}
       {!gistDataArray.length ? (
         <GistsContainer style={{ justifyContent: "center" }}>
           <Audio height="10%" width="80%" color="#5ACBA1" ariaLabel="loading" />
         </GistsContainer>
       ) : (
         <div>
-         
           <GistsContainer>
             <GridIcon
               fontSize="large"
               sx={{
-                color: `${sortingType === "Grid" ? "#5ACBA1" : "lightgrey"}`,
+                color: `${sortingType === "grid" ? "#5ACBA1" : "lightgrey"}`,
               }}
               onClick={() => {
-                setSortingType("Grid");
+                setSortingType("grid");
               }}
             />
             |
             <ListIcon
               fontSize="large"
               sx={{
-                color: `${sortingType === "List" ? "#5ACBA1" : "lightgrey"}`,
+                color: `${sortingType === "list" ? "#5ACBA1" : "lightgrey"}`,
               }}
               onClick={() => {
-                setSortingType("List");
+                setSortingType("list");
               }}
             />
           </GistsContainer>
           <>
-            {sortingType === "List" ? (
-              <ListOfGists
+         
+            {sortingType === "list" ? (
+              <GistList
                 gistsData={
-                  searchedData.length > 0 ? searchedData : gistDataArray
+                  searchedData.length > 0 ? searchedData : props.searchQuery ? searchedData: gistDataArray
                 }
               />
             ) : (
-              <GridOfGists
-                gistsData={
-                  searchedData.length > 0 ? searchedData : gistDataArray
-                }
+              <GistGrid
+              gistsData={
+                searchedData.length > 0 ? searchedData : props.searchQuery ? searchedData: gistDataArray
+              }
               />
             )}
           </>

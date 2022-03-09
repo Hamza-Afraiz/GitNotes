@@ -30,7 +30,7 @@ const GistOption = ({
   handleAlertValue,
 }: GistOptionProps) => {
   const dispatch = useAppDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const [starType, setStarValue] = React.useState(starValue);
 
   const userState = useUserState();
@@ -39,24 +39,37 @@ const GistOption = ({
   const publicGistData = usePublicGists();
 
   const starGist = () => {
+    //handling when we are clicked to star gist
     if (!starType) {
+
+
       let starGistItem = publicGistData.find((gist) => gist.gistId === gistId);
       dispatch(StarGist(gistId?.toString(), gistType, starGistItem));
       setStarValue(true);
 
-      handleAlertValue("Star Successfully");
-    } else {
+      handleAlertValue("Star Successfully");//setting state using hook to show message upon completion of gist option
+
+
+    } 
+
+    //handling when we are clicked to Unstar gist
+    
+    else {
       dispatch(UnStarGist(gistId?.toString()));
       setStarValue(false);
 
       handleAlertValue("Unstar Successfully");
     }
   };
+
+
   const deleteGist = () => {
     dispatch(DeleteGist(gistId?.toString()));
 
     handleAlertValue("DeletedSuccessfully");
   };
+
+  
   const handleEdit = () => {
     navigate(`/createGist`, { state: { gistId: gistId } });
   };

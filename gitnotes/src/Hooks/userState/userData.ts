@@ -28,7 +28,7 @@ export function usePublicGists(){
 
     return data;
 }
-export function useStarredGists(){
+export function useStarredGistsData(){
    
     const data=useAppSelector((state) => state.userGists.starredGists);
 

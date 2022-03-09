@@ -1,15 +1,5 @@
-import { styled } from "@mui/material/styles";
 import * as React from "react";
-
-const Row = styled("div")(() => ({
-  display: "flex",
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "space-between",
-
-  width: "80%",
-}));
-const ProfileImage = styled("div")(() => ({}));
+import "./profileImageAndName.css";
 
 interface ProfileImageAndNameProps {
   avatar_url: string;
@@ -21,15 +11,15 @@ export default function ProfileImageAndName({
   ownerName,
 }: ProfileImageAndNameProps) {
   return (
-    <Row>
-      <ProfileImage>
+    <div className="container">
+      <div>
         <img
           style={{ width: "40px", height: "40px", borderRadius: "50%" }}
           src={avatar_url}
           alt="profile"
         />
-      </ProfileImage>
+      </div>
       <div>{ownerName}</div>
-    </Row>
+    </div>
   );
 }

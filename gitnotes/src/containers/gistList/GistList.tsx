@@ -2,17 +2,13 @@ import Box from "@mui/material/Box";
 import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { GistsListColumns } from "../../styledComponents";
+import { GistsListHeading } from "../../styledComponents";
+import { GistDataList } from "../../types/gistDataList";
 
-import {GistData} from '../../types/gistData'
-interface gistsDataList {
-  gistsData: GistData[];
-}
+export default function ListOfGists({ gistsData }: GistDataList) {
+  const navigate = useNavigate();
 
-export default function ListOfGists({ gistsData}: gistsDataList) {
-  let navigate = useNavigate();
-
-  const rows1 = gistsData.map((item, index) => {
+  const listData = gistsData.map((item, index) => {
     return {
       id: index,
       name: item.ownerName,
@@ -24,8 +20,7 @@ export default function ListOfGists({ gistsData}: gistsDataList) {
     };
   });
 
-  function handleOnClick(rowData: any) {
- 
+  function onGistClick(rowData: any) {
     navigate(`/gistPage`, {
       state: { item: gistsData[rowData.id] },
     });
@@ -50,13 +45,13 @@ export default function ListOfGists({ gistsData}: gistsDataList) {
             color: "red",
           },
         }}
-        rows={rows1}
-        columns={GistsListColumns}
+        rows={listData}
+        columns={GistsListHeading}
         pageSize={10}
         rowsPerPageOptions={[10]}
         checkboxSelection
         disableSelectionOnClick
-        onRowClick={(param) => handleOnClick(param.row)}
+        onRowClick={(param) => onGistClick(param.row)}
       />
     </Box>
   );

@@ -5,6 +5,7 @@ import { GistPage } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import "./userProfile.css";
 import { LoadingSpinner } from "../../components";
+import { CustomButton } from "../../styledComponents";
 
 const ColorButton = styled(Button)<ButtonProps>(({ theme }) => ({
   color: "black",
@@ -21,7 +22,7 @@ const UserProfile = () => {
   const userGistDataArray = useAppSelector(
     (state) => state.userGists.userGistsData
   );
-  console.log('user gist dat a',userGistDataArray)
+ 
  
 
 
@@ -35,9 +36,9 @@ const UserProfile = () => {
         />
         <div className="userName">{userData.ownerName}</div>
         <div>
-          <ColorButton onClick={() => {}} variant="contained">
+          <CustomButton colorvalue='black' backgroundcolor="white" variant="contained" width="100%">
             View Github Profile
-          </ColorButton>
+          </CustomButton>
         </div>
       </div>
       <div className="gistContainer">

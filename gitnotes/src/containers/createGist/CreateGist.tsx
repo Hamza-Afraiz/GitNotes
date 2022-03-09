@@ -1,60 +1,57 @@
-import Button, { ButtonProps } from "@mui/material/Button";
-import { alpha, styled } from "@mui/material/styles";
+import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import React from "react";
-import { AnimatedTextComponent, LoadingSpinner } from "../../components";
-import { CustomButton } from "../../styledComponents";
+import { useLocation } from "react-router-dom";
+import {
+  AnimatedTextComponent,
+  LoadingSpinner,
+  PopUpNotification,
+} from "../../components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   CreateGist as CreateGistByUser,
   UpdateGist,
 } from "../../store/slices/userGists";
+import { CustomButton } from "../../styledComponents";
 import { File } from "../../types/createGist";
-import { useLocation } from "react-router-dom";
 import "./createGist.css";
-import Alert from "@mui/material/Alert";
-
-const ColorButton = styled(Button)<ButtonProps>(() => ({
-  color: "white",
-  backgroundColor: "#5ACBA1",
-  "&:hover": {
-    backgroundColor: alpha("#5ACBA1", 0.65),
-  },
-  width: "20%",
-  marginTop: "5%",
-}));
 
 const CreateGist = () => {
-  const [posted, setPosted] = React.useState(false);
-  const [editing, setEditing] = React.useState(false);
+  const dispatch = useAppDispatch();
+  const location: any = useLocation();
+
+  const [postedGist, setPostedGist] = React.useState(false);
+  const [editingGist, setEditingGist] = React.useState(false);
   const [gistDescription, setGistDescription] = React.useState("");
   const [gistName, setGistName] = React.useState("");
   const [gistContent, setGistContent] = React.useState("");
-  const [files, setFiles] = React.useState<File[]>([]);
+  const [gistFiles, setFiles] = React.useState<File[]>([]);
   const [editingGistId, setEditingGistId] = React.useState(0);
+  const [popUpText, setPopUpText] = React.useState("");
 
-  const dispatch = useAppDispatch();
-  const location: any = useLocation();
+
+
   const userState = useAppSelector((state) => state.user.loggedIn);
-  const loadingState = useAppSelector((state) => state.userGists.loading);
-  const userGistData = useAppSelector((state) => state.userGists.userGistsData);
+  const { loading, userGistsData } = useAppSelector((state) => state.userGists);
 
-  React.useEffect(() => {
-    checkingRoute();
-  }, []);
-  const checkingRoute = () => {
+
+  const EditingGist = () => {
     if (location?.state?.gistId) {
-      getGistDataFromRedux(location.state.gistId);
-      setEditing(true);
+      editingGistData(location.state.gistId);
+      setEditingGist(true);
     }
   };
+ 
 
-  const getGistDataFromRedux = (gistId: number) => {
-    let editGistItem = userGistData.find((gist) => gist.gistId === gistId);
+  
 
-    console.log("editng item is", editGistItem);
+  const editingGistData = (gistId: number) => {
+    let editGistItem = userGistsData.find((gist) => gist.gistId === gistId);
+
     SettingEditData(editGistItem);
   };
+
+
   const SettingEditData = (gistData: any) => {
     setGistDescription(gistData.description);
     setGistName(gistData.fileName);
@@ -62,44 +59,50 @@ const CreateGist = () => {
     setEditingGistId(gistData.gistId);
   };
 
-  const postRequestOfGist = () => {
+
+  const AddGist = () => {
     const createGist = {
-      files: files,
+      files: gistFiles,
       description: gistDescription,
     };
-    if (files.length > 0) {
-      if (editing) {
+    if (gistFiles.length) {
+      if (editingGist) {
         dispatch(UpdateGist(createGist, editingGistId.toString()));
       } else {
         dispatch(CreateGistByUser(createGist));
       }
     } else {
-      alert(
-        "Add some Files First Please Or make some change in Existing to Update"
+      setPopUpText(
+        "Add some Files First Please Or make some change in Existing to Update."
       );
+
       return;
     }
 
-    if (!loadingState) {
-      console.log("resetFileting");
+    if (!loading) {
       resetFile();
       resetGist();
-      setPosted(true);
+      setPostedGist(true);
     }
   };
+
+
   const resetGist = () => {
     setFiles([]);
     setGistDescription("");
-    setEditing(false);
+    setEditingGist(false);
   };
+
+
   const resetFile = () => {
     setGistContent("");
 
     setGistName("");
   };
+
   const AddFile = () => {
     if (!gistContent || !gistName) {
-      alert("Please Enter gist Details first");
+      setPopUpText("Please Enter Gist Details First");
       return;
     }
     const createGist = {
@@ -107,23 +110,33 @@ const CreateGist = () => {
       fileDescription: gistDescription,
       fileName: gistName,
     };
-    setFiles((files) => [...files, createGist]);
-    console.log("files are ", files);
+    setFiles((gistFiles) => [...gistFiles, createGist]);
+
     resetFile();
-    //postRequestOfGist();
+    
   };
+
+
+
+  React.useEffect(() => {
+    EditingGist();
+  }, []);
+
+
+
   return (
     <div className="createGistContainer">
-      {posted && (
+      {popUpText && <PopUpNotification popUpText={popUpText} />}
+      {postedGist && (
         <Alert severity="success">
           <AnimatedTextComponent text=" Gist Posted !!!" />
         </Alert>
       )}
-      {!posted &&
-        (files.length > 0 ? (
+      {!postedGist &&
+        (gistFiles.length > 0 ? (
           <Alert severity="info">
             {" "}
-            <AnimatedTextComponent text="File Added. Add More or just push the gist  !!!" />
+            <AnimatedTextComponent text="File Added. Add more or just push the gist  !!!" />
           </Alert>
         ) : null)}
       <TextField
@@ -162,23 +175,25 @@ const CreateGist = () => {
           AddFile();
         }}
         variant="contained"
-        colorValue="white"
-        backgroundColor="#5ACBA1"
+        colorvalue="white"
+        backgroundcolor="#5ACBA1"
+        width="20%"
       >
         {userState === true ? "Add File " : "Please Login First"}
       </CustomButton>
       <CustomButton
         onClick={() => {
-          postRequestOfGist();
+          AddGist();
         }}
         variant="contained"
-        colorValue="white"
-        backgroundColor="#5ACBA1"
+        colorvalue="white"
+        backgroundcolor="#5ACBA1"
+        width="20%"
       >
         {userState === true ? (
-          loadingState === true ? (
+          loading === true ? (
             <LoadingSpinner width="20%" height="20%" color="white" />
-          ) : editing ? (
+          ) : editingGist ? (
             " Update Gist"
           ) : (
             "Add Gist"
