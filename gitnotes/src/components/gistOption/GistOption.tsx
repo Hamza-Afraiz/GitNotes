@@ -16,6 +16,7 @@ import {
 import { useAppDispatch } from "../../store/hooks";
 import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
 import "./gistOptions.css";
+import {PlainText} from '../../styledComponents'
 
 interface GistOptionProps {
   gistId?: number | string;

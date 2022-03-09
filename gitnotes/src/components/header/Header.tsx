@@ -1,5 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import HomeIcon from "@mui/icons-material/Home";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
@@ -101,11 +103,14 @@ function Header(props: any) {
       />
       <AppBar sx={{ backgroundColor: "#5ACBA1" }} position="static">
         <Toolbar>
+        <ArrowBackIcon onClick={()=>{navigate(-1)}}/>
+          <HomeIcon onClick={()=>{navigate("/")}} />
+          
           <Typography
             variant="h6"
             
             component="div"
-            sx={{ display: { md:'block',xs: "none", sm: "none" } }}
+            sx={{ display: { md:'block',xs: "none", sm: "none" },marginLeft:'2%' }}
           >
             EMUMBA
           </Typography>

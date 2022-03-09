@@ -1,10 +1,18 @@
 import React from 'react';
 import { GistCodeContainer } from '../../styledComponents';
-
+import { styled } from "@mui/material/styles";
 
 interface GistCodeProps{
     GistCodeContent:string[]|undefined
 }
+export  const OrderedListItem = styled("li")(({theme}) => ({
+    
+    fontSize:"0.9em",
+    [theme.breakpoints.down('md')]: {
+      fontSize:"0.5em"
+    },
+    
+  }));
 const GistCode = ({GistCodeContent}:GistCodeProps) => {
     
     
@@ -12,9 +20,9 @@ const GistCode = ({GistCodeContent}:GistCodeProps) => {
         <GistCodeContainer>
             <ol>
                 {GistCodeContent?.map((item,index)=>(
-                    <li key={index}>
+                    <OrderedListItem key={index}>
                         {item}
-                    </li>
+                    </OrderedListItem>
                 ))}
             </ol>
 
