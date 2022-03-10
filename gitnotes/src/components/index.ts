@@ -9,4 +9,5 @@ export {LoadingSpinner} from './loadingSpinner/LoadingSpinner'
 export {AnimatedTextComponent} from './animatedText/AnimatedText'
 export {Snack} from './alert/Alert'
 export {default as PopUpNotification } from './popUpNotification/PopUpNotification'
+export {default as MenuItems}from './menu/Menu'
 
