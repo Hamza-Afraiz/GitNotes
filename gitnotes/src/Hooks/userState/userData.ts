@@ -1,48 +1,18 @@
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { addStarGistFromPublic,StarGist } from "../../store/slices/userGists";
+import { useAppSelector } from "../../store/hooks";
 
-export function useLoadingState(){
-   
-    const loadingState=useAppSelector((state) => state.userGists.loading);
-
-
-
-
-    return loadingState;
+export function useLoadingState() {
+  return useAppSelector((state) => state.userGists.loading);
 }
-export function useUserState(){
-   
-    const data=useAppSelector((state) => state.user.loggedIn);
-
-
-
-
-    return data;
+export function useUserState() {
+  return useAppSelector((state) => state.user.loggedIn);
 }
-export function usePublicGists(){
-   
-    const data=useAppSelector((state) => state.publicGist.gistsData);
-
-
-
-
-    return data;
+export function usePublicGists() {
+  return useAppSelector((state) => state.publicGist.gistsData);
 }
-export function useStarredGistsData(){
-   
-    const data=useAppSelector((state) => state.userGists.starredGists);
-
-
-
-
-    return data;
+export function useStarredGistsData() {
+  return useAppSelector((state) => state.userGists.starredGists);
 }
-export function useUserGists(){
-   
-    const data=useAppSelector((state) => state.userGists.userGistsData);
 
-
-
-
-    return data;
+export function useUserGists() {
+  return useAppSelector((state) => state.userGists.userGistsData);
 }

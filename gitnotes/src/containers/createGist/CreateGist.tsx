@@ -1,7 +1,10 @@
+//lib
 import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { useLocation } from "react-router-dom";
+
+//src
 import {
   AnimatedTextComponent,
   LoadingSpinner,
@@ -12,8 +15,11 @@ import {
   CreateGist as CreateGistByUser,
   UpdateGist,
 } from "../../store/slices/userGists";
-import { CustomButton } from "../../styledComponents";
 import { File } from "../../types/createGist";
+
+//styles
+import { CustomButton } from "../../styledComponents";
+
 import "./createGist.css";
 
 const CreateGist = () => {
@@ -29,11 +35,8 @@ const CreateGist = () => {
   const [editingGistId, setEditingGistId] = React.useState(0);
   const [popUpText, setPopUpText] = React.useState("");
 
-
-
   const userState = useAppSelector((state) => state.user.loggedIn);
   const { loading, userGistsData } = useAppSelector((state) => state.userGists);
-
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -41,16 +44,10 @@ const CreateGist = () => {
       setEditingGist(true);
     }
   };
- 
-
-  
 
   const editingGistData = (gistId: number) => {
-    let editGistItem = userGistsData.find((gist) => gist.gistId === gistId);
-
-    SettingEditData(editGistItem);
+    SettingEditData(userGistsData.find((gist) => gist.gistId === gistId));
   };
-
 
   const SettingEditData = (gistData: any) => {
     setGistDescription(gistData.description);
@@ -59,12 +56,12 @@ const CreateGist = () => {
     setEditingGistId(gistData.gistId);
   };
 
-
   const AddGist = () => {
     const createGist = {
       files: gistFiles,
       description: gistDescription,
     };
+
     if (gistFiles.length) {
       if (editingGist) {
         dispatch(UpdateGist(createGist, editingGistId.toString()));
@@ -72,9 +69,7 @@ const CreateGist = () => {
         dispatch(CreateGistByUser(createGist));
       }
     } else {
-      setPopUpText(
-        "Add some Files First Please ."
-      );
+      setPopUpText("Add one file atleast to add gist .");
 
       return;
     }
@@ -86,13 +81,11 @@ const CreateGist = () => {
     }
   };
 
-
   const resetGist = () => {
     setFiles([]);
     setGistDescription("");
     setEditingGist(false);
   };
-
 
   const resetFile = () => {
     setGistContent("");
@@ -102,7 +95,7 @@ const CreateGist = () => {
 
   const AddFile = () => {
     if (!gistContent || !gistName) {
-      setPopUpText("Please Enter File Details Details First");
+      setPopUpText("Please enter file content first");
       return;
     }
     const createGist = {
@@ -113,32 +106,27 @@ const CreateGist = () => {
     setFiles((gistFiles) => [...gistFiles, createGist]);
 
     resetFile();
-    
   };
-
-
 
   React.useEffect(() => {
     EditingGist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-
 
   return (
     <div className="createGistContainer">
       {popUpText && <PopUpNotification popUpText={popUpText} />}
       {postedGist && (
         <Alert severity="success">
-          <AnimatedTextComponent text=" Gist Posted !!!" />
+          <AnimatedTextComponent text=" Gist Added Successfully !!!" />
         </Alert>
       )}
-      {!postedGist &&
-        (gistFiles.length > 0 ? (
-          <Alert severity="info">
-            {" "}
-            <AnimatedTextComponent text="File Added. Add more or just push the gist  !!!" />
-          </Alert>
-        ) : null)}
+      {!postedGist && gistFiles.length && (
+        <Alert severity="info">
+          {" "}
+          <AnimatedTextComponent text="File Added !!!" />
+        </Alert>
+      )}
       <TextField
         id="outlined-multiline-static"
         label="File Name"
@@ -171,9 +159,7 @@ const CreateGist = () => {
         }}
       />
       <CustomButton
-        onClick={() => {
-          AddFile();
-        }}
+        onClick={AddFile}
         variant="contained"
         colorvalue="white"
         backgroundcolor="#5ACBA1"
@@ -182,16 +168,14 @@ const CreateGist = () => {
         {userState === true ? "Add File " : "Please Login First"}
       </CustomButton>
       <CustomButton
-        onClick={() => {
-          AddGist();
-        }}
+        onClick={AddGist}
         variant="contained"
         colorvalue="white"
         backgroundcolor="#5ACBA1"
         width="20%"
       >
-        {userState === true ? (
-          loading === true ? (
+        {userState ? (
+          loading ? (
             <LoadingSpinner width="20%" height="20%" color="white" />
           ) : editingGist ? (
             " Update Gist"

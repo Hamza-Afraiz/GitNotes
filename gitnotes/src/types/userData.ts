@@ -1,4 +1,4 @@
 export interface UserData {
-    ownerName?: string;
-    ownerAvatar?: string;
-  }
+  ownerName?: string;
+  ownerAvatar?: string;
+}

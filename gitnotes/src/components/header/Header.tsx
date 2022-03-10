@@ -1,3 +1,4 @@
+//lib
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloseIcon from "@mui/icons-material/Close";
 import HomeIcon from "@mui/icons-material/Home";
@@ -5,21 +6,23 @@ import SearchIcon from "@mui/icons-material/Search";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Snack, MenuItems } from "../../components";
+
+//src
+import { MenuItems, Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 import {
   getStarredGistsData,
   getUserGistsData,
 } from "../../store/slices/userGists";
+
+//styles
 import {
   CustomButton,
   SearchContainer,
@@ -28,7 +31,7 @@ import {
 import "./header.css";
 
 function Header(props: any) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
 
@@ -98,6 +101,8 @@ function Header(props: any) {
   };
   const LogoutUser = () => {
     dispatch(LoggedOut());
+    navigate("/", { replace: true });
+    window.history.replaceState(null, "/");
   };
 
   return (
@@ -114,8 +119,10 @@ function Header(props: any) {
             }}
           />
           <HomeIcon
+            sx={{ marginLeft: "1%" }}
             onClick={() => {
-              navigate("/");
+              navigate("/", { replace: true });
+              window.history.replaceState(null, "/");
             }}
           />
 
@@ -124,8 +131,8 @@ function Header(props: any) {
             component="div"
             sx={{
               display: { md: "none", xs: "none", sm: "none", lg: "block" },
-              marginLeft: "2%",
             }}
+            className="company-name"
           >
             EMUMBA
           </Typography>

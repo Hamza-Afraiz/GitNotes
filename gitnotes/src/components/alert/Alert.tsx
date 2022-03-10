@@ -1,16 +1,22 @@
 import MuiAlert, { AlertProps } from "@mui/material/Alert";
 import React from "react";
 import Snackbar from "@mui/material/Snackbar";
+
+interface SnackProps {
+  LogInNotification: boolean;
+  CloseLogInNotification: any;
+}
+
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   }
 );
-interface SnackProps {
-  LogInNotification: boolean;
-  CloseLogInNotification: any;
-}
-export const Snack = ({ LogInNotification, CloseLogInNotification }: SnackProps) => {
+
+export const Snack = ({
+  LogInNotification,
+  CloseLogInNotification,
+}: SnackProps) => {
   return (
     <Snackbar
       open={LogInNotification}

@@ -3,22 +3,22 @@ import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+//src
 import { GistCode, GistIntroduction } from "../../components";
-import { GridGist, GridGistContainer } from "../../styledComponents";
-import {GistDataList} from '../../types/gistDataList'
+import { GistDataList } from "../../types/gistDataList";
 import { GistData } from "../../types/gistData";
 
+//styles
+import { GridGist, GridGistContainer } from "../../styledComponents";
 
-
-
-const GistGrid = ({ gistsData}: GistDataList) => {
+const GistGrid = ({ gistsData }: GistDataList) => {
   const navigate = useNavigate();
 
   const [pageNumber, setPageNumber] = React.useState(0);
   const [gridData, setGridData] = React.useState<GistData[]>([]);
 
   const changeGridData = (value: number) => {
-   
     setGridData(gistsData.slice(value * 9, value * 9 + 9));
   };
 
@@ -29,12 +29,13 @@ const GistGrid = ({ gistsData}: GistDataList) => {
 
   useEffect(() => {
     changeGridData(pageNumber);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <GridGistContainer>
       <Grid container spacing={{ xs: 5 }}>
-        {gridData.map((item , index) => (
+        {gridData.map((item, index) => (
           <Grid item xs={4} key={index}>
             <GridGist
               onClick={() => {

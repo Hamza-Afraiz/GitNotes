@@ -1,13 +1,18 @@
+//lib
 import Alert from "@mui/material/Alert";
 import React from "react";
+
+//src
 import {
   AnimatedTextComponent,
   GistIntroduction,
-  GistOption
+  GistOption,
 } from "../../components";
-import { GistInfoContainer } from "../../styledComponents";
 import { GistData } from "../../types/gistData";
+
+//styles
 import "./gistInfo.css";
+import { GistInfoContainer } from "../../styledComponents";
 
 const GistInfo = ({
   ownerName,
@@ -19,22 +24,18 @@ const GistInfo = ({
   gistType,
   starValue,
 }: GistData) => {
-
-
   const [alertValue, setAlertValue] = React.useState<string | null>(null);
   const handleAlertValue = (alertValueProp: string) => {
     setAlertValue(alertValueProp);
   };
 
- 
-
   return (
     <div className="gist-info">
-      {alertValue !== null ? (
+      {alertValue && (
         <Alert severity="success">
           <AnimatedTextComponent text={alertValue} />
         </Alert>
-      ) : null}
+      )}
       <GistInfoContainer>
         <GistIntroduction
           ownerName={ownerName}

@@ -1,41 +1,34 @@
-.profilePic{
-    width:40px;
-    height:40px;
-    border-radius: 50px;
-    margin-right: 10px;
-    
-   
-
+.profilePic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  margin-right: 10px;
 }
-.searchIconWrapper{
-   
-    padding-left: 2%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-   
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.searchIconWrapper {
+  padding-left: 2%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.profilePicDiv{
-    border-radius: 50%;
-    margin-left: 5%;
+.profilePicDiv {
+  border-radius: 50%;
+  margin-left: 5%;
 }
-.closeIconWrapper{
-    padding-right: 2%;
-    height: 100%;
-    position: absolute;
-    z-index: 1;
-    right:0;
-   
-    display: flex;
-    align-items: center;
-    
-   
-   
-    
-   
+.closeIconWrapper {
+  padding-right: 2%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+  right: 0;
 
+  display: flex;
+  align-items: center;
+}
+.company-name {
+  margin-left: 1%;
 }

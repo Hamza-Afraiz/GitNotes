@@ -9,3 +9,5 @@ export {GridGist} from './GridGist'
 export {GistCodeContainer} from './GistCodeContainer'
 export {UserNameAndFileName,PlainText} from  './UserNameAndFileName'
 export {GistInfoContainer} from './GistInfoContainer'
+export {GistCodeLine} from "./GistCodeLine"
+export {GistListContainer} from './GistListContainer'

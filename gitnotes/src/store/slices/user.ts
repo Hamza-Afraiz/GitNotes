@@ -7,6 +7,7 @@ const initialState: User = {
   userData: {},
   loggedIn: false,
 };
+
 export const fetchUserLoginDetails = () => async (dispatch: any) => {
   const response = await getAuthentication();
 

@@ -1,9 +1,17 @@
+//lib
 import Box from "@mui/material/Box";
-import { DataGrid } from "@mui/x-data-grid";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { GistsListHeading } from "../../styledComponents";
+
+//styles
+import { GistListContainer, GistsListHeading } from "../../styledComponents";
+
+//types
 import { GistDataList } from "../../types/gistDataList";
+import "./gistList.css";
+
+
+
 
 export default function ListOfGists({ gistsData }: GistDataList) {
   const navigate = useNavigate();
@@ -20,26 +28,16 @@ export default function ListOfGists({ gistsData }: GistDataList) {
     };
   });
 
+
+
   function onGistClick(rowData: any) {
     navigate(`/gistPage`, {
       state: { item: gistsData[rowData.id] },
     });
   }
   return (
-    <Box
-      sx={{
-        height: 600,
-        width: "80%",
-        marginLeft: "10%",
-        marginRight: "10%",
-        marginTop: "5%",
-        marginBottom: "5%",
-        "& .colored": {
-          backgroundColor: "#DEF5EC",
-        },
-      }}
-    >
-      <DataGrid
+    <Box className="Box">
+      <GistListContainer
         sx={{
           "&.Mui-checkBox": {
             color: "red",

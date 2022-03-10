@@ -1,4 +1,6 @@
 import * as React from "react";
+
+//styles
 import "./profileImageAndName.css";
 
 interface ProfileImageAndNameProps {
@@ -13,13 +15,9 @@ export default function ProfileImageAndName({
   return (
     <div className="container">
       <div>
-        <img
-          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
-          src={avatar_url}
-          alt="profile"
-        />
+        <img src={avatar_url} alt="profile" className="profilePic" />
       </div>
-      <div>{ownerName}</div>
+      {ownerName}
     </div>
   );
 }

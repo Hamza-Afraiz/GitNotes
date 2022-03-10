@@ -1,7 +1,12 @@
 import React from "react";
-import { PlainText, UserNameAndFileName } from "../../styledComponents";
+
+
+//src
 import { GistData } from "../../types/gistData";
+
+//styles
 import "./gistIntroduction.css";
+import { PlainText, UserNameAndFileName } from "../../styledComponents";
 
 const GistIntroduction = ({
   ownerName,
@@ -13,13 +18,7 @@ const GistIntroduction = ({
   return (
     <div className="gistInfoContainer">
       <img
-        style={{
-          width: "25%",
-          height: "100%",
-          maxHeight: "100px",
-          maxWidth: "25%",
-          borderRadius: "50%",
-        }}
+        className="profilePic"
         src={ownerAvatar}
         alt="profile"
       />

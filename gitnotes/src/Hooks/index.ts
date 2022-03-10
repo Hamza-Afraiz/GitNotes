@@ -1,4 +1,4 @@
-export {useWorkingGistId} from './useWorkingGistId/useWorkingGistId'
+export {useCurrentGistId} from './useCurrentGistId/useCurrentGistId'
 export {useStarStatus} from './useStarStatus/useStarStatus'
 export {usePublicGists} from './userState/userData'
 export {useUserState} from './userState/userData'

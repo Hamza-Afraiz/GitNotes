@@ -12,7 +12,6 @@ const initialState: UserGistDataList = {
 };
 export const UserGists = createSlice({
   name: "UserGists",
-
   initialState,
   reducers: {
     setUserGistData(state, action) {
@@ -39,8 +38,8 @@ export const UserGists = createSlice({
 
     //adding gists to starred gists from my gists
     addStarGistDataFromGists(state, action) {
-      var temp = state.userGistsData.find(function (element) {
-        console.log(action.payload === element.gistId);
+      const temp = state.userGistsData.find(function (element) {
+        
         return element.gistId === action.payload;
       });
 
@@ -63,27 +62,31 @@ export const UserGists = createSlice({
 //Basically we have created this object type for our create Gist operation
 //creating gist needs this type of object
 
-const convertArrayToObject = (array: any, key: any) => {
-  const initialValue = {};
-  return array.reduce((obj: any, item: any) => {
+const convertArrayToObject = (
+  files: Array<{ fileName: string; content: string }>,
+  key: any
+) => {
+  return files.reduce((obj: any, item: any) => {
     return {
       ...obj,
-      [item[key]]: { ["content"]: item.content },
+      [item[key]]: { content: item.content },
     };
-  }, initialValue);
+  }, {});
 };
 
 export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   //converting gist data to desired type for post operation
 
-  const bodyData = gistData.files.map((item) => {
+  const filesArray = gistData.files.map((item) => {
     return {
       fileName: item.fileName,
       content: item.fileContent,
     };
   });
 
-  const filesData = convertArrayToObject(bodyData, "fileName");
+  const filesObject = convertArrayToObject(filesArray, "fileName");
+ 
+  
 
   //okay ! Dispatching(1) means we are not working(star,unstar ) on some gists.we are just ending the loading
   dispatch(setLoadingState(1));
@@ -94,7 +97,7 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
       Authorization: `Bearer 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`,
     },
     body: JSON.stringify({
-      files: filesData,
+      files: filesObject,
 
       description: gistData.description,
     }),
@@ -222,75 +225,76 @@ export const GetGists = async () => {
   return await req.json();
 };
 
-// getting gists objects and then extracting one object  details all we need 
+// getting gists objects and then extracting one object  details all we need
 //cant go to the next object untill we completed details of one object
 //using await for one object to complete all its api calls
 
 export const getUserGistsData = () => async (dispatch: any) => {
   const response = await GetGists();
 
-  let tempGistDataArray: GistData[] = [];
+  const gistsDataArray: GistData[] = [];
   const gistsDataFromApi = response;
   for (let i = 0; i < gistsDataFromApi.length; i++) {
     const item = gistsDataFromApi[i];
-    let temp: GistData = {};
-    let momentJsVariable = moment(item.created_at);
-    temp.creationDate = momentJsVariable.format("MMM DD YYYY");
-    temp.time = momentJsVariable.format("hh:mm:ss");
-    temp.ownerAvatar = item.owner.avatar_url;
-    temp.ownerName = item.owner.login;
-    let fileKeys = item.files;
-    let fileName = Object.keys(fileKeys)[0];
 
-    temp.fileName = fileName;
-    temp.gistId = item.id;
-    temp.description = item.description;
+    const momentJsVariable = moment(item.created_at);
+    const fileName = Object.keys(item.files)[0];
+
     if (fileName) {
       const res = await fetchGistFileData(
         item?.files[`${fileName}`]["raw_url"]
       );
-      let contentArray = res.split("\n");
-      temp.content = contentArray;
+      const temp = {
+        time: momentJsVariable.format("hh:mm:ss"),
+        ownerAvatar: item.owner.avatar_url,
+        ownerName: item.owner.login,
+        id: item.id,
+        fileName: fileName,
+        gistId: item.id,
+        description: item.description,
+        creationDate: momentJsVariable.format("MMM DD YYYY"),
+        content: res.split("\n"),
+      };
+      gistsDataArray.push(temp);
+      
     }
-
-    tempGistDataArray.push(temp);
   }
-  dispatch(setUserGistData(tempGistDataArray));
+
+  dispatch(setUserGistData(gistsDataArray));
 };
 
 export const getStarredGistsData = () => async (dispatch: any) => {
   const response = await GetStarredGists();
-  let tempGistDataArray: GistData[] = [];
+  const gistsDataArray: GistData[] = [];
   const gistsDataFromApi = response;
   for (let i = 0; i < gistsDataFromApi.length; i++) {
     const item = gistsDataFromApi[i];
-    let temp: GistData = {};
-    let momentJsVariable = moment(item.created_at);
-    temp.creationDate = momentJsVariable.format("MMM DD YYYY");
-    temp.time = momentJsVariable.format("hh:mm:ss");
-    temp.ownerAvatar = item.owner.avatar_url;
-    temp.ownerName = item.owner.login;
-    temp.id = item.id;
-    let fileKeys = item.files;
-    let fileName = Object.keys(fileKeys)[0];
 
-    temp.fileName = fileName;
-    temp.gistId = item.id;
-    temp.description = item.description;
+    const momentJsVariable = moment(item.created_at);
+    const fileName = Object.keys(item.files)[0];
+
     if (fileName) {
       const res = await fetchGistFileData(
         item?.files[`${fileName}`]["raw_url"]
       );
-      let contentArray = res.split("\n");
-      temp.content = contentArray;
+      const temp = {
+        time: momentJsVariable.format("hh:mm:ss"),
+        ownerAvatar: item.owner.avatar_url,
+        ownerName: item.owner.login,
+        id: item.id,
+        fileName: fileName,
+        gistId: item.id,
+        description: item.description,
+        creationDate: momentJsVariable.format("MMM DD YYYY"),
+        content: res.split("\n"),
+      };
+      gistsDataArray.push(temp);
+      
     }
-
-    tempGistDataArray.push(temp);
   }
 
-  dispatch(setUserStarredData(tempGistDataArray));
+  dispatch(setUserStarredData(gistsDataArray));
 };
-
 
 export const {
   setUserGistData,

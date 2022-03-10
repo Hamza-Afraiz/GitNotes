@@ -1,3 +1,4 @@
+//lib
 import EditIcon from "@mui/icons-material/Edit";
 import ForkIcon from "@mui/icons-material/ForkRight";
 import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
@@ -7,22 +8,28 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+//src
 import { LoadingSpinner } from "../../components";
+//Hooks
 import {
-  useLoadingState,
+  useCurrentGistId, useLoadingState,
   usePublicGists,
-  useUserState,
-  useWorkingGistId,
+  useUserState
 } from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
 import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
+//styles
 import "./gistOptions.css";
+
+
+
 
 interface GistOptionProps {
   gistId?: number | string;
   gistType?: string;
   starValue?: boolean;
-  handleAlertValue(alertValueProp: string): void;
+
+  handleAlertValue: (alertValueProp: string) => void;
 }
 const GistOption = ({
   gistId,
@@ -37,13 +44,15 @@ const GistOption = ({
   const [starType, setStarValue] = React.useState(starValue);
   const userState = useUserState();
   const loadingState = useLoadingState();
-  const workingGistId = useWorkingGistId();
+  const workingGistId = useCurrentGistId();
   const publicGistData = usePublicGists();
 
   const starGist = () => {
     //handling when we are clicked to star gist
     if (!starType) {
-      let starGistItem = publicGistData.find((gist) => gist.gistId === gistId);
+      const starGistItem = publicGistData.find(
+        (gist) => gist.gistId === gistId
+      );
       dispatch(StarGist(gistId?.toString(), gistType, starGistItem));
       setStarValue(true);
 
@@ -62,7 +71,7 @@ const GistOption = ({
   const deleteGist = () => {
     dispatch(DeleteGist(gistId?.toString()));
 
-    handleAlertValue("DeletedSuccessfully");
+    handleAlertValue("Deleted Successfully");
   };
 
   const handleEdit = () => {
@@ -77,16 +86,14 @@ const GistOption = ({
         <div>
           {userState ? (
             <div className="gistOptions">
-              {gistType === "user" ? (
+              {gistType === "user" && (
                 <div>
                   <LoadingButton
                     endIcon={<RateReviewOutlinedIcon />}
                     loading={false}
                     loadingPosition="end"
                     variant="text"
-                    onClick={() => {
-                      deleteGist();
-                    }}
+                    onClick={deleteGist}
                   >
                     Delete
                   </LoadingButton>
@@ -95,14 +102,12 @@ const GistOption = ({
                     loading={false}
                     loadingPosition="end"
                     variant="text"
-                    onClick={() => {
-                      handleEdit();
-                    }}
+                    onClick={handleEdit}
                   >
                     Edit
                   </LoadingButton>
                 </div>
-              ) : null}
+              )}
 
               <LoadingButton
                 endIcon={<ForkIcon />}
@@ -114,15 +119,13 @@ const GistOption = ({
               </LoadingButton>
 
               <LoadingButton
-                endIcon={starType !== true ? <StarIcon /> : <StarFilledIcon />}
+                endIcon={!starType ? <StarIcon /> : <StarFilledIcon />}
                 loading={false}
                 loadingPosition="end"
                 variant="text"
-                onClick={() => {
-                  starGist();
-                }}
+                onClick={starGist}
               >
-                {starType === true ? "UnStar" : "Star"}
+                {starType ? "UnStar" : "Star"}
               </LoadingButton>
             </div>
           ) : (

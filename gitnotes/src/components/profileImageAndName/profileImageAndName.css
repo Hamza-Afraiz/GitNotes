@@ -4,5 +4,10 @@
   align-items: center;
   justify-content: space-between;
 
-  width: 80%;
+  width: 100%;
+}
+.container .profilePic {
+  width: 80px;
+  height: 40px;
+  border-radius: 50%;
 }

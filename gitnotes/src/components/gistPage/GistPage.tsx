@@ -1,9 +1,14 @@
+//lib
 import React from "react";
 import { useLocation } from "react-router-dom";
+
+//src
 import { GistCode, GistInfo } from "../../components";
-import "./gistPage.css";
 import { GistData } from "../../types/gistData";
 import { useStarStatus } from "../../Hooks";
+
+//styles
+import "./gistPage.css";
 
 interface GistPageProps {
   gistData: GistData | null;
@@ -12,16 +17,12 @@ interface GistPageProps {
 
 const GistPage = (props: GistPageProps) => {
   const location: any = useLocation();
+  //Gist Page component can be used for different purpose.It can be called as a component.And can be navigated to this component
+  //thats why we have to handle different scenarios
 
-  let gistData;
-  let starValue;
+  const gistData = location?.state?.item ? location.state.item : props.gistData;
 
-  if (location?.state?.item) {
-    gistData = location.state.item;
-  } else {
-    gistData = props.gistData;
-  }
-  starValue = useStarStatus(gistData.gistId);
+  const starValue = useStarStatus(gistData.gistId);
   return (
     <div>
       <div className="gistPageContainer">
