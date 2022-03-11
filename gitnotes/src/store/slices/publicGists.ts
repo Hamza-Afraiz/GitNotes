@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { request } from "../../utils/axios-utils";
 import moment from "moment";
 import { GistData } from "../../types/gistData";
 import { GistDataList } from "../../types/gistDataList";
@@ -7,7 +7,7 @@ import { GistDataList } from "../../types/gistDataList";
 // Define the initial state using that type
 const initialState: GistDataList = {
   gistsData: [],
-  error: "",
+  error: false,
   loading: false,
 };
 
@@ -22,12 +22,16 @@ export const PublicGistsSlice = createSlice({
     setLoadingState(state, action) {
       state.loading = !action.payload;
     },
+    setError(state){
+      state.error=!state.error;
+    }
   },
 });
 
 const fetchPublicGists = async () => {
-  const responseNew = await axios.get(`https://api.github.com/gists`);
-  return await responseNew.data;
+ 
+  const response=await  request({url:"/gists",headers:null})
+  return response.data
 };
 
 const fetchGistFileData = async (gistFileUrl: string) => {
@@ -41,6 +45,11 @@ const fetchGistFileData = async (gistFileUrl: string) => {
 
 export const getGistsData = () => async (dispatch: any) => {
   const response = await fetchPublicGists();
+  if(!response){
+    dispatch(setError())
+    return
+  }
+
 
   const gistsDataArray: GistData[] = [];
   const gistsDataFromApi = response;
@@ -72,5 +81,5 @@ export const getGistsData = () => async (dispatch: any) => {
 };
 
 // Other code such as selectors can use the imported `RootState` type
-const { setGistData } = PublicGistsSlice.actions;
+const { setGistData,setError } = PublicGistsSlice.actions;
 export default PublicGistsSlice.reducer;

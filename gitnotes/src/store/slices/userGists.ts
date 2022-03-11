@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import moment from "moment";
 import { createGist } from "../../types/createGist";
+import { request } from "../../utils/axios-utils";
 import { GistData } from "../../types/gistData";
 import { UserGistDataList } from "../../types/userGistDataList";
 const initialState: UserGistDataList = {
@@ -39,7 +40,6 @@ export const UserGists = createSlice({
     //adding gists to starred gists from my gists
     addStarGistDataFromGists(state, action) {
       const temp = state.userGistsData.find(function (element) {
-        
         return element.gistId === action.payload;
       });
 
@@ -85,57 +85,47 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   });
 
   const filesObject = convertArrayToObject(filesArray, "fileName");
- 
-  
 
   //okay ! Dispatching(1) means we are not working(star,unstar ) on some gists.we are just ending the loading
   dispatch(setLoadingState(1));
 
-  const req = await fetch(`https://api.github.com/gists`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer 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`,
-    },
-    body: JSON.stringify({
-      files: filesObject,
-
-      description: gistData.description,
-    }),
+  const response = await request({
+    url: "/gists",
+    method: "post",
+    data: { files: filesObject, description: gistData.description },
   });
-  dispatch(getUserGistsData());
-  dispatch(setLoadingState(1));
+  if (response) {
+    dispatch(getUserGistsData());
+    dispatch(setLoadingState(1));
+    return response;
+  }
 
-  return await req;
+  // return await req;
 };
 
 export const UpdateGist =
   (gistData: createGist, gistId: string) => async (dispatch: any) => {
-    const bodyData = gistData.files.map((item) => {
+    const filesArray = gistData.files.map((item) => {
       return {
         fileName: item.fileName,
         content: item.fileContent,
       };
     });
 
-    const filesData = convertArrayToObject(bodyData, "fileName");
+    const filesObject = convertArrayToObject(filesArray, "fileName");
 
     dispatch(setLoadingState(1));
 
-    const req = await fetch(`https://api.github.com/gists/${gistId}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-      body: JSON.stringify({
-        files: filesData,
-
-        description: gistData.description,
-      }),
+    const response = await request({
+      url: `/gists${gistId}`,
+      method: "patch",
+      data: { files: filesObject, description: gistData.description },
     });
-    dispatch(getUserGistsData());
-    dispatch(setLoadingState(1));
-
-    return await req;
+    if (response.data) {
+      dispatch(getUserGistsData());
+      dispatch(setLoadingState(1));
+      return response;
+    }
   };
 
 export const StarGist =
@@ -147,12 +137,8 @@ export const StarGist =
   async (dispatch: any) => {
     //setting loading on speicfic gist id
     dispatch(setLoadingState(gistId));
-    const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-    });
+
+    const req = await request({ url: `/gists/${gistId}/star`, method: "put" });
 
     //if we are going to star some our own gists
     if (gistType === "user") {
@@ -171,12 +157,7 @@ export const StarGist =
 export const DeleteGist =
   (gistId: string | undefined) => async (dispatch: any) => {
     dispatch(setLoadingState(gistId));
-    const req = await fetch(`https://api.github.com/gists/${gistId}`, {
-      method: "Delete",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
-    });
+    const req = await request({ url: `/gists/${gistId}`, method: "delete" });
 
     dispatch(deleteGistData(gistId));
     dispatch(setLoadingState(gistId));
@@ -185,24 +166,17 @@ export const DeleteGist =
   };
 
 export const GetStarredGists = async () => {
-  const req = await fetch(`https://api.github.com/gists/starred`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer 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`,
-    },
-  });
+  const req = await request({ url: `/gists/starred` });
 
-  return await req.json();
+  return await req.data;
 };
 
 export const UnStarGist =
   (gistId: string | undefined) => async (dispatch: any) => {
     dispatch(setLoadingState(gistId));
-    const req = await fetch(`https://api.github.com/gists/${gistId}/star`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer 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`,
-      },
+    const req = await request({
+      url: `/gists/${gistId}/star`,
+      method: "delete",
     });
     dispatch(removeStarGistData(gistId));
     dispatch(setLoadingState(gistId));
@@ -215,14 +189,9 @@ const fetchGistFileData = async (gistFileUrl: string) => {
   return await response.text();
 };
 export const GetGists = async () => {
-  const req = await fetch(`https://api.github.com/gists`, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer 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`,
-    },
-  });
+  const req = await request({ url: `/gists` });
 
-  return await req.json();
+  return  req.data;
 };
 
 // getting gists objects and then extracting one object  details all we need
@@ -232,8 +201,9 @@ export const GetGists = async () => {
 export const getUserGistsData = () => async (dispatch: any) => {
   const response = await GetGists();
 
-  const gistsDataArray: GistData[] = [];
   const gistsDataFromApi = response;
+  const gistsDataArray: GistData[] = [];
+
   for (let i = 0; i < gistsDataFromApi.length; i++) {
     const item = gistsDataFromApi[i];
 
@@ -256,7 +226,6 @@ export const getUserGistsData = () => async (dispatch: any) => {
         content: res.split("\n"),
       };
       gistsDataArray.push(temp);
-      
     }
   }
 
@@ -264,9 +233,12 @@ export const getUserGistsData = () => async (dispatch: any) => {
 };
 
 export const getStarredGistsData = () => async (dispatch: any) => {
+
   const response = await GetStarredGists();
-  const gistsDataArray: GistData[] = [];
+  
   const gistsDataFromApi = response;
+  const gistsDataArray: GistData[] = [];
+
   for (let i = 0; i < gistsDataFromApi.length; i++) {
     const item = gistsDataFromApi[i];
 
@@ -289,7 +261,6 @@ export const getStarredGistsData = () => async (dispatch: any) => {
         content: res.split("\n"),
       };
       gistsDataArray.push(temp);
-      
     }
   }
 

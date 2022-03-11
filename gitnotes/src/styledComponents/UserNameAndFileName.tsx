@@ -5,7 +5,7 @@ export const UserNameAndFileName = styled("div")(({theme}) => ({
     color:'blue',
     fontSize:"1em",
     [theme.breakpoints.down('md')]: {
-      fontSize:"0.4em"
+      fontSize:"0.6em"
     },
     
 
@@ -17,7 +17,7 @@ export const UserNameAndFileName = styled("div")(({theme}) => ({
     color:'grey',
     fontSize:"0.9em",
     [theme.breakpoints.down('md')]: {
-      fontSize:"0.5em"
+      fontSize:"0.7em"
     },
     
   }));

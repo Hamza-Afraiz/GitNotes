@@ -16,3 +16,6 @@ export function useStarredGistsData() {
 export function useUserGists() {
   return useAppSelector((state) => state.userGists.userGistsData);
 }
+export function useErrorState() {
+  return useAppSelector((state) => state.publicGist.error);
+}

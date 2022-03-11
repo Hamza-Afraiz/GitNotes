@@ -30,7 +30,12 @@ import {
 } from "../../styledComponents";
 import "./header.css";
 
-function Header(props: any) {
+interface HeaderProps {
+  setSearchQueryValue(query: string): void;
+  setStarredGists(show: true): void;
+}
+
+function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -50,7 +55,7 @@ function Header(props: any) {
   };
 
   const SearchGist = () => {
-    props.setSearchQueryValue(searchQuery);
+    setSearchQueryValue(searchQuery);
     navigate(`/`);
   };
 
@@ -64,7 +69,7 @@ function Header(props: any) {
         break;
       case "starred":
         navigate(`/`);
-        props.setStarredGists(true);
+        setStarredGists(true);
 
         break;
       case "createGist":
@@ -96,7 +101,7 @@ function Header(props: any) {
     setLogInNotification(false);
   };
   const ClearSearchQuery = () => {
-    props.setSearchQueryValue("");
+    setSearchQueryValue("");
     setSearchQuery("");
   };
   const LogoutUser = () => {
@@ -170,7 +175,7 @@ function Header(props: any) {
           ) : userState === true ? (
             <div className="profilePicDiv">
               <img
-                className="profilePic"
+                className="userPic"
                 src={userData.ownerAvatar}
                 alt="profile"
                 onClick={openMenu}

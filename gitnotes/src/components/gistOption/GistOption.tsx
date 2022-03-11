@@ -1,7 +1,7 @@
 //lib
 import EditIcon from "@mui/icons-material/Edit";
 import ForkIcon from "@mui/icons-material/ForkRight";
-import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import StarFilledIcon from "@mui/icons-material/Star";
 import StarIcon from "@mui/icons-material/StarBorder";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -12,17 +12,16 @@ import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../components";
 //Hooks
 import {
-  useCurrentGistId, useLoadingState,
+  useCurrentGistId,
+  useLoadingState,
   usePublicGists,
-  useUserState
+  useUserState,
 } from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
 import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
+import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";
-
-
-
 
 interface GistOptionProps {
   gistId?: number | string;
@@ -88,45 +87,25 @@ const GistOption = ({
             <div className="gistOptions">
               {gistType === "user" && (
                 <div>
-                  <LoadingButton
-                    endIcon={<RateReviewOutlinedIcon />}
-                    loading={false}
-                    loadingPosition="end"
-                    variant="text"
-                    onClick={deleteGist}
-                  >
+                  <div className="gist-option-button" onClick={deleteGist}>
                     Delete
-                  </LoadingButton>
-                  <LoadingButton
-                    endIcon={<EditIcon />}
-                    loading={false}
-                    loadingPosition="end"
-                    variant="text"
-                    onClick={handleEdit}
-                  >
+                    <DeleteIcon color='info'/>
+                  </div>
+                  <div className="gist-option-button" onClick={handleEdit}>
                     Edit
-                  </LoadingButton>
+                    <EditIcon color='info' />
+                  </div>
                 </div>
               )}
 
-              <LoadingButton
-                endIcon={<ForkIcon />}
-                loading={false}
-                loadingPosition="end"
-                variant="text"
-              >
-                Fork
-              </LoadingButton>
-
-              <LoadingButton
-                endIcon={!starType ? <StarIcon /> : <StarFilledIcon />}
-                loading={false}
-                loadingPosition="end"
-                variant="text"
-                onClick={starGist}
-              >
+              <div className="gist-option-button">
                 {starType ? "UnStar" : "Star"}
-              </LoadingButton>
+                {!starType ? <StarIcon color='info' /> : <StarFilledIcon color='info' />}
+              </div>
+              <div className="gist-option-button">
+                Fork
+                <ForkIcon  color='info'/>
+              </div>
             </div>
           ) : (
             <div>Logged in to access options</div>

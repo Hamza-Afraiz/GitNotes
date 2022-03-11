@@ -17,11 +17,13 @@ const GistIntroduction = ({
 }: GistData) => {
   return (
     <div className="gistInfoContainer">
-      <img
-        className="profilePic"
+     <div  className="gistUserImageDiv">
+     <img
+        className="gistUserImage"
         src={ownerAvatar}
         alt="profile"
       />
+       </div> 
       <div className="gistDetails">
         <UserNameAndFileName>
           <div>{ownerName}/</div>

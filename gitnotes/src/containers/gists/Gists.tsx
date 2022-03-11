@@ -6,25 +6,30 @@ import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
 
 //hooks
-import { usePublicGists, useStarredGistsData } from "../../Hooks";
+import { usePublicGists, useStarredGistsData ,useErrorState} from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
 
 //css
 import { GistsContainer } from "../../styledComponents";
 
-
 //src
 import { GistData } from "../../types/gistData";
 import { getGistsData } from "../../store/slices/publicGists";
 import { GistGrid, GistList } from "../index";
+import {PopUpNotification} from '../../components'
 //
-const Gists = (props: any) => {
+interface GistsProps {
+  starredGists: boolean;
+  searchQuery: string;
+}
+
+const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   const dispatch = useAppDispatch();
 
   const publicsGistData = usePublicGists();
-
   const starredGistData = useStarredGistsData();
-  const gistData = props.starredGists ? starredGistData : publicsGistData;
+  const error=useErrorState();
+  const gistData = starredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
@@ -32,19 +37,20 @@ const Gists = (props: any) => {
   React.useEffect(() => {
     dispatch(getGistsData()); //Api call to get Gists Data
 
-    if (props.searchQuery) {
+    if (searchQuery) {
       setSearchedData(
         gistData.filter(function (itm) {
-          return itm.gistId?.toString().includes(props.searchQuery);
+          return itm.gistId?.toString().includes(searchQuery);
         })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.searchQuery]);
+  }, [searchQuery]);
 
   return (
     <div>
-      {!gistData.length ? (
+      {error &&  <PopUpNotification popUpText="Looks like you are not connected to the internet"/>}
+      {!gistData.length ?   (
         <GistsContainer style={{ justifyContent: "center" }}>
           <LoadingSpinner
             height="10%"
@@ -78,13 +84,9 @@ const Gists = (props: any) => {
           </GistsContainer>
           <>
             {sortingType === "list" ? (
-              <GistList
-                gistsData={props.searchQuery ? searchedData : gistData}
-              />
+              <GistList gistsData={searchQuery ? searchedData : gistData} />
             ) : (
-              <GistGrid
-                gistsData={props.searchQuery ? searchedData : gistData}
-              />
+              <GistGrid gistsData={searchQuery ? searchedData : gistData} />
             )}
           </>
         </div>

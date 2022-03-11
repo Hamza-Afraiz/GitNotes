@@ -11,3 +11,10 @@
     flex-wrap: wrap;
     margin-right: 2%;
 }
+.gist-option-button{
+   
+    color:'blue';
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

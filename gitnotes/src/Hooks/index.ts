@@ -1,3 +1,5 @@
+import { useErrorState } from './userState/userData'
+
 export {useCurrentGistId} from './useCurrentGistId/useCurrentGistId'
 export {useStarStatus} from './useStarStatus/useStarStatus'
 export {usePublicGists} from './userState/userData'
@@ -7,3 +9,4 @@ export { useStarredGistsData} from './userState/userData'
 export {useUserGists} from './userState/userData'
 export {default as useSearchQuery} from './useSearchQuery/useSearchQuery'
 export {default as useStarredGists } from './useStarredGists/useStarredGists'
+export {useErrorState} from './userState/userData'

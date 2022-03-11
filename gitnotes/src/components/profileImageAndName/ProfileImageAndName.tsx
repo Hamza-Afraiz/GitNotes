@@ -14,10 +14,13 @@ export default function ProfileImageAndName({
 }: ProfileImageAndNameProps) {
   return (
     <div className="container">
-      <div>
+      <div >
         <img src={avatar_url} alt="profile" className="profilePic" />
       </div>
+      <div>
       {ownerName}
+      </div>
+     
     </div>
   );
 }

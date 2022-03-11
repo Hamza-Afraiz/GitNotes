@@ -115,13 +115,13 @@ const CreateGist = () => {
 
   return (
     <div className="createGistContainer">
-      {popUpText && <PopUpNotification popUpText={popUpText} />}
-      {postedGist && (
+      {!!popUpText && <PopUpNotification popUpText={popUpText} />}
+      {!!postedGist && (
         <Alert severity="success">
           <AnimatedTextComponent text=" Gist Added Successfully !!!" />
         </Alert>
       )}
-      {!postedGist && gistFiles.length && (
+      {  !postedGist && gistFiles.length && (
         <Alert severity="info">
           {" "}
           <AnimatedTextComponent text="File Added !!!" />

@@ -6,8 +6,10 @@
 
   width: 100%;
 }
-.container .profilePic {
-  width: 80px;
+.container  .profilePic {
+  
+  min-width: 50%;
   height: 40px;
   border-radius: 50%;
+  background-color: blue;
 }
