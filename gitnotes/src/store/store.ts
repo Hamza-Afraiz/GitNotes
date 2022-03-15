@@ -10,10 +10,12 @@ import UserGistsSlice from "./slices/userGists";
     user: UserSlice,
     userGists: UserGistsSlice,
   },
+
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       immutableCheck: false,
       serializableCheck: false,
+      
     }),
 });
 

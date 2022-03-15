@@ -74,6 +74,7 @@ export const getGistsData = () => async (dispatch: any) => {
         content: res.split("\n"),
       };
       gistsDataArray.push(temp);
+      
     }
   }
 

@@ -169,11 +169,11 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
          LOGIN BUTTON AND UPON CLICKING PIC ,MENU ITEMS LL APPEAR */}
 
           {loading === true ? (
-            <div className="profilePicDiv">
+            <div data-testid="loading-spinner" className="profilePicDiv">
               <CircularProgress color="success" />
             </div>
           ) : userState === true ? (
-            <div className="profilePicDiv">
+            <div className="profilePicDiv" data-testid="user-image">
               <img
                 className="userPic"
                 src={userData.ownerAvatar}

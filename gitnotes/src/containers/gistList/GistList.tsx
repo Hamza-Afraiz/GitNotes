@@ -13,7 +13,8 @@ import "./gistList.css";
 
 
 
-export default function ListOfGists({ gistsData }: GistDataList) {
+export default function GistList({ gistsData }: GistDataList) {
+
   const navigate = useNavigate();
 
   const listData = gistsData.map((item, index) => {
@@ -50,6 +51,7 @@ export default function ListOfGists({ gistsData }: GistDataList) {
         checkboxSelection
         disableSelectionOnClick
         onRowClick={(param) => onGistClick(param.row)}
+
       />
     </Box>
   );

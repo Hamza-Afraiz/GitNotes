@@ -23,6 +23,7 @@
     "eslint-config-react-app": "6",
     "firebase": "^9.6.7",
     "moment": "^2.29.1",
+    "msw": "^0.39.1",
     "react": "^17.0.2",
     "react-animated-text": "^0.1.4",
     "react-animated-text-content": "^1.0.1",
@@ -57,5 +58,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "mse": "^0.1.0"
   }
 }

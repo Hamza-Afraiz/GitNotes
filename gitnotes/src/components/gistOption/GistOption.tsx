@@ -1,10 +1,9 @@
 //lib
+import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ForkIcon from "@mui/icons-material/ForkRight";
-import DeleteIcon from "@mui/icons-material/Delete";
 import StarFilledIcon from "@mui/icons-material/Star";
 import StarIcon from "@mui/icons-material/StarBorder";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,11 +14,10 @@ import {
   useCurrentGistId,
   useLoadingState,
   usePublicGists,
-  useUserState,
+  useUserState
 } from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
 import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
-import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";
 
@@ -98,7 +96,7 @@ const GistOption = ({
                 </div>
               )}
 
-              <div className="gist-option-button">
+              <div className="gist-option-button" onClick={starGist}>
                 {starType ? "UnStar" : "Star"}
                 {!starType ? <StarIcon color='info' /> : <StarFilledIcon color='info' />}
               </div>

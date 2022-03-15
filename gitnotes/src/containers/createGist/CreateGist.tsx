@@ -117,15 +117,18 @@ const CreateGist = () => {
     <div className="createGistContainer">
       {!!popUpText && <PopUpNotification popUpText={popUpText} />}
       {!!postedGist && (
-        <Alert severity="success">
-          <AnimatedTextComponent text=" Gist Added Successfully !!!" />
+        <div data-testid="gist-posted">
+        <Alert  severity="success">
+          <AnimatedTextComponent text="Gist Added Successfully !!!" />
         </Alert>
+        </div>
       )}
       {  !postedGist && gistFiles.length && (
-        <Alert severity="info">
-          {" "}
-          <AnimatedTextComponent text="File Added !!!" />
-        </Alert>
+        <div data-testid="file-added"><Alert severity="info">
+        {" "}
+        <AnimatedTextComponent text="File Added !!!" />
+      </Alert></div>
+        
       )}
       <TextField
         id="outlined-multiline-static"
@@ -138,7 +141,7 @@ const CreateGist = () => {
       />
       <TextField
         id="outlined-multiline-static"
-        label=" Gist Description"
+        label="Gist Description"
         multiline
         sx={{ marginTop: "2%" }}
         value={gistDescription}
@@ -164,8 +167,9 @@ const CreateGist = () => {
         colorvalue="white"
         backgroundcolor="#5ACBA1"
         width="20%"
+        aria-label="Add File"
       >
-        {userState === true ? "Add File " : "Please Login First"}
+        {userState === true ? "Add File" : "Please Login First"}
       </CustomButton>
       <CustomButton
         onClick={AddGist}
@@ -173,10 +177,11 @@ const CreateGist = () => {
         colorvalue="white"
         backgroundcolor="#5ACBA1"
         width="20%"
+        aria-label="Add Gist"
       >
         {userState ? (
           loading ? (
-            <LoadingSpinner width="20%" height="20%" color="white" />
+            <LoadingSpinner  data-test-id="loading" width="20%" height="20%" color="white" />
           ) : editingGist ? (
             " Update Gist"
           ) : (

@@ -59,7 +59,7 @@ export const GistsListHeading: GridColDef[] = [
     width: 110,
     editable: true,
     renderCell: () => (
-      <IconsRow>
+      <IconsRow >
         <ForkIcon sx={{ color: "#5ACBA1" }} />
         <StarIcon sx={{ color: "#5ACBA1" }} />
       </IconsRow>

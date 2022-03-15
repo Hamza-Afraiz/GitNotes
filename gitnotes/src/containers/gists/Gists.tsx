@@ -51,7 +51,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
     <div>
       {error &&  <PopUpNotification popUpText="Looks like you are not connected to the internet"/>}
       {!gistData.length ?   (
-        <GistsContainer style={{ justifyContent: "center" }}>
+        <GistsContainer data-testid='loading' style={{ justifyContent: "center" }}>
           <LoadingSpinner
             height="10%"
             width="80%"
@@ -60,7 +60,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
           />
         </GistsContainer>
       ) : (
-        <div>
+        <div  data-testid="gist-list">
           <GistsContainer>
             <GridIcon
               fontSize="large"
