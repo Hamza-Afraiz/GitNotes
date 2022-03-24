@@ -1,12 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-// ...
-import publicGistReducer from "./slices/publicGists";
+// src
+
 import UserSlice from "./slices/user";
 import UserGistsSlice from "./slices/userGists";
 
   const store = configureStore({
   reducer: {
-    publicGist: publicGistReducer,
+  
     user: UserSlice,
     userGists: UserGistsSlice,
   },

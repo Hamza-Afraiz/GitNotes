@@ -13,12 +13,12 @@ export default function ProfileImageAndName({
   ownerName,
 }: ProfileImageAndNameProps) {
   return (
-    <div className="container">
+    <div className="container" data-testid='name'>
       <div >
         <img src={avatar_url} alt="profile" className="profilePic" />
       </div>
-      <div>
-      {ownerName}
+      <div className="owner-name">
+      {ownerName.substring(0,15)}
       </div>
      
     </div>

@@ -8,5 +8,5 @@ export const GistsContainer = styled("div")(() => ({
     width: "80%",
     marginLeft: "10%",
     marginRight: "10%",
-    marginTop: "2%",
+    marginTop: "1%",
   }));

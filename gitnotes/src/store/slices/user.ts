@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice,PayloadAction } from "@reduxjs/toolkit";
 import githubAuth from "../../config/authMethods";
 import { User } from "../../types/user";
 
 // Define the initial state using that typeO
-const initialState: User = {
+export const initialState: User = {
   userData: {},
   loggedIn: false,
 };
@@ -30,15 +30,18 @@ export const UserSlice = createSlice({
 
   initialState,
   reducers: {
-    setUserData(state, action) {
+    setUserData(state, action:PayloadAction<{ownerName:string,ownerAvatar:string}>) {
       state.userData = action.payload;
       state.loggedIn = true;
     },
     LoggedOut(state) {
       state.loggedIn = false;
     },
+    LoggedIn(state){
+      state.loggedIn=true;
+    }
   },
 });
 
-export const { setUserData, LoggedOut } = UserSlice.actions;
+export const { setUserData, LoggedOut,LoggedIn } = UserSlice.actions;
 export default UserSlice.reducer;

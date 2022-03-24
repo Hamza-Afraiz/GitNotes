@@ -6,7 +6,7 @@ export const GistListContainer = styled(DataGrid)<DataGridProps>(() => ({
     width: "90%",
     marginLeft: "5%",
     marginRight: "5%",
-    marginTop: "2%",
+    marginTop: "0%",
     marginBottom: "5%",
     "& .colored": {
       backgroundColor: "#DEF5EC",

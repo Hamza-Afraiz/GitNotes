@@ -15,7 +15,7 @@ export const UserNameAndFileName = styled("div")(({theme}) => ({
     display: "flex",
    
     color:'grey',
-    fontSize:"0.9em",
+    fontSize:"1em",
     [theme.breakpoints.down('md')]: {
       fontSize:"0.7em"
     },

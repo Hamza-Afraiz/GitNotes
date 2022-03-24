@@ -12,12 +12,18 @@ import { LoadingSpinner } from "../../components";
 //Hooks
 import {
   useCurrentGistId,
+  useErrorState,
   useLoadingState,
-  usePublicGists,
-  useUserState
+  useUserState,
 } from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
-import { DeleteGist, StarGist, UnStarGist } from "../../store/slices/userGists";
+import {
+  DeleteGist,
+  setErrorState,
+  StarGist,
+  UnStarGist,
+} from "../../store/slices/userGists";
+import { PlainText} from "../../styledComponents";
 //styles
 import "./gistOptions.css";
 
@@ -41,34 +47,48 @@ const GistOption = ({
   const [starType, setStarValue] = React.useState(starValue);
   const userState = useUserState();
   const loadingState = useLoadingState();
-  const workingGistId = useCurrentGistId();
-  const publicGistData = usePublicGists();
+  const currentGistId = useCurrentGistId();
 
-  const starGist = () => {
+  const error = useErrorState();
+
+  const starGist = async () => {
+   
     //handling when we are clicked to star gist
     if (!starType) {
-      const starGistItem = publicGistData.find(
-        (gist) => gist.gistId === gistId
-      );
-      dispatch(StarGist(gistId?.toString(), gistType, starGistItem));
-      setStarValue(true);
+      
+      await dispatch(StarGist(gistId?.toString(), gistType));
+     
 
-      handleAlertValue("Star Successfully"); //setting state using hook to show message upon completion of gist option
+      if (!loadingState && !error) {
+       
+        handleAlertValue("Star Successfully");
+        setStarValue(true);
+      } else {
+        handleAlertValue(error);
+        dispatch(setErrorState(""));
+        return;
+      } //setting state using hook to show message upon completion of gist option
     }
 
     //handling when we are clicked to Unstar gist
     else {
-      dispatch(UnStarGist(gistId?.toString()));
-      setStarValue(false);
+      await dispatch(UnStarGist(gistId?.toString()));
 
-      handleAlertValue("Unstar Successfully");
+      if (!loadingState && !error) {
+        handleAlertValue("UnStar Successfully");
+        setStarValue(false);
+      } else {
+        handleAlertValue(error);
+        dispatch(setErrorState(""));
+        return;
+      }
     }
   };
 
-  const deleteGist = () => {
-    dispatch(DeleteGist(gistId?.toString()));
+  const deleteGist = async () => {
+    await dispatch(DeleteGist(gistId?.toString()));
 
-    handleAlertValue("Deleted Successfully");
+    if (!loadingState) handleAlertValue("Deleted Successfully");
   };
 
   const handleEdit = () => {
@@ -77,36 +97,48 @@ const GistOption = ({
 
   return (
     <div>
-      {loadingState && workingGistId === gistId ? (
-        <LoadingSpinner width="40%" height="20%" color={theme.color.primary} />
+      {loadingState && currentGistId === gistId ? (
+        <div data-testid="loading-spinner">
+          <LoadingSpinner
+            width="40%"
+            height="20%"
+            color={theme.color.primary}
+          />
+        </div>
       ) : (
         <div>
           {userState ? (
             <div className="gistOptions">
               {gistType === "user" && (
                 <div>
-                  <div className="gist-option-button" onClick={deleteGist}>
-                    Delete
-                    <DeleteIcon color='info'/>
+                  <div className="gist-option-button" data-testid='gist-option-button-delete'onClick={deleteGist}>
+                    <PlainText> Delete</PlainText>
+                    <DeleteIcon color="info" fontSize="inherit" />
                   </div>
                   <div className="gist-option-button" onClick={handleEdit}>
-                    Edit
-                    <EditIcon color='info' />
+                    <PlainText> Edit</PlainText>
+                    <EditIcon color="info" fontSize="inherit" />
                   </div>
                 </div>
               )}
 
-              <div className="gist-option-button" onClick={starGist}>
-                {starType ? "UnStar" : "Star"}
-                {!starType ? <StarIcon color='info' /> : <StarFilledIcon color='info' />}
+              <div className="gist-option-button" data-testid="gist-option-button-star" onClick={starGist}>
+                <PlainText> {starType ? "UnStar" : "Star"}</PlainText>
+                {!starType ? (
+                  <StarIcon color="info" fontSize="inherit" />
+                ) : (
+                  <StarFilledIcon color="info"  fontSize="inherit"/>
+                )}
               </div>
               <div className="gist-option-button">
-                Fork
-                <ForkIcon  color='info'/>
+                <PlainText> Fork</PlainText>
+                <ForkIcon color="info" className="icon" fontSize="inherit" />
               </div>
             </div>
           ) : (
-            <div>Logged in to access options</div>
+            <div>
+              <PlainText> Logged in to access options</PlainText>
+            </div>
           )}
         </div>
       )}

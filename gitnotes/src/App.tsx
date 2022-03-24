@@ -8,6 +8,7 @@ import { theme } from "../src/theme/Theme";
 import "./App.css";
 import { GistPage, Header } from "./components";
 import { CreateGist, Gists, UserProfile } from "./containers";
+import { RequireAuth } from "./routes/ProtectedRoute";
 
 function App() {
   const { setStarredGists, starredGists } = useStarredGists();
@@ -36,8 +37,22 @@ function App() {
                   />
                 }
               />
-              <Route path="/createGist" element={<CreateGist />} />
-              <Route path="/userProfile" element={<UserProfile />} />
+              <Route
+                path="/createGist"
+                element={
+                  <RequireAuth>
+                    <CreateGist />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/userProfile"
+                element={
+                  <RequireAuth>
+                    <UserProfile />
+                  </RequireAuth>
+                }
+              />
             </Routes>
           </div>
         </div>

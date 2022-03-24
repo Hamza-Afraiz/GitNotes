@@ -56,7 +56,7 @@ const GistGrid = ({ gistsData }: GistDataList) => {
           </Grid>
         ))}
       </Grid>
-      <Stack sx={{ marginTop: "2%" }} spacing={2}>
+      <Stack sx={{ marginTop: "4%" }} spacing={2}>
         <Pagination
           count={Math.round(gistsData.length / 9)}
           page={pageNumber}

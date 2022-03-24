@@ -6,7 +6,11 @@ import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
 
 //hooks
-import { usePublicGists, useStarredGistsData ,useErrorState} from "../../Hooks";
+import {
+  usePublicGists,
+  useStarredGistsData,
+  useErrorState,
+} from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
 
 //css
@@ -14,9 +18,9 @@ import { GistsContainer } from "../../styledComponents";
 
 //src
 import { GistData } from "../../types/gistData";
-import { getGistsData } from "../../store/slices/publicGists";
+import { GistsData } from "../../store/slices/userGists";
 import { GistGrid, GistList } from "../index";
-import {PopUpNotification} from '../../components'
+import { PopUpNotification } from "../../components";
 //
 interface GistsProps {
   starredGists: boolean;
@@ -28,14 +32,14 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
 
   const publicsGistData = usePublicGists();
   const starredGistData = useStarredGistsData();
-  const error=useErrorState();
+  const error = useErrorState();
   const gistData = starredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
   React.useEffect(() => {
-    dispatch(getGistsData()); //Api call to get Gists Data
+     //Api call to get Gists Data
 
     if (searchQuery) {
       setSearchedData(
@@ -44,14 +48,20 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
         })
       );
     }
+    else{
+      dispatch(GistsData("public"));
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   return (
-    <div>
-      {error &&  <PopUpNotification popUpText="Looks like you are not connected to the internet"/>}
-      {!gistData.length ?   (
-        <GistsContainer data-testid='loading' style={{ justifyContent: "center" }}>
+    <div data-testid="gist-container">
+      {error && <PopUpNotification popUpText={error} />}
+      {!gistData.length ? (
+        <GistsContainer
+          data-testid="loading"
+          style={{ justifyContent: "center" }}
+        >
           <LoadingSpinner
             height="10%"
             width="80%"
@@ -60,7 +70,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
           />
         </GistsContainer>
       ) : (
-        <div  data-testid="gist-list">
+        <div data-testid="gist-list">
           <GistsContainer>
             <GridIcon
               fontSize="large"
