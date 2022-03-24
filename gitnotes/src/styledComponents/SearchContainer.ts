@@ -11,7 +11,11 @@ export const SearchContainer = styled("div")(({ theme }) => ({
   
     minWidth: "30%",
     [theme.breakpoints.up("sm")]: {
-      marginLeft: "50%",
-      width: "auto",
+      marginLeft: "40%",
+      
+    },
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "10%",
+      
     },
   }));

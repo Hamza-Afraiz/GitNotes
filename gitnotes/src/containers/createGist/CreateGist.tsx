@@ -3,24 +3,23 @@ import Alert from "@mui/material/Alert";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { useLocation } from "react-router-dom";
-
 //src
 import {
-  AnimatedTextComponent,
   LoadingSpinner,
-  PopUpNotification,
+  PopUpNotification
 } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   CreateGist as CreateGistByUser,
-  UpdateGist,
+  UpdateGist
 } from "../../store/slices/userGists";
-import { File } from "../../types/createGist";
-
 //styles
 import { CustomButton } from "../../styledComponents";
-
+import { File } from "../../types/createGist";
 import "./createGist.css";
+
+
+
 
 const CreateGist = () => {
   const dispatch = useAppDispatch();
@@ -56,7 +55,7 @@ const CreateGist = () => {
     setEditingGistId(gistData.gistId);
   };
 
-  const AddGist = () => {
+  const AddGist = async() => {
     const createGist = {
       files: gistFiles,
       description: gistDescription,
@@ -64,9 +63,9 @@ const CreateGist = () => {
 
     if (gistFiles.length) {
       if (editingGist) {
-        dispatch(UpdateGist(createGist, editingGistId.toString()));
+       await  dispatch(UpdateGist(createGist, editingGistId.toString()));
       } else {
-        dispatch(CreateGistByUser(createGist));
+        await dispatch(CreateGistByUser(createGist));
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");
@@ -115,24 +114,25 @@ const CreateGist = () => {
 
   return (
     <div className="createGistContainer">
-      {!!popUpText && <PopUpNotification popUpText={popUpText} />}
-      {!!postedGist && (
-        <div data-testid="gist-posted">
-        <Alert  severity="success">
-          <AnimatedTextComponent text="Gist Added Successfully !!!" />
-        </Alert>
+      {(popUpText) && <PopUpNotification popUpText={popUpText} />}
+      { (postedGist) && (
+        <div data-testid='gist-added'>
+          <Alert severity="success">
+          Gist Added Successfully !!!
+          </Alert>
         </div>
       )}
-      {  !postedGist && gistFiles.length && (
-        <div data-testid="file-added"><Alert severity="info">
-        {" "}
-        <AnimatedTextComponent text="File Added !!!" />
-      </Alert></div>
-        
+      {(!postedGist) && Boolean(gistFiles.length) && (
+        <div data-testid='file-added'>
+          <Alert severity="info">
+          File Added !!!
+          </Alert>
+        </div>
       )}
       <TextField
         id="outlined-multiline-static"
         label="File Name"
+        inputProps={{ "data-testid": "file-name" }}
         multiline
         value={gistName}
         onChange={(value: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,6 +142,7 @@ const CreateGist = () => {
       <TextField
         id="outlined-multiline-static"
         label="Gist Description"
+        inputProps={{ "data-testid": "gist-description" }}
         multiline
         sx={{ marginTop: "2%" }}
         value={gistDescription}
@@ -154,6 +155,7 @@ const CreateGist = () => {
         id="outlined-multiline-static"
         label="File Content"
         multiline
+        inputProps={{ "data-testid": "file-content" }}
         rows={4}
         value={gistContent}
         sx={{ marginTop: "4%" }}
@@ -167,7 +169,7 @@ const CreateGist = () => {
         colorvalue="white"
         backgroundcolor="#5ACBA1"
         width="20%"
-        aria-label="Add File"
+        data-testid="add-file"
       >
         {userState === true ? "Add File" : "Please Login First"}
       </CustomButton>
@@ -177,11 +179,16 @@ const CreateGist = () => {
         colorvalue="white"
         backgroundcolor="#5ACBA1"
         width="20%"
-        aria-label="Add Gist"
+        data-testid="add-gist"
       >
         {userState ? (
           loading ? (
-            <LoadingSpinner  data-test-id="loading" width="20%" height="20%" color="white" />
+            <LoadingSpinner
+              data-test-id="loading"
+              width="10%"
+              height="10%"
+              color="white"
+            />
           ) : editingGist ? (
             " Update Gist"
           ) : (

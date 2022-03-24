@@ -18,7 +18,8 @@ const firebaseConfig = {
   storageBucket: "gitnotes-c4703.appspot.com",
   messagingSenderId: "917080503422",
   appId: "1:917080503422:web:75c27fbe764c0e625e542f",
-  measurementId: "G-QTPQC37CTT"
+  measurementId: "G-QTPQC37CTT",
+  providerId:"Github"
 };
 
 // Initialize Firebase

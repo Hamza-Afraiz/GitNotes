@@ -48,7 +48,7 @@ export default function GistList({ gistsData }: GistDataList) {
         columns={GistsListHeading}
         pageSize={10}
         rowsPerPageOptions={[10]}
-        checkboxSelection
+        
         disableSelectionOnClick
         onRowClick={(param) => onGistClick(param.row)}
 

@@ -1,13 +1,13 @@
 import React from "react";
-
+import Divider from '@mui/material/Divider';
 //src
-import { GistPage, LoadingSpinner } from "../../components";
+import { GistPage } from "../../components";
 import { useAppSelector } from "../../store/hooks";
-
 //styles
-
-import { CustomButton } from "../../styledComponents";
+import { CustomButton, PlainText } from "../../styledComponents";
 import "./userProfile.css";
+
+
 
 const UserProfile = () => {
   const userData = useAppSelector((state) => state.user.userData);
@@ -19,7 +19,7 @@ const UserProfile = () => {
     <div className="container">
       <div className="infoContainer">
         <img
-          className="profileImage"
+          className="userProfileImage"
           src={userData.ownerAvatar}
           alt="profilePic"
         />
@@ -35,13 +35,17 @@ const UserProfile = () => {
           </CustomButton>
         </div>
       </div>
-      <div className="gistContainer">
+      <div className="gistContainer" data-testid='gist-container'>
         <div className="gistPage">
-          {!userGistDataArray && (
-            <LoadingSpinner width="40%" height="60%" color="green" />
+          {userGistDataArray.length < 1 && (
+            <PlainText>No User Gists Yet.</PlainText>
           )}
           {userGistDataArray.map((item, index) => (
-            <GistPage key={index} gistData={item} gistType="user" />
+            <div key={index}>
+                 <GistPage key={index} gistData={item} gistType="user" />
+            <Divider />
+            </div>
+         
           ))}
         </div>
       </div>

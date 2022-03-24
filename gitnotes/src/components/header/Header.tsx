@@ -18,8 +18,7 @@ import { MenuItems, Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 import {
-  getStarredGistsData,
-  getUserGistsData,
+  GistsData,
 } from "../../store/slices/userGists";
 
 //styles
@@ -83,9 +82,9 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-      dispatch(getUserGistsData());
+      dispatch(GistsData('user'));
 
-      dispatch(getStarredGistsData());
+      dispatch(GistsData('starred'));
       setLogInNotification(userState);
     }
   }, [userState, dispatch]);
@@ -119,12 +118,13 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
       <AppBar sx={{ backgroundColor: theme.color.primary }} position="static">
         <Toolbar>
           <ArrowBackIcon
+          className="arrowBack"
             onClick={() => {
               navigate(-1);
             }}
           />
           <HomeIcon
-            sx={{ marginLeft: "1%" }}
+           className="arrowBack"
             onClick={() => {
               navigate("/", { replace: true });
               window.history.replaceState(null, "/");
@@ -135,7 +135,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
             variant="h6"
             component="div"
             sx={{
-              display: { md: "none", xs: "none", sm: "none", lg: "block" },
+              display: { md: "block", xs: "none", sm: "none", lg: "block" },
             }}
             className="company-name"
           >
@@ -144,7 +144,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
 
           {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>
-            <div className="searchIconWrapper" onClick={SearchGist}>
+            <div className="searchIconWrapper" data-testid='search-button' onClick={SearchGist}>
               <SearchIcon />
             </div>
 
@@ -173,10 +173,11 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
               <CircularProgress color="success" />
             </div>
           ) : userState === true ? (
-            <div className="profilePicDiv" data-testid="user-image">
+            <div className="profilePicDiv" >
               <img
                 className="userPic"
                 src={userData.ownerAvatar}
+                data-testid="user-image"
                 alt="profile"
                 onClick={openMenu}
               />
