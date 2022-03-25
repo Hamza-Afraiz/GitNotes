@@ -1,6 +1,13 @@
 // lib
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 // src
 import { useSearchQuery, useStarredGists } from "../src/Hooks";
 import { theme } from "../src/theme/Theme";
@@ -14,7 +21,10 @@ function App() {
   const { setStarredGists, starredGists } = useStarredGists();
   const { setSearchQueryValue, searchQuery } = useSearchQuery();
 
+   const queryClient = new QueryClient()
+
   return (
+    <QueryClientProvider client={queryClient}>
     <ThemeProvider theme={theme}>
       <Router>
         <div>
@@ -58,6 +68,7 @@ function App() {
         </div>
       </Router>
     </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

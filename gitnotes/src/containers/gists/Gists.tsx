@@ -1,30 +1,26 @@
 //lib
 
-import ListIcon from "@mui/icons-material/List";
-import GridIcon from "@mui/icons-material/Window";
 import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
-
+import { PopUpNotification } from "../../components";
 //hooks
+import { useErrorState } from "../../Hooks";
 import {
-  usePublicGists,
-  useStarredGistsData,
-  useErrorState,
-} from "../../Hooks";
-import { useAppDispatch } from "../../store/hooks";
-
+  usePublicGistsData,
+  useStarredGistsData
+} from "../../react-query/react-query";
 //css
 import {
-  GistsContainer,
   CustomGridIcon,
-  CustomListIcon,
+  CustomListIcon, GistsContainer
 } from "../../styledComponents";
-
 //src
 import { GistData } from "../../types/gistData";
-import { GistsData } from "../../store/slices/userGists";
 import { GistGrid, GistList } from "../index";
-import { PopUpNotification } from "../../components";
+import "./gists.css";
+
+
+
 //
 interface GistsProps {
   starredGists: boolean;
@@ -32,10 +28,8 @@ interface GistsProps {
 }
 
 const Gists = ({ starredGists, searchQuery }: GistsProps) => {
-  const dispatch = useAppDispatch();
-
-  const publicsGistData = usePublicGists();
-  const starredGistData = useStarredGistsData();
+  const publicsGistData = usePublicGistsData().data;
+  const starredGistData = useStarredGistsData().data;
   const error = useErrorState();
   const gistData = starredGists ? starredGistData : publicsGistData;
 
@@ -43,16 +37,12 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
   React.useEffect(() => {
-    //Api call to get Gists Data
-
     if (searchQuery) {
       setSearchedData(
-        gistData.filter(function (itm) {
+        gistData.filter(function (itm: any) {
           return itm.gistId?.toString().includes(searchQuery);
         })
       );
-    } else {
-      dispatch(GistsData("public"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
@@ -62,15 +52,15 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
       {error && (
         <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
       )}
-      {!gistData.length ? (
-        <GistsContainer data-testid="loading">
+      {!gistData?.length ? (
+        <div className="loading-spinner" data-testid="loading">
           <LoadingSpinner
             height="10%"
             width="80%"
             color="#5ACBA1"
             ariaLabel="loading"
           />
-        </GistsContainer>
+        </div>
       ) : (
         <div data-testid="gist-list">
           <GistsContainer>
