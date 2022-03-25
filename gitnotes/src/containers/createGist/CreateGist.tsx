@@ -4,22 +4,17 @@ import TextField from "@mui/material/TextField";
 import React from "react";
 import { useLocation } from "react-router-dom";
 //src
-import {
-  LoadingSpinner,
-  PopUpNotification
-} from "../../components";
+import { LoadingSpinner, PopUpNotification } from "../../components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   CreateGist as CreateGistByUser,
-  UpdateGist
+  setErrorState,
+  UpdateGist,
 } from "../../store/slices/userGists";
 //styles
 import { CustomButton } from "../../styledComponents";
 import { File } from "../../types/createGist";
 import "./createGist.css";
-
-
-
 
 const CreateGist = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +30,9 @@ const CreateGist = () => {
   const [popUpText, setPopUpText] = React.useState("");
 
   const userState = useAppSelector((state) => state.user.loggedIn);
-  const { loading, userGistsData } = useAppSelector((state) => state.userGists);
+  const { loading, userGistsData, error } = useAppSelector(
+    (state) => state.userGists
+  );
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -55,7 +52,7 @@ const CreateGist = () => {
     setEditingGistId(gistData.gistId);
   };
 
-  const AddGist = async() => {
+  const AddGist = async () => {
     const createGist = {
       files: gistFiles,
       description: gistDescription,
@@ -63,9 +60,11 @@ const CreateGist = () => {
 
     if (gistFiles.length) {
       if (editingGist) {
-       await  dispatch(UpdateGist(createGist, editingGistId.toString()));
+        await dispatch(UpdateGist(createGist, editingGistId.toString()));
+        dispatch(setErrorState(false));
       } else {
         await dispatch(CreateGistByUser(createGist));
+        dispatch(setErrorState(false));
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");
@@ -114,19 +113,19 @@ const CreateGist = () => {
 
   return (
     <div className="createGistContainer">
-      {(popUpText) && <PopUpNotification popUpText={popUpText} />}
-      { (postedGist) && (
-        <div data-testid='gist-added'>
-          <Alert severity="success">
-          Gist Added Successfully !!!
-          </Alert>
+      {popUpText && <PopUpNotification popUpText={popUpText} />}
+
+      {postedGist && !error ? (
+        <div data-testid="gist-added">
+          <Alert severity="success">Gist Added Successfully !!!</Alert>
         </div>
-      )}
-      {(!postedGist) && Boolean(gistFiles.length) && (
-        <div data-testid='file-added'>
-          <Alert severity="info">
-          File Added !!!
-          </Alert>
+      ) : null}
+
+          {error && <Alert severity="info">Unable to add gist.Check your network connection. !!!</Alert> }
+
+      {!postedGist && Boolean(gistFiles.length) && (
+        <div data-testid="file-added">
+          <Alert severity="info">File Added !!!</Alert>
         </div>
       )}
       <TextField

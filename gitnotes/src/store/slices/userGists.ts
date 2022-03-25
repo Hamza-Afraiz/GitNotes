@@ -11,7 +11,7 @@ const initialState: GistsDataList = {
   publicGistsData: [],
   loading: false,
   currentGistId: 0,
-  error: "",
+  error: false,
 };
 export const UserGists = createSlice({
   name: "UserGists",
@@ -106,6 +106,10 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
     dispatch(GistsData("user"));
     dispatch(setLoadingState(1));
     return response;
+  } else {
+    dispatch(setErrorState(true));
+    dispatch(setLoadingState(1));
+    return;
   }
 
   // return await req;
@@ -137,11 +141,7 @@ export const UpdateGist =
   };
 
 export const StarGist =
-  (
-    gistId: string | undefined,
-    gistType: string | undefined,
-    
-  ) =>
+  (gistId: string | undefined, gistType: string | undefined) =>
   async (dispatch: any) => {
     //setting loading on speicfic gist id
     dispatch(setLoadingState(gistId));
@@ -149,21 +149,19 @@ export const StarGist =
     const req = await request({ url: `/gists/${gistId}/star`, method: "put" });
 
     if (req.status !== 204) {
-      dispatch(setErrorState("There is something wrong with Star Operation."));
+      dispatch(setErrorState(true));
       dispatch(setLoadingState(gistId));
       return;
     }
 
     //if we are going to star some our own gists
-   
-      await dispatch(addStarGistDataFromGists({ gistId, gistType }));
-      
 
-      //if we are going to star public gists
-   
+    await dispatch(addStarGistDataFromGists({ gistId, gistType }));
+
+    //if we are going to star public gists
 
     dispatch(setLoadingState(gistId));
-   
+
     return await req;
   };
 
@@ -173,9 +171,7 @@ export const DeleteGist =
     const req = await request({ url: `/gists/${gistId}`, method: "delete" });
 
     if (req.status !== 204) {
-      dispatch(
-        setErrorState("There is something wrong with Delete Operation.")
-      );
+      dispatch(setErrorState(true));
       dispatch(setLoadingState(gistId));
       return;
     }
@@ -199,12 +195,9 @@ export const UnStarGist =
       url: `/gists/${gistId}/star`,
       method: "delete",
     });
-   
 
     if (req.status !== 204) {
-      dispatch(
-        setErrorState("There is something wrong with Unstar Operation.")
-      );
+      dispatch(setErrorState(true));
       dispatch(setLoadingState(gistId));
       return;
     }
@@ -240,9 +233,8 @@ export const GistsData = (type: string) => async (dispatch: any) => {
       : await GetStarredGists();
 
   if (!GistsData) {
-    dispatch(
-      setErrorState("Failed to get gists data.Check network connection")
-    );
+    console.log("no");
+    dispatch(setErrorState(true));
     return;
   }
   const gistsDataFromApi = GistsData;

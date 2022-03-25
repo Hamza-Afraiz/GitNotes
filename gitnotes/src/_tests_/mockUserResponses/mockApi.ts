@@ -15,6 +15,10 @@ export const mockServer = setupServer(
     console.log("get starred");
     return res(ctx.json(gistApiResponse));
   }),
+  rest.get(gistApiResponse[0].files['hello'].raw_url, (req, res, ctx) => {
+    console.log("get files");
+    return res(ctx.json('dsaffds dfasf afdsf'));
+  }),
   rest.get("https://github.com/login/oauth/authorize", (req, res, ctx) => {
     console.log("get login");
     return res(

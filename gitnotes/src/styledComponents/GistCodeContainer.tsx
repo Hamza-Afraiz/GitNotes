@@ -5,9 +5,10 @@ export const GistCodeContainer = styled("div")(() => ({
   minHeight: "150px",
   textAlign: "start",
   maxHeight: 600,
-  marginTop: "3%",
+  marginTop: "1%",
   backgroundColor: "#FFFFFF",
   padding: "0%",
+  flex:"1",
 
   border: "1px solid lightgray",
   borderRadius: "1%",

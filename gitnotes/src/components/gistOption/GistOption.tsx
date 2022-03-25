@@ -64,8 +64,8 @@ const GistOption = ({
         handleAlertValue("Star Successfully");
         setStarValue(true);
       } else {
-        handleAlertValue(error);
-        dispatch(setErrorState(""));
+      handleAlertValue('Looks Like something wrong with Star operation.');
+        dispatch(setErrorState(false));
         return;
       } //setting state using hook to show message upon completion of gist option
     }
@@ -78,8 +78,8 @@ const GistOption = ({
         handleAlertValue("UnStar Successfully");
         setStarValue(false);
       } else {
-        handleAlertValue(error);
-        dispatch(setErrorState(""));
+        handleAlertValue('Looks Like something wrong with Unstar operation.');
+        dispatch(setErrorState(false));
         return;
       }
     }

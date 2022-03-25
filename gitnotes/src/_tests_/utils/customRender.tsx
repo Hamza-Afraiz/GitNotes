@@ -27,7 +27,7 @@ const initialState = {
     loading: false,
     starredGists: [],
     currentGistId: 0,
-    error: "",
+    error: false,
   },
 };
 export const store = configureStore({

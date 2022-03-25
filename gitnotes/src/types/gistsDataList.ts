@@ -5,5 +5,5 @@ export interface GistsDataList {
   starredGists: GistData[];
   loading: boolean;
   currentGistId: number;
-  error: string;
+  error: boolean;
 }

@@ -42,11 +42,11 @@ describe("when List Displays", () => {
       { timeout: 3000 }
     );
 
-    //clicking star/unstar button
-    console.log(screen.getByTestId('gist-container').textContent)
+    //clicking delete button
+
     fireEvent.click(screen.getByTestId("gist-option-button-delete"));
     await waitForElementToBeRemoved(()=>(screen.getByTestId('loading-spinner')),{timeout:5000})
-    console.log(screen.getByTestId('gist-container').textContent)
+ 
     //wait for completion :)
     expect(screen.getByText('Deleted Successfully')).toBeInTheDocument()
 
