@@ -1,31 +1,27 @@
 //lib
 
-import ListIcon from "@mui/icons-material/List";
-import GridIcon from "@mui/icons-material/Window";
 import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
-
+import { PopUpNotification } from "../../components";
 //hooks
 import {
+  useErrorState,
   usePublicGists,
   useStarredGistsData,
-  useErrorState,
 } from "../../Hooks";
 import { useAppDispatch } from "../../store/hooks";
-
+import { GistsData } from "../../store/slices/userGists";
 //css
 import {
-  GistsContainer,
   CustomGridIcon,
   CustomListIcon,
+  GistsContainer,
 } from "../../styledComponents";
-import './gists.css'
-
 //src
 import { GistData } from "../../types/gistData";
-import { GistsData } from "../../store/slices/userGists";
 import { GistGrid, GistList } from "../index";
-import { PopUpNotification } from "../../components";
+import "./gists.css";
+
 //
 interface GistsProps {
   starredGists: boolean;
