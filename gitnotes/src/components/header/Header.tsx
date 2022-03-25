@@ -118,16 +118,16 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
       <AppBar sx={{ backgroundColor: theme.color.primary }} position="static">
         <Toolbar>
           <ArrowBackIcon
-          className="arrowBack"
+          className="arrow-back-icon"
             onClick={() => {
               navigate(-1);
             }}
           />
           <HomeIcon
-           className="arrowBack"
+           className="home-back-icon"
             onClick={() => {
               navigate("/", { replace: true });
-              window.history.replaceState(null, "/");
+              
             }}
           />
 

@@ -4,12 +4,22 @@
   border-radius: 50px;
   margin-right: 10px;
 }
-.arrowBack {
+.arrow-back-icon {
+  margin-left: 0%;
+}
+.home-back-icon{
+  margin-right: 3%;
   margin-left: 1%;
 }
-.arrowBack:hover {
+
+.arrow-back-icon:hover {
   cursor: pointer;
   opacity: 0.5;
+}
+.home-back-icon:hover{
+  cursor: pointer;
+  opacity: 0.5;
+
 }
 .searchIconWrapper {
   display: flex;

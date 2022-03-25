@@ -14,7 +14,11 @@ import {
 import { useAppDispatch } from "../../store/hooks";
 
 //css
-import { GistsContainer } from "../../styledComponents";
+import {
+  GistsContainer,
+  CustomGridIcon,
+  CustomListIcon,
+} from "../../styledComponents";
 
 //src
 import { GistData } from "../../types/gistData";
@@ -39,7 +43,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
   React.useEffect(() => {
-     //Api call to get Gists Data
+    //Api call to get Gists Data
 
     if (searchQuery) {
       setSearchedData(
@@ -47,8 +51,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
           return itm.gistId?.toString().includes(searchQuery);
         })
       );
-    }
-    else{
+    } else {
       dispatch(GistsData("public"));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,12 +59,11 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
 
   return (
     <div data-testid="gist-container">
-      {error && <PopUpNotification popUpText={error} />}
+      {error && (
+        <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
+      )}
       {!gistData.length ? (
-        <GistsContainer
-          data-testid="loading"
-          style={{ justifyContent: "center" }}
-        >
+        <GistsContainer data-testid="loading">
           <LoadingSpinner
             height="10%"
             width="80%"
@@ -72,21 +74,15 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
       ) : (
         <div data-testid="gist-list">
           <GistsContainer>
-            <GridIcon
-              fontSize="large"
-              sx={{
-                color: `${sortingType === "grid" ? "#5ACBA1" : "lightgrey"}`,
-              }}
+            <CustomGridIcon
+              sortingtype={sortingType}
               onClick={() => {
                 setSortingType("grid");
               }}
             />
             |
-            <ListIcon
-              fontSize="large"
-              sx={{
-                color: `${sortingType === "list" ? "#5ACBA1" : "lightgrey"}`,
-              }}
+            <CustomListIcon
+              sortingtype={sortingType}
               onClick={() => {
                 setSortingType("list");
               }}

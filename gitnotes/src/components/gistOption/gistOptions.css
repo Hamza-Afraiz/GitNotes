@@ -18,3 +18,6 @@
     flex-direction: row;
     justify-content: space-between;
 }
+.gist-option-button:hover{
+    cursor: pointer;
+}
