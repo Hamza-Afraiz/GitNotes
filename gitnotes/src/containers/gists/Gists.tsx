@@ -19,6 +19,7 @@ import {
   CustomGridIcon,
   CustomListIcon,
 } from "../../styledComponents";
+import './gists.css'
 
 //src
 import { GistData } from "../../types/gistData";
@@ -63,14 +64,14 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
         <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
       )}
       {!gistData.length ? (
-        <GistsContainer data-testid="loading">
+        <div data-testid="loading" className="loading-spinner">
           <LoadingSpinner
             height="10%"
             width="80%"
             color="#5ACBA1"
             ariaLabel="loading"
           />
-        </GistsContainer>
+        </div>
       ) : (
         <div data-testid="gist-list">
           <GistsContainer>
