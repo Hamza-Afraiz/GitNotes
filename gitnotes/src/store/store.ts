@@ -2,13 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 // src
 
 import UserSlice from "./slices/user";
-import UserGistsSlice from "./slices/userGists";
+
 
   const store = configureStore({
   reducer: {
   
     user: UserSlice,
-    userGists: UserGistsSlice,
+  
   },
 
   middleware: (getDefaultMiddleware) =>

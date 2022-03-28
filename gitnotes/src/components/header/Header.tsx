@@ -17,12 +17,11 @@ import { useNavigate } from "react-router-dom";
 import { MenuItems, Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
-import {
-  GistsData,
-} from "../../store/slices/userGists";
+
 
 //styles
-import {
+import
+ {
   CustomButton,
   SearchContainer,
   StyledInputBase,
@@ -82,9 +81,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-      dispatch(GistsData('user'));
-
-      dispatch(GistsData('starred'));
+     
       setLogInNotification(userState);
     }
   }, [userState, dispatch]);

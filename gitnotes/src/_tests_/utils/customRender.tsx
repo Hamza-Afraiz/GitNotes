@@ -10,7 +10,7 @@ import { theme } from "../../theme/Theme";
 // src
 
 import UserSlice from "../../store/slices/user";
-import UserGistsSlice from "../../store/slices/userGists";
+
 import { GistData } from "../mockUserResponses/reduxGists";
 
 const initialState = {
@@ -33,7 +33,7 @@ const initialState = {
 export const store = configureStore({
   reducer: {
     user: UserSlice,
-    userGists: UserGistsSlice,
+    
   },
   preloadedState: initialState,
 });

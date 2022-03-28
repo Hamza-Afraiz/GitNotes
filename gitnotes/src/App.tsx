@@ -1,13 +1,11 @@
 // lib
 import { ThemeProvider } from "@mui/material/styles";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+  QueryClientProvider
+} from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 // src
 import { useSearchQuery, useStarredGists } from "../src/Hooks";
 import { theme } from "../src/theme/Theme";
@@ -68,6 +66,7 @@ function App() {
         </div>
       </Router>
     </ThemeProvider>
+    <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

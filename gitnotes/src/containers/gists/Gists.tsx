@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
 import { PopUpNotification } from "../../components";
 //hooks
-import { useErrorState } from "../../Hooks";
+
 import {
   usePublicGistsData,
   useStarredGistsData
@@ -28,9 +28,9 @@ interface GistsProps {
 }
 
 const Gists = ({ starredGists, searchQuery }: GistsProps) => {
-  const publicsGistData = usePublicGistsData().data;
-  const starredGistData = useStarredGistsData().data;
-  const error = useErrorState();
+  const{ data:publicsGistData,error:publicGistError} = usePublicGistsData();
+  const {data:starredGistData,error:starredGistError} = useStarredGistsData();
+ 
   const gistData = starredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
@@ -49,7 +49,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
 
   return (
     <div data-testid="gist-container">
-      {error && (
+      {publicGistError && (
         <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
       )}
       {!gistData?.length ? (

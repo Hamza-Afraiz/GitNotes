@@ -1,19 +1,22 @@
-import React from "react";
 import Divider from '@mui/material/Divider';
+import React from "react";
 //src
-import { GistPage } from "../../components";
-import { useAppSelector } from "../../store/hooks";
+import { GistPage, LoadingSpinner } from "../../components";
 import { useUserGistsData } from "../../react-query/react-query";
+import { useAppSelector } from "../../store/hooks";
 //styles
-import { CustomButton, PlainText } from "../../styledComponents";
-import "./userProfile.css";
+import { CustomButton } from "../../styledComponents";
 import { GistData } from "../../types/gistData";
+import "./userProfile.css";
 
 
 
 const UserProfile = () => {
   const userData = useAppSelector((state) => state.user.userData);
-  const userGistDataArray = useUserGistsData().data
+  const {data :userGistDataArray,isLoading,isFetching} = useUserGistsData()
+  console.log('refetcging',isFetching,"data",userGistDataArray)
+
+
 
   return (
     <div className="container">
@@ -37,10 +40,10 @@ const UserProfile = () => {
       </div>
       <div className="gistContainer" data-testid='gist-container'>
         <div className="gistPage">
-          {userGistDataArray?.length < 1 && (
-            <PlainText>No User Gists Yet.</PlainText>
+          {isFetching && (
+            <LoadingSpinner width="30%" height="10%" color="blue"/>
           )}
-          {userGistDataArray?.map((item:GistData, index:number) => (
+          { !isLoading && userGistDataArray?.map((item:GistData, index:number) => (
             <div key={index}>
                  <GistPage key={index} gistData={item} gistType="user" />
             <Divider />

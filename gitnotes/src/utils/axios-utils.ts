@@ -13,5 +13,5 @@ export const request = ({ ...options }) => {
     return error;
   };
 
-  return client(options).then(onSuccess).catch(onError);
+  return client(options).then(onSuccess);
 };

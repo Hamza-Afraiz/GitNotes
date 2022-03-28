@@ -31,7 +31,7 @@ const GistInfo = ({
   return (
     <div className="gist-info">
       {alertValue &&  (
-        <Alert data-testid='gist-option-completion'severity="success">
+        <Alert data-testid='gist-option-completion'severity="info">
           {alertValue}
         </Alert>
       )}

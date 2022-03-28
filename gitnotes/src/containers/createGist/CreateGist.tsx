@@ -5,19 +5,20 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 //src
 import { LoadingSpinner, PopUpNotification } from "../../components";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
-  CreateGist as CreateGistByUser,
-  setErrorState,
-  UpdateGist,
-} from "../../store/slices/userGists";
+  useCreateGist,
+  usePublicGistsData,
+  useUserGistsData,
+  useUpdateGist,
+} from "../../react-query/react-query";
+import { useAppSelector } from "../../store/hooks";
 //styles
 import { CustomButton } from "../../styledComponents";
 import { File } from "../../types/createGist";
+import { GistData } from "../../types/gistData";
 import "./createGist.css";
 
 const CreateGist = () => {
-  const dispatch = useAppDispatch();
   const location: any = useLocation();
 
   const [postedGist, setPostedGist] = React.useState(false);
@@ -26,13 +27,17 @@ const CreateGist = () => {
   const [gistName, setGistName] = React.useState("");
   const [gistContent, setGistContent] = React.useState("");
   const [gistFiles, setFiles] = React.useState<File[]>([]);
-  const [editingGistId, setEditingGistId] = React.useState(0);
+  const [editingGistId, setEditingGistId] = React.useState("");
   const [popUpText, setPopUpText] = React.useState("");
+  const [loading, setLoading] = React.useState(false);
 
   const userState = useAppSelector((state) => state.user.loggedIn);
-  const { loading, userGistsData, error } = useAppSelector(
-    (state) => state.userGists
-  );
+  // const { loading, userGistsData, error } = useAppSelector(
+  //   (state) => state.userGists
+  // );
+
+  const { data: userGistsData } = useUserGistsData();
+  console.log("Data  is", userGistsData);
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -42,29 +47,54 @@ const CreateGist = () => {
   };
 
   const editingGistData = (gistId: number) => {
-    SettingEditData(userGistsData.find((gist) => gist.gistId === gistId));
+    SettingEditData(
+      userGistsData?.find((gist: GistData) => gist.gistId === gistId)
+    );
   };
 
   const SettingEditData = (gistData: any) => {
-    setGistDescription(gistData.description);
-    setGistName(gistData.fileName);
-    setGistContent(gistData.content.toString());
-    setEditingGistId(gistData.gistId);
+    setGistDescription(gistData?.description);
+    setGistName(gistData?.fileName);
+    setGistContent(gistData?.content.toString());
+    setEditingGistId(gistData?.gistId.toString());
   };
 
-  const AddGist = async () => {
-    const createGist = {
+  const onCreateGist = () => {
+    setLoading(false);
+  };
+  const onError = () => {
+    setLoading(false);
+  };
+
+  const onMutate = () => {
+    setLoading(true);
+  };
+  const { mutate: CreateGist, error: createGistError } = useCreateGist(
+    {
       files: gistFiles,
       description: gistDescription,
-    };
+    },
+    onCreateGist,
+    onError,
+    onMutate
+  );
+  const { mutate: UpdateGist, error: updateGistError } = useUpdateGist(
+    {
+      files: gistFiles,
+      description: gistDescription,
+    },
+    editingGistId,
+    onCreateGist,
+    onError,
+    onMutate
+  );
 
+  const AddGist = async () => {
     if (gistFiles.length) {
       if (editingGist) {
-        await dispatch(UpdateGist(createGist, editingGistId.toString()));
-        dispatch(setErrorState(false));
+        UpdateGist();
       } else {
-        await dispatch(CreateGistByUser(createGist));
-        dispatch(setErrorState(false));
+        CreateGist();
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");
@@ -115,13 +145,17 @@ const CreateGist = () => {
     <div className="createGistContainer">
       {popUpText && <PopUpNotification popUpText={popUpText} />}
 
-      {postedGist && !error ? (
+      {postedGist && !createGistError && !updateGistError ? (
         <div data-testid="gist-added">
           <Alert severity="success">Gist Added Successfully !!!</Alert>
         </div>
       ) : null}
 
-          {error && <Alert severity="info">Unable to add gist.Check your network connection. !!!</Alert> }
+      {createGistError || updateGistError ? (
+        <Alert severity="info">
+          Unable to add gist.Check your network connection. !!!
+        </Alert>
+      ) : null}
 
       {!postedGist && Boolean(gistFiles.length) && (
         <div data-testid="file-added">
