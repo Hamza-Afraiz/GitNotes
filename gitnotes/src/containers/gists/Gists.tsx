@@ -8,7 +8,7 @@ import { PopUpNotification } from "../../components";
 import {
   usePublicGistsData,
   useStarredGistsData
-} from "../../react-query/react-query";
+} from "../../Hooks";
 //css
 import {
   CustomGridIcon,
@@ -50,7 +50,10 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   return (
     <div data-testid="gist-container">
       {publicGistError && (
-        <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
+        <PopUpNotification popUpText="Failed to get public gists. Check your network connection." />
+      )}
+       {starredGistError && (
+        <PopUpNotification popUpText="Failed to get starred gists. Check your network connection." />
       )}
       {!gistData?.length ? (
         <div className="loading-spinner" data-testid="loading">

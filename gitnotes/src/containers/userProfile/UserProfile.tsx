@@ -2,7 +2,7 @@ import Divider from '@mui/material/Divider';
 import React from "react";
 //src
 import { GistPage, LoadingSpinner } from "../../components";
-import { useUserGistsData } from "../../react-query/react-query";
+import { useUserGistsData } from "../../Hooks";
 import { useAppSelector } from "../../store/hooks";
 //styles
 import { CustomButton } from "../../styledComponents";

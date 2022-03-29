@@ -16,7 +16,7 @@ import {
 import {
   useDeleteGist, useStarGist,
   useUnStarGist
-} from "../../react-query/react-query";
+} from "../../Hooks";
 import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";

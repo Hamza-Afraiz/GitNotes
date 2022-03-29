@@ -5,12 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 //src
 import { LoadingSpinner, PopUpNotification } from "../../components";
-import {
-  useCreateGist,
-  usePublicGistsData,
-  useUserGistsData,
-  useUpdateGist,
-} from "../../react-query/react-query";
+import { useCreateGist, useUpdateGist, useUserGistsData } from "../../Hooks";
 import { useAppSelector } from "../../store/hooks";
 //styles
 import { CustomButton } from "../../styledComponents";
@@ -29,12 +24,10 @@ const CreateGist = () => {
   const [gistFiles, setFiles] = React.useState<File[]>([]);
   const [editingGistId, setEditingGistId] = React.useState("");
   const [popUpText, setPopUpText] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+ 
 
   const userState = useAppSelector((state) => state.user.loggedIn);
-  // const { loading, userGistsData, error } = useAppSelector(
-  //   (state) => state.userGists
-  // );
+  
 
   const { data: userGistsData } = useUserGistsData();
   console.log("Data  is", userGistsData);
@@ -59,24 +52,13 @@ const CreateGist = () => {
     setEditingGistId(gistData?.gistId.toString());
   };
 
-  const onCreateGist = () => {
-    setLoading(false);
-  };
-  const onError = () => {
-    setLoading(false);
-  };
-
-  const onMutate = () => {
-    setLoading(true);
-  };
-  const { mutate: CreateGist, error: createGistError } = useCreateGist(
+ 
+  const { mutate: CreateGist, error: createGistError ,isLoading} = useCreateGist(
     {
       files: gistFiles,
       description: gistDescription,
     },
-    onCreateGist,
-    onError,
-    onMutate
+   
   );
   const { mutate: UpdateGist, error: updateGistError } = useUpdateGist(
     {
@@ -84,9 +66,7 @@ const CreateGist = () => {
       description: gistDescription,
     },
     editingGistId,
-    onCreateGist,
-    onError,
-    onMutate
+  
   );
 
   const AddGist = async () => {
@@ -102,7 +82,7 @@ const CreateGist = () => {
       return;
     }
 
-    if (!loading) {
+    if (!isLoading) {
       resetFile();
       resetGist();
       setPostedGist(true);
@@ -145,7 +125,7 @@ const CreateGist = () => {
     <div className="createGistContainer">
       {popUpText && <PopUpNotification popUpText={popUpText} />}
 
-      {postedGist && !createGistError && !updateGistError ? (
+      {postedGist && !createGistError && !updateGistError && !isLoading ? (
         <div data-testid="gist-added">
           <Alert severity="success">Gist Added Successfully !!!</Alert>
         </div>
@@ -215,7 +195,7 @@ const CreateGist = () => {
         data-testid="add-gist"
       >
         {userState ? (
-          loading ? (
+          isLoading ? (
             <LoadingSpinner
               data-test-id="loading"
               width="10%"
