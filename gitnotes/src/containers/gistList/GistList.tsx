@@ -17,7 +17,7 @@ export default function GistList({ gistsData }: GistDataList) {
 
   const navigate = useNavigate();
 
-  const listData = gistsData.map((item, index) => {
+  const listData = gistsData?.map((item, index) => {
     return {
       id: index,
       name: item.ownerName,

@@ -4,11 +4,9 @@ import { createGist } from "../../types/createGist";
 import { request } from "../../utils/axios-utils";
 import { GistData } from "../../types/gistData";
 import { GistsDataList } from "../../types/gistsDataList";
+import useSWR from "swr";
 
 const initialState: GistsDataList = {
-  userGistsData: [],
-  starredGists: [],
-  publicGistsData: [],
   loading: false,
   currentGistId: 0,
   error: false,
@@ -20,50 +18,41 @@ export const UserGists = createSlice({
     setErrorState(state, action) {
       state.error = action.payload;
     },
-    setPublicGistData(state, action) {
-      state.publicGistsData = action.payload;
-    },
-    setUserGistData(state, action) {
-      state.userGistsData = action.payload;
-    },
 
-    setUserStarredData(state, action) {
-      state.starredGists = action.payload;
-    },
     setLoadingState(state, action) {
       state.loading = !state.loading;
       state.currentGistId = action.payload;
     },
 
     //adding star gists froom public gists
-    addStarGistFromPublic(state, action) {
-      state.starredGists.push(action.payload);
-    },
+    // addStarGistFromPublic(state, action) {
+    //   state.starredGists.push(action.payload);
+    // },
 
     //adding gists to starred gists from my gists
-    addStarGistDataFromGists(state, action) {
-      const temp =
-        action.payload.gistType === "user"
-          ? state.userGistsData.find(function (element) {
-              return element.gistId === action.payload.gistId;
-            })
-          : state.publicGistsData.find(function (element) {
-              return element.gistId === action.payload.gistId;
-            });
+    // addStarGistDataFromGists(state, action) {
+    //   const temp =
+    //     action.payload.gistType === "user"
+    //       ? state.userGistsData.find(function (element) {
+    //           return element.gistId === action.payload.gistId;
+    //         })
+    //       : state.publicGistsData.find(function (element) {
+    //           return element.gistId === action.payload.gistId;
+    //         });
 
-      if (temp) state.starredGists = [...state.starredGists, temp];
-    },
-    removeStarGistData(state, action) {
-      state.starredGists = state.starredGists.filter(
-        (gist) => gist.gistId !== action.payload
-      );
-    },
+    //   if (temp) state.starredGists = [...state.starredGists, temp];
+    // },
+    // removeStarGistData(state, action) {
+    //   state.starredGists = state.starredGists.filter(
+    //     (gist) => gist.gistId !== action.payload
+    //   );
+    // },
 
-    deleteGistData(state, action) {
-      state.userGistsData = state.userGistsData.filter(
-        (gist) => gist.gistId !== action.payload
-      );
-    },
+    // deleteGistData(state, action) {
+    //   state.userGistsData = state.userGistsData.filter(
+    //     (gist) => gist.gistId !== action.payload
+    //   );
+    // },
   },
 });
 
@@ -81,7 +70,15 @@ const convertArrayToObject = (
     };
   }, {});
 };
+// export async function useSwrPublicData (){
+//   const { data, error } = useSWR('publicGists', await request({
+//     url: "/gists"
 
+//   }))
+//   console.log("data swr is ",data)
+//   return data
+
+// }
 export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   //converting gist data to desired type for post operation
 
@@ -103,7 +100,6 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
     data: { files: filesObject, description: gistData.description },
   });
   if (response) {
-    dispatch(GistsData("user"));
     dispatch(setLoadingState(1));
     return response;
   } else {
@@ -134,7 +130,6 @@ export const UpdateGist =
       data: { files: filesObject, description: gistData.description },
     });
     if (response.data) {
-      dispatch(GistsData("user"));
       dispatch(setLoadingState(1));
       return response;
     }
@@ -144,6 +139,7 @@ export const StarGist =
   (gistId: string | undefined, gistType: string | undefined) =>
   async (dispatch: any) => {
     //setting loading on speicfic gist id
+
     dispatch(setLoadingState(gistId));
 
     const req = await request({ url: `/gists/${gistId}/star`, method: "put" });
@@ -156,7 +152,7 @@ export const StarGist =
 
     //if we are going to star some our own gists
 
-    await dispatch(addStarGistDataFromGists({ gistId, gistType }));
+    // await dispatch(addStarGistDataFromGists({ gistId, gistType }));
 
     //if we are going to star public gists
 
@@ -176,7 +172,7 @@ export const DeleteGist =
       return;
     }
 
-    await dispatch(deleteGistData(gistId));
+    // await dispatch(deleteGistData(gistId));
     dispatch(setLoadingState(gistId));
 
     return await req;
@@ -201,91 +197,19 @@ export const UnStarGist =
       dispatch(setLoadingState(gistId));
       return;
     }
-    dispatch(removeStarGistData(gistId));
+    // dispatch(removeStarGistData(gistId));
     dispatch(setLoadingState(gistId));
 
     return await req;
   };
-const fetchPublicGists = async () => {
-  const response = await request({ url: "/gists", headers: null });
-  return response.data;
-};
-const fetchGistFileData = async (gistFileUrl: string) => {
-  const response = await fetch(`${gistFileUrl}`);
-  return await response.text();
-};
-export const GetUserGists = async () => {
-  const req = await request({ url: `/gists` });
-
-  return req.data;
-};
-
-// getting gists objects and then extracting one object  details all we need
-//cant go to the next object untill we completed details of one object
-//using await for one object to complete all its api calls
-
-export const GistsData = (type: string) => async (dispatch: any) => {
-  const GistsData =
-    type === "public"
-      ? await fetchPublicGists()
-      : type === "user"
-      ? await GetUserGists()
-      : await GetStarredGists();
-
-  if (!GistsData) {
-    console.log("no");
-    dispatch(setErrorState(true));
-    return;
-  }
-  const gistsDataFromApi = GistsData;
-  const gistsDataArray: GistData[] = [];
-
-  for (let i = 0; i < gistsDataFromApi.length; i++) {
-    const item = gistsDataFromApi[i];
-
-    const dateAndTime = moment(item.created_at);
-    const fileName = Object.keys(item.files)[0];
-
-    if (fileName) {
-      const res = await fetchGistFileData(
-        item?.files[`${fileName}`]["raw_url"]
-      );
-      const temp = {
-        time: dateAndTime.format("hh:mm:ss"),
-        ownerAvatar: item.owner?.avatar_url,
-        ownerName: item.owner?.login,
-        id: item.id,
-        fileName: fileName,
-        gistId: item.id,
-        description: item.description,
-        creationDate: dateAndTime.format("MMM DD YYYY"),
-        content: res.split("\n"),
-      };
-      gistsDataArray.push(temp);
-    }
-  }
-  switch (type) {
-    case "public":
-      dispatch(setPublicGistData(gistsDataArray));
-      break;
-    case "user":
-      dispatch(setUserGistData(gistsDataArray));
-      break;
-
-    case "starred":
-      dispatch(setUserStarredData(gistsDataArray));
-  }
-};
 
 export const {
-  setUserGistData,
-  setUserStarredData,
   setLoadingState,
-  addStarGistDataFromGists,
-  deleteGistData,
-  removeStarGistData,
-  addStarGistFromPublic,
-  setPublicGistData,
+  // addStarGistDataFromGists,
+  // deleteGistData,
+  // removeStarGistData,
+  // addStarGistFromPublic,
+
   setErrorState,
 } = UserGists.actions;
 

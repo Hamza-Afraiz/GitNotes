@@ -3,19 +3,12 @@
 import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
 import { PopUpNotification } from "../../components";
-//hooks
-import {
-  useErrorState,
-  usePublicGists,
-  useStarredGistsData,
-} from "../../Hooks";
-import { useAppDispatch } from "../../store/hooks";
-import { GistsData } from "../../store/slices/userGists";
-//css
+import { usePublicGists, useStarredGists } from "../../Hooks/useGists/useGists";
+//css as custom
 import {
   CustomGridIcon,
   CustomListIcon,
-  GistsContainer,
+  GistsContainer
 } from "../../styledComponents";
 //src
 import { GistData } from "../../types/gistData";
@@ -29,37 +22,41 @@ interface GistsProps {
 }
 
 const Gists = ({ starredGists, searchQuery }: GistsProps) => {
-  const dispatch = useAppDispatch();
 
-  const publicsGistData = usePublicGists();
-  const starredGistData = useStarredGistsData();
-  const error = useErrorState();
+  const {
+     publicsGistData,
+     isPublicGistsLoading,
+     publicGistsError,
+  } = usePublicGists();
+ 
+  const { starredGistData,starredGistsError } =
+    useStarredGists();
+
   const gistData = starredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
   React.useEffect(() => {
-    //Api call to get Gists Data
-
     if (searchQuery) {
       setSearchedData(
-        gistData.filter(function (itm) {
+        gistData?.filter(function (itm: GistData) {
           return itm.gistId?.toString().includes(searchQuery);
         })
       );
-    } else {
-      dispatch(GistsData("public"));
-    }
+    } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   return (
     <div data-testid="gist-container">
-      {error && (
+      {publicGistsError && (
         <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
       )}
-      {!gistData.length ? (
+      {starredGistsError && (
+        <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
+      )}
+      {isPublicGistsLoading ? (
         <div data-testid="loading" className="loading-spinner">
           <LoadingSpinner
             height="10%"

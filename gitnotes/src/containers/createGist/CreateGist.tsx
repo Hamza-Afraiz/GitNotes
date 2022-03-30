@@ -5,6 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 //src
 import { LoadingSpinner, PopUpNotification } from "../../components";
+import { useUserGists } from "../../Hooks/useGists/useGists";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
   CreateGist as CreateGistByUser,
@@ -14,6 +15,7 @@ import {
 //styles
 import { CustomButton } from "../../styledComponents";
 import { File } from "../../types/createGist";
+import { GistData } from "../../types/gistData";
 import "./createGist.css";
 
 const CreateGist = () => {
@@ -30,9 +32,8 @@ const CreateGist = () => {
   const [popUpText, setPopUpText] = React.useState("");
 
   const userState = useAppSelector((state) => state.user.loggedIn);
-  const { loading, userGistsData, error } = useAppSelector(
-    (state) => state.userGists
-  );
+ 
+  const { userGistsLoading:loading, userGistsData, userGistsError:error }=useUserGists()
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -42,7 +43,7 @@ const CreateGist = () => {
   };
 
   const editingGistData = (gistId: number) => {
-    SettingEditData(userGistsData.find((gist) => gist.gistId === gistId));
+    SettingEditData(userGistsData.find((gist:GistData) => gist.gistId === gistId));
   };
 
   const SettingEditData = (gistData: any) => {
@@ -63,8 +64,8 @@ const CreateGist = () => {
         await dispatch(UpdateGist(createGist, editingGistId.toString()));
         dispatch(setErrorState(false));
       } else {
-        await dispatch(CreateGistByUser(createGist));
-        dispatch(setErrorState(false));
+        // await dispatch(CreateGistByUser(createGist));
+        // dispatch(setErrorState(false));
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");

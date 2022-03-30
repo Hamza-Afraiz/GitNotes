@@ -1,9 +1,10 @@
-import { useAppSelector } from "../../store/hooks";
+import { useStarredGists } from "../../Hooks/useGists/useGists";
+import { GistData } from "../../types/gistData";
 
 export function useStarStatus(currentGistId: number | undefined) {
-  const starredGists = useAppSelector((state) => state.userGists.starredGists);
+  const {starredGistData:starredGists} = useStarredGists();
 
-  const starVal = starredGists?.filter((gist) => gist.gistId === currentGistId);
+  const starVal = starredGists?.filter((gist:GistData) => gist.gistId === currentGistId);
 
   if (starVal?.length > 0) {
     return true;

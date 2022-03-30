@@ -18,7 +18,7 @@ export default function ProfileImageAndName({
         <img src={avatar_url} alt="profile" className="profilePic" />
       </div>
       <div className="owner-name">
-      {ownerName.substring(0,15)}
+      {ownerName?.substring(0,15)}
       </div>
      
     </div>

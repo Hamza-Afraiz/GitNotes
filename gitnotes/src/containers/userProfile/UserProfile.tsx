@@ -3,17 +3,17 @@ import Divider from '@mui/material/Divider';
 //src
 import { GistPage } from "../../components";
 import { useAppSelector } from "../../store/hooks";
+import { useUserGists } from "../../Hooks/useGists/useGists";
 //styles
 import { CustomButton, PlainText } from "../../styledComponents";
 import "./userProfile.css";
+import { GistData } from "../../types/gistData";
 
 
 
 const UserProfile = () => {
   const userData = useAppSelector((state) => state.user.userData);
-  const userGistDataArray = useAppSelector(
-    (state) => state.userGists.userGistsData
-  );
+  const {userGistsData:userGistDataArray}=useUserGists()
 
   return (
     <div className="container">
@@ -37,10 +37,10 @@ const UserProfile = () => {
       </div>
       <div className="gistContainer" data-testid='gist-container'>
         <div className="gistPage">
-          {userGistDataArray.length < 1 && (
+          {userGistDataArray?.length < 1 && (
             <PlainText>No User Gists Yet.</PlainText>
           )}
-          {userGistDataArray.map((item, index) => (
+          {userGistDataArray?.map((item:GistData, index:number) => (
             <div key={index}>
                  <GistPage key={index} gistData={item} gistType="user" />
             <Divider />

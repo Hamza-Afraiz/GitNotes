@@ -6,16 +6,7 @@ export function useLoadingState() {
 export function useUserState() {
   return useAppSelector((state) => state.user.loggedIn);
 }
-export function usePublicGists() {
-  return useAppSelector((state) => state.userGists.publicGistsData);
-}
-export function useStarredGistsData() {
-  return useAppSelector((state) => state.userGists.starredGists);
-}
 
-export function useUserGists() {
-  return useAppSelector((state) => state.userGists.userGistsData);
-}
 export function useErrorState() {
   return useAppSelector((state) => state.userGists.error);
 }
