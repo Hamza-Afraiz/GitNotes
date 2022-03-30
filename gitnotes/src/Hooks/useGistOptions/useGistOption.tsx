@@ -1,8 +1,6 @@
-import { request } from "../../utils/axios-utils";
 import useSWR from "swr";
-import { GistData } from "../../types/gistData";
-import moment from "moment";
 import { createGist } from "../../types/createGist";
+import { request } from "../../utils/axios-utils";
 
 const convertArrayToObject = (
   files: Array<{ fileName: string; content: string }>,

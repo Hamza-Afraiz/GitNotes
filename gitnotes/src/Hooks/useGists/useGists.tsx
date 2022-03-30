@@ -31,15 +31,18 @@ export function usePublicGists() {
   };
 }
 export function useStarredGists() {
-  const { data, error } = useSWR(`/gists/starred`, GetStarredGists);
+  console.log("starred")
+  const { data, error,mutate } = useSWR(`/gists/starred`, GetStarredGists);
 
   return {
     starredGistData: data,
     isStarredGistsLoading: !error && !data,
     starredGistsError: error,
+    getStarredGists:mutate
   };
 }
 export function useUserGists() {
+  console.log("user")
   const { data, error,mutate } = useSWR(`/userGists`, GetUserGists);
 
   return {

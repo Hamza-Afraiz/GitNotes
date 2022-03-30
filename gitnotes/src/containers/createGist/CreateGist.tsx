@@ -33,7 +33,7 @@ const CreateGist = () => {
 
   const userState = useAppSelector((state) => state.user.loggedIn);
  
-  const { userGistsLoading:loading, userGistsData, userGistsError:error }=useUserGists()
+  const { userGistsLoading:loading, userGistsData, userGistsError:error,getUserGists }=useUserGists()
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -64,8 +64,9 @@ const CreateGist = () => {
         await dispatch(UpdateGist(createGist, editingGistId.toString()));
         dispatch(setErrorState(false));
       } else {
-        // await dispatch(CreateGistByUser(createGist));
-        // dispatch(setErrorState(false));
+        await dispatch(CreateGistByUser(createGist));
+        dispatch(setErrorState(false));
+        getUserGists()
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");

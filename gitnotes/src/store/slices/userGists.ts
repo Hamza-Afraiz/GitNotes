@@ -1,16 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
-import moment from "moment";
+
 import { createGist } from "../../types/createGist";
-import { request } from "../../utils/axios-utils";
-import { GistData } from "../../types/gistData";
 import { GistsDataList } from "../../types/gistsDataList";
-import useSWR from "swr";
+import { request } from "../../utils/axios-utils";
 
 const initialState: GistsDataList = {
   loading: false,
   currentGistId: 0,
   error: false,
 };
+
 export const UserGists = createSlice({
   name: "UserGists",
   initialState,
@@ -101,6 +100,7 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   });
   if (response) {
     dispatch(setLoadingState(1));
+     
     return response;
   } else {
     dispatch(setErrorState(true));

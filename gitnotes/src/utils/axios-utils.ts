@@ -3,7 +3,7 @@ import axios from "axios";
 const client = axios.create({ baseURL: "https://api.github.com" });
 export const request = ({ ...options }) => {
   client.defaults.headers.common.Authorization =
-    "Bearer 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";
+    "Bearer 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";
   const onSuccess = (response: any) => {
     return response;
   };

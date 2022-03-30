@@ -16,6 +16,7 @@ import {
   useLoadingState,
   useUserState,
 } from "../../Hooks";
+import { useStarredGists, useUserGists } from "../../Hooks/useGists/useGists";
 import { useAppDispatch } from "../../store/hooks";
 import {
   DeleteGist,
@@ -23,7 +24,7 @@ import {
   StarGist,
   UnStarGist,
 } from "../../store/slices/userGists";
-import { PlainText} from "../../styledComponents";
+import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";
 
@@ -50,21 +51,18 @@ const GistOption = ({
   const currentGistId = useCurrentGistId();
 
   const error = useErrorState();
-
+  const { getStarredGists } = useStarredGists();
+  const { getUserGists } = useUserGists();
   const starGist = async () => {
-   
     //handling when we are clicked to star gist
     if (!starType) {
-      
       await dispatch(StarGist(gistId?.toString(), gistType));
-     
 
       if (!loadingState && !error) {
-       
         handleAlertValue("Star Successfully");
         setStarValue(true);
       } else {
-      handleAlertValue('Looks Like something wrong with Star operation.');
+        handleAlertValue("Looks Like something wrong with Star operation.");
         dispatch(setErrorState(false));
         return;
       } //setting state using hook to show message upon completion of gist option
@@ -76,9 +74,10 @@ const GistOption = ({
 
       if (!loadingState && !error) {
         handleAlertValue("UnStar Successfully");
+        getStarredGists();
         setStarValue(false);
       } else {
-        handleAlertValue('Looks Like something wrong with Unstar operation.');
+        handleAlertValue("Looks Like something wrong with Unstar operation.");
         dispatch(setErrorState(false));
         return;
       }
@@ -88,7 +87,13 @@ const GistOption = ({
   const deleteGist = async () => {
     await dispatch(DeleteGist(gistId?.toString()));
 
-    if (!loadingState) handleAlertValue("Deleted Successfully");
+    if (!loadingState && !error) {
+      handleAlertValue("Deleted Successfully");
+      getUserGists();
+    }
+    else{
+      handleAlertValue('Unable to delete.')
+    }
   };
 
   const handleEdit = () => {
@@ -111,7 +116,11 @@ const GistOption = ({
             <div className="gistOptions">
               {gistType === "user" && (
                 <div>
-                  <div className="gist-option-button" data-testid='gist-option-button-delete'onClick={deleteGist}>
+                  <div
+                    className="gist-option-button"
+                    data-testid="gist-option-button-delete"
+                    onClick={deleteGist}
+                  >
                     <PlainText> Delete</PlainText>
                     <DeleteIcon color="info" fontSize="inherit" />
                   </div>
@@ -122,12 +131,16 @@ const GistOption = ({
                 </div>
               )}
 
-              <div className="gist-option-button" data-testid="gist-option-button-star" onClick={starGist}>
+              <div
+                className="gist-option-button"
+                data-testid="gist-option-button-star"
+                onClick={starGist}
+              >
                 <PlainText> {starType ? "UnStar" : "Star"}</PlainText>
                 {!starType ? (
                   <StarIcon color="info" fontSize="inherit" />
                 ) : (
-                  <StarFilledIcon color="info"  fontSize="inherit"/>
+                  <StarFilledIcon color="info" fontSize="inherit" />
                 )}
               </div>
               <div className="gist-option-button">
