@@ -25,6 +25,7 @@ import {
   UnStarGist,
 } from "../../store/slices/userGists";
 import { PlainText } from "../../styledComponents";
+import { GistData } from "../../types/gistData";
 //styles
 import "./gistOptions.css";
 
@@ -51,8 +52,8 @@ const GistOption = ({
   const currentGistId = useCurrentGistId();
 
   const error = useErrorState();
-  const { getStarredGists } = useStarredGists();
-  const { getUserGists } = useUserGists();
+  const { mutateStarredGists, starredGistData } = useStarredGists();
+  const { mutateUserGists, userGistsData } = useUserGists();
   const starGist = async () => {
     //handling when we are clicked to star gist
     if (!starType) {
@@ -61,11 +62,19 @@ const GistOption = ({
       if (!loadingState && !error) {
         handleAlertValue("Star Successfully");
         setStarValue(true);
+        mutateStarredGists(
+          [
+            ...starredGistData,
+            userGistsData.find((gist: GistData) => gist.gistId === gistId),
+          ],
+          { revalidate: false }
+        );
       } else {
         handleAlertValue("Looks Like something wrong with Star operation.");
         dispatch(setErrorState(false));
         return;
-      } //setting state using hook to show message upon completion of gist option
+      }
+      //setting state using hook to show message upon completion of gist option
     }
 
     //handling when we are clicked to Unstar gist
@@ -74,8 +83,13 @@ const GistOption = ({
 
       if (!loadingState && !error) {
         handleAlertValue("UnStar Successfully");
-        getStarredGists();
+        mutateStarredGists();
         setStarValue(false);
+        mutateStarredGists(
+          starredGistData.filter((gist: GistData) => gist.gistId !== gistId),
+
+          { revalidate: false }
+        );
       } else {
         handleAlertValue("Looks Like something wrong with Unstar operation.");
         dispatch(setErrorState(false));
@@ -87,12 +101,14 @@ const GistOption = ({
   const deleteGist = async () => {
     await dispatch(DeleteGist(gistId?.toString()));
 
-    if (!loadingState && !error) {
+    if (!loadingState) {
       handleAlertValue("Deleted Successfully");
-      getUserGists();
-    }
-    else{
-      handleAlertValue('Unable to delete.')
+      mutateUserGists(
+        userGistsData.filter((gist: GistData) => gist.gistId !== gistId),
+        { revalidate: false }
+      );
+    } else {
+      handleAlertValue("Unable to delete.");
     }
   };
 

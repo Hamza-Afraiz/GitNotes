@@ -3,9 +3,6 @@ import useSWR from "swr";
 import { GistData } from "../../types/gistData";
 import moment from "moment";
 
-
-
-
 const GetPublicGists = async (url: string) => {
   let data = await request({ url: url, headers: null }).then((res) => res.data);
   data = GistsData(data);
@@ -17,7 +14,7 @@ const GetStarredGists = async (url: string) => {
   return data;
 };
 const GetUserGists = async (url: string) => {
-  let data = await request({ url: '/gists' }).then((res) => res.data);
+  let data = await request({ url: "/gists" }).then((res) => res.data);
   data = GistsData(data);
   return data;
 };
@@ -31,25 +28,23 @@ export function usePublicGists() {
   };
 }
 export function useStarredGists() {
-  console.log("starred")
-  const { data, error,mutate } = useSWR(`/gists/starred`, GetStarredGists);
+  const { data, error, mutate } = useSWR(`/gists/starred`, GetStarredGists);
 
   return {
     starredGistData: data,
     isStarredGistsLoading: !error && !data,
     starredGistsError: error,
-    getStarredGists:mutate
+    mutateStarredGists: mutate,
   };
 }
 export function useUserGists() {
-  console.log("user")
-  const { data, error,mutate } = useSWR(`/userGists`, GetUserGists);
+  const { data, error, mutate } = useSWR(`/userGists`, GetUserGists);
 
   return {
     userGistsData: data,
     userGistsLoading: !error && !data,
     userGistsError: error,
-    getUserGists:mutate
+    mutateUserGists: mutate,
   };
 }
 const fetchGistFileData = async (gistFileUrl: string) => {

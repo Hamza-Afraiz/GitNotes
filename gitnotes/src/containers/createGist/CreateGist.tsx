@@ -5,6 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 //src
 import { LoadingSpinner, PopUpNotification } from "../../components";
+import { useLoadingState } from "../../Hooks";
 import { useUserGists } from "../../Hooks/useGists/useGists";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import {
@@ -32,8 +33,9 @@ const CreateGist = () => {
   const [popUpText, setPopUpText] = React.useState("");
 
   const userState = useAppSelector((state) => state.user.loggedIn);
+  const loading=useLoadingState()
  
-  const { userGistsLoading:loading, userGistsData, userGistsError:error,getUserGists }=useUserGists()
+  const { userGistsData, userGistsError:error,mutateUserGists }=useUserGists()
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -66,7 +68,7 @@ const CreateGist = () => {
       } else {
         await dispatch(CreateGistByUser(createGist));
         dispatch(setErrorState(false));
-        getUserGists()
+        mutateUserGists()
       }
     } else {
       setPopUpText("Add one file atleast to add gist .");

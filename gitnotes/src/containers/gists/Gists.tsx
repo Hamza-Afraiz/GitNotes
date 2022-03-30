@@ -4,11 +4,12 @@ import React, { useState } from "react";
 import { Audio as LoadingSpinner } from "react-loader-spinner";
 import { PopUpNotification } from "../../components";
 import { usePublicGists, useStarredGists } from "../../Hooks/useGists/useGists";
+
 //css as custom
 import {
   CustomGridIcon,
   CustomListIcon,
-  GistsContainer
+  GistsContainer,
 } from "../../styledComponents";
 //src
 import { GistData } from "../../types/gistData";
@@ -22,15 +23,10 @@ interface GistsProps {
 }
 
 const Gists = ({ starredGists, searchQuery }: GistsProps) => {
+  const { publicsGistData, isPublicGistsLoading, publicGistsError } =
+    usePublicGists();
 
-  const {
-     publicsGistData,
-     isPublicGistsLoading,
-     publicGistsError,
-  } = usePublicGists();
- 
-  const { starredGistData,starredGistsError } =
-    useStarredGists();
+  const { starredGistData, starredGistsError } = useStarredGists();
 
   const gistData = starredGists ? starredGistData : publicsGistData;
 
@@ -44,7 +40,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
           return itm.gistId?.toString().includes(searchQuery);
         })
       );
-    } 
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 

@@ -100,7 +100,6 @@ export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   });
   if (response) {
     dispatch(setLoadingState(1));
-     
     return response;
   } else {
     dispatch(setErrorState(true));

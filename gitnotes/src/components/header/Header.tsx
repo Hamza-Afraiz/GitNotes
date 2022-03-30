@@ -39,7 +39,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
 
   const userState = useAppSelector((state) => state.user.loggedIn);
   const userData = useAppSelector((state) => state.user.userData);
- const {getUserGists}=useUserGists()
+ const {mutateUserGists}=useUserGists()
 
   const [loading, setLoading] = React.useState(false);
   const [LogInNotification, setLogInNotification] = React.useState(false);
@@ -81,7 +81,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-     getUserGists('/userGists')
+     mutateUserGists('/userGists')
       setLogInNotification(userState);
     }
   }, [userState, dispatch]);

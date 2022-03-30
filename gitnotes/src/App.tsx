@@ -1,6 +1,7 @@
 // lib
 import { ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import  { SWRConfig } from 'swr'
 // src
 import { useSearchQuery, useStarredGists } from "../src/Hooks";
 import { theme } from "../src/theme/Theme";
@@ -17,6 +18,17 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+      <SWRConfig 
+      value={{
+        refreshInterval: 30000,
+        revalidateOnMount: false,
+        revalidateOnFocus:false,
+        revalidateOnReconnect:false,
+        
+
+        
+      }}
+    >
         <div>
           <Header
             setStarredGists={setStarredGists}
@@ -56,6 +68,7 @@ function App() {
             </Routes>
           </div>
         </div>
+        </SWRConfig>
       </Router>
     </ThemeProvider>
   );
