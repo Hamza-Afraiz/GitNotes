@@ -11,6 +11,9 @@
 # production
 /build
 
+# Config
+/src/utils/personalAccessToken.ts
+
 # misc
 .DS_Store
 .env.local

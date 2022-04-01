@@ -15,16 +15,19 @@ const GetStarredGists = async (url: string) => {
 };
 const GetUserGists = async (url: string) => {
   let data = await request({ url: "/gists" }).then((res) => res.data);
+  
   data = GistsData(data);
-  return data;
+  
+  
+  return data 
 };
-export function usePublicGists() {
+export  function usePublicGists() {
   const { data, error } = useSWR(`/gists`, GetPublicGists);
-
+  
   return {
     publicsGistData: data,
     isPublicGistsLoading: !error && !data,
-    publicGistsError: error,
+    publicGistsError:error,
   };
 }
 export function useStarredGists() {

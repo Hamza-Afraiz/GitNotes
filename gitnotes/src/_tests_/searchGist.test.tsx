@@ -29,20 +29,4 @@ test("when user search some gist and found result", async () => {
   expect(screen.getByText(gistApiResponse[0].owner.login)).toBeInTheDocument();
 });
 
-// test("when user search some gist and didn't found matching result", async () => {
-//   render(<App/>);
 
-//   //we have to wait for gist lists, because we are getting search results from gists
-
-//   const searchInput = screen.getByLabelText("search");
-
-//   fireEvent.change(searchInput, { target: { value: "8fdksagfksd" } });
-
-//   fireEvent.click(screen.getByTestId('search-button'));
-
-//   //expecting to see owner name from gist response
-//   expect(
-//     screen.getByText(gistApiResponse[0].owner.login)
-//   ).not.toBeInTheDocument();
-
-// });

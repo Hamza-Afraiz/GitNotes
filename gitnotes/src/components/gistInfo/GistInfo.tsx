@@ -11,8 +11,6 @@ import { GistData } from "../../types/gistData";
 //styles
 import "./gistInfo.css";
 
-
-
 const GistInfo = ({
   ownerName,
   fileName,

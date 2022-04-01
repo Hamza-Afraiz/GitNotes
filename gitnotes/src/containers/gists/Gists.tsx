@@ -16,7 +16,6 @@ import { GistData } from "../../types/gistData";
 import { GistGrid, GistList } from "../index";
 import "./gists.css";
 
-//
 interface GistsProps {
   starredGists: boolean;
   searchQuery: string;
@@ -25,9 +24,7 @@ interface GistsProps {
 const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   const { publicsGistData, isPublicGistsLoading, publicGistsError } =
     usePublicGists();
-
   const { starredGistData, starredGistsError } = useStarredGists();
-
   const gistData = starredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
@@ -47,10 +44,10 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
   return (
     <div data-testid="gist-container">
       {publicGistsError && (
-        <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
+        <PopUpNotification popUpText="Failed to get public gists. Check your network connection." />
       )}
       {starredGistsError && (
-        <PopUpNotification popUpText="Failed to get gists. Check your network connection." />
+        <PopUpNotification popUpText="Failed to get starred gists. Check your network connection." />
       )}
       {isPublicGistsLoading ? (
         <div data-testid="loading" className="loading-spinner">

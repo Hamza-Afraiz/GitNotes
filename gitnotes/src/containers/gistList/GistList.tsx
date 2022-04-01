@@ -7,11 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { GistListContainer, GistsListHeading } from "../../styledComponents";
 
 //types
-import { GistDataList } from "../../types/gistDataList";
 import "./gistList.css";
-
-
-
+import { GistDataList } from "../../types/gistDataList";
 
 export default function GistList({ gistsData }: GistDataList) {
 

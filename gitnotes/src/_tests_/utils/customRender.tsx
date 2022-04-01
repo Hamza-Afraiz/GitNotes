@@ -4,11 +4,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { render } from "@testing-library/react";
 import { ReactElement } from "react";
 import { Provider } from "react-redux";
+
 //src
 import { theme } from "../../theme/Theme";
 
 // src
-
 import UserSlice from "../../store/slices/user";
 import UserGistsSlice from "../../store/slices/userGists";
 import { GistData } from "../mockUserResponses/reduxGists";

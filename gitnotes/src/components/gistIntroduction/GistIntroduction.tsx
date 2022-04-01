@@ -1,6 +1,5 @@
 import React from "react";
 
-
 //src
 import { GistData } from "../../types/gistData";
 
