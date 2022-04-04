@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import { createGist } from "../../types/createGist";
 import { GistsDataList } from "../../types/gistsDataList";
 import { request } from "../../utils/axios-utils";
+
 
 const initialState: GistsDataList = {
   loading: false,
@@ -22,36 +22,6 @@ export const UserGists = createSlice({
       state.loading = !state.loading;
       state.currentGistId = action.payload;
     },
-
-    //adding star gists froom public gists
-    // addStarGistFromPublic(state, action) {
-    //   state.starredGists.push(action.payload);
-    // },
-
-    //adding gists to starred gists from my gists
-    // addStarGistDataFromGists(state, action) {
-    //   const temp =
-    //     action.payload.gistType === "user"
-    //       ? state.userGistsData.find(function (element) {
-    //           return element.gistId === action.payload.gistId;
-    //         })
-    //       : state.publicGistsData.find(function (element) {
-    //           return element.gistId === action.payload.gistId;
-    //         });
-
-    //   if (temp) state.starredGists = [...state.starredGists, temp];
-    // },
-    // removeStarGistData(state, action) {
-    //   state.starredGists = state.starredGists.filter(
-    //     (gist) => gist.gistId !== action.payload
-    //   );
-    // },
-
-    // deleteGistData(state, action) {
-    //   state.userGistsData = state.userGistsData.filter(
-    //     (gist) => gist.gistId !== action.payload
-    //   );
-    // },
   },
 });
 
@@ -69,15 +39,7 @@ const convertArrayToObject = (
     };
   }, {});
 };
-// export async function useSwrPublicData (){
-//   const { data, error } = useSWR('publicGists', await request({
-//     url: "/gists"
 
-//   }))
-//   console.log("data swr is ",data)
-//   return data
-
-// }
 export const CreateGist = (gistData: createGist) => async (dispatch: any) => {
   //converting gist data to desired type for post operation
 
@@ -202,14 +164,6 @@ export const UnStarGist =
     return await req;
   };
 
-export const {
-  setLoadingState,
-  // addStarGistDataFromGists,
-  // deleteGistData,
-  // removeStarGistData,
-  // addStarGistFromPublic,
-
-  setErrorState,
-} = UserGists.actions;
+export const { setLoadingState, setErrorState } = UserGists.actions;
 
 export default UserGists.reducer;

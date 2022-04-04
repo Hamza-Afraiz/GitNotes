@@ -16,7 +16,11 @@ import {
   useLoadingState,
   useUserState,
 } from "../../Hooks";
-import { useStarredGists, useUserGists } from "../../Hooks/useGists/useGists";
+import {
+  usePublicGists,
+  useStarredGists,
+  useUserGists,
+} from "../../Hooks/useGists/useGists";
 import { useAppDispatch } from "../../store/hooks";
 import {
   DeleteGist,
@@ -52,8 +56,10 @@ const GistOption = ({
   const currentGistId = useCurrentGistId();
 
   const error = useErrorState();
+  const { publicsGistData } = usePublicGists();
   const { mutateStarredGists, starredGistData } = useStarredGists();
   const { mutateUserGists, userGistsData } = useUserGists();
+
   const starGist = async () => {
     //handling when we are clicked to star gist
     if (!starType) {
@@ -65,7 +71,11 @@ const GistOption = ({
         mutateStarredGists(
           [
             ...starredGistData,
-            userGistsData.find((gist: GistData) => gist.gistId === gistId),
+            gistType === "user"
+              ? userGistsData.find((gist: GistData) => gist.id === gistId)
+              : publicsGistData.find(
+                  (gist: GistData) => gist.id === gistId
+                ),
           ],
           { revalidate: false }
         );
@@ -86,7 +96,7 @@ const GistOption = ({
         mutateStarredGists();
         setStarValue(false);
         mutateStarredGists(
-          starredGistData.filter((gist: GistData) => gist.gistId !== gistId),
+          starredGistData.filter((gist: GistData) => gist.id !== gistId),
 
           { revalidate: false }
         );

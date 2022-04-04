@@ -9,20 +9,22 @@ import { GistListContainer, GistsListHeading } from "../../styledComponents";
 //types
 import "./gistList.css";
 import { GistDataList } from "../../types/gistDataList";
+import { GistData } from "../../types/gistData";
 
 export default function GistList({ gistsData }: GistDataList) {
 
+
   const navigate = useNavigate();
 
-  const listData = gistsData?.map((item, index) => {
+  const listData = gistsData?.map((item:GistData, index:number) => {
     return {
       id: index,
-      name: item.ownerName,
-      date: item.creationDate,
-      noteBookName: item.fileName,
-      avatar_url: item.ownerAvatar,
-      keyword: item.gistId,
-      time: item.time,
+      name: item?.ownerName,
+      date: item?.creationDate,
+      noteBookName: item?.fileName,
+      avatar_url: item?.ownerAvatar,
+      keyword: item?.gistId,
+      time: item?.time,
     };
   });
 

@@ -29,7 +29,7 @@ import "./header.css";
 
 interface HeaderProps {
   setSearchQueryValue(query: string): void;
-  setStarredGists(show: true): void;
+  setStarredGists(show: boolean): void;
 }
 
 function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
@@ -39,7 +39,7 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
 
   const userState = useAppSelector((state) => state.user.loggedIn);
   const userData = useAppSelector((state) => state.user.userData);
- const {mutateUserGists}=useUserGists()
+  const { mutateUserGists } = useUserGists();
 
   const [loading, setLoading] = React.useState(false);
   const [LogInNotification, setLogInNotification] = React.useState(false);
@@ -70,6 +70,11 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
         setStarredGists(true);
 
         break;
+      case "public":
+        navigate(`/`);
+        setStarredGists(false);
+
+        break;
       case "createGist":
         navigate(`/createGist`);
 
@@ -81,10 +86,10 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-     mutateUserGists('/userGists')
+      mutateUserGists("/userGists");
       setLogInNotification(userState);
     }
-  }, [userState, dispatch]);
+  }, [userState, dispatch, mutateUserGists]);
 
   const CloseLogInNotification = (
     event?: React.SyntheticEvent | Event,
