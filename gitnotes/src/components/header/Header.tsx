@@ -30,10 +30,10 @@ import "./header.css";
 
 interface HeaderProps {
   setSearchQueryValue(query: string): void;
-  setStarredGists(show: true): void;
+  showStarredGists(show: boolean): void;
 }
 
-function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
+function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -67,8 +67,11 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
         break;
       case "starred":
         navigate(`/`);
-        setStarredGists(true);
-
+        showStarredGists(true);
+        break
+      case 'public':
+        navigate('/')
+        showStarredGists(false);
         break;
       case "createGist":
         navigate(`/createGist`);
@@ -81,10 +84,10 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-     
+       
       setLogInNotification(userState);
     }
-  }, [userState, dispatch]);
+  }, [userState, dispatch, showStarredGists]);
 
   const CloseLogInNotification = (
     event?: React.SyntheticEvent | Event,
@@ -102,8 +105,8 @@ function Header({ setSearchQueryValue, setStarredGists }: HeaderProps) {
   };
   const LogoutUser = () => {
     dispatch(LoggedOut());
-    navigate("/", { replace: true });
-    window.history.replaceState(null, "/");
+   
+    
   };
 
   return (

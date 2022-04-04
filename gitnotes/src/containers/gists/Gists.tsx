@@ -5,41 +5,41 @@ import { Audio as LoadingSpinner } from "react-loader-spinner";
 import { PopUpNotification } from "../../components";
 //hooks
 
-import {
-  usePublicGistsData,
-  useStarredGistsData
-} from "../../Hooks";
+import { usePublicGistsData, useStarredGistsData } from "../../Hooks";
 //css
 import {
   CustomGridIcon,
-  CustomListIcon, GistsContainer
+  CustomListIcon,
+  GistsContainer,
 } from "../../styledComponents";
 //src
 import { GistData } from "../../types/gistData";
 import { GistGrid, GistList } from "../index";
 import "./gists.css";
 
-
-
 //
 interface GistsProps {
-  starredGists: boolean;
+ isStarredGists: boolean;
   searchQuery: string;
 }
 
-const Gists = ({ starredGists, searchQuery }: GistsProps) => {
-  const{ data:publicsGistData,error:publicGistError} = usePublicGistsData();
-  const {data:starredGistData,error:starredGistError} = useStarredGistsData();
- 
-  const gistData = starredGists ? starredGistData : publicsGistData;
+const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
+
+  const { data: publicsGistData, error: publicGistError } =
+    usePublicGistsData();
+  const { data: starredGistData, error: starredGistError } =
+    useStarredGistsData( );
+
+  
+  const gistData =isStarredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (searchQuery) {
       setSearchedData(
-        gistData.filter(function (itm: any) {
+        gistData?.filter(function (itm: any) {
           return itm.gistId?.toString().includes(searchQuery);
         })
       );
@@ -52,7 +52,7 @@ const Gists = ({ starredGists, searchQuery }: GistsProps) => {
       {publicGistError && (
         <PopUpNotification popUpText="Failed to get public gists. Check your network connection." />
       )}
-       {starredGistError && (
+      {starredGistError && (
         <PopUpNotification popUpText="Failed to get starred gists. Check your network connection." />
       )}
       {!gistData?.length ? (

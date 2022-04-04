@@ -5,7 +5,7 @@
  const githubAuth =()=>{ 
    return   firebase.auth().signInWithPopup(githubProvider).then((res)=>{
        
-      console.log("user",res)
+   
          return res.user;
      }).catch((er)=>{
          return er

@@ -11,16 +11,14 @@ import { useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "../../components";
 //Hooks
 import {
-  useUserState
-} from "../../Hooks";
-import {
-  useDeleteGist, useStarGist,
-  useUnStarGist
+  useDeleteGist,
+  useStarGist,
+  useUnStarGist,
+  useUserState,
 } from "../../Hooks";
 import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";
-
 
 interface GistOptionProps {
   gistId?: number | string;
@@ -37,8 +35,8 @@ const GistOption = ({
 }: GistOptionProps) => {
   const [starType, setStarValue] = React.useState(starValue);
   const [loading, setLoading] = React.useState(false);
+
   const userState = useUserState();
-  
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -46,13 +44,12 @@ const GistOption = ({
     handleAlertValue("Star Successfully");
     setStarValue(true);
     setLoading(false);
-
   };
   const onError = () => {
     handleAlertValue("Operation UnSuccessful");
-    setLoading(false)
+    setLoading(false);
   };
- 
+
   const onMutate = () => {
     setLoading(true);
   };
@@ -70,23 +67,20 @@ const GistOption = ({
     gistType,
     onStarGist,
     onError,
-    onMutate,
-   
+    onMutate
   );
   const { mutate: UnStarGist } = useUnStarGist(
     gistId?.toString(),
     onUnStarGist,
     onError,
-    onMutate,
-   
+    onMutate
   );
   const { mutate: DeleteGist } = useDeleteGist(
     gistId?.toString(),
 
     onDeleteGist,
     onError,
-    onMutate,
-    
+    onMutate
   );
 
   const starGist = async () => {
@@ -100,8 +94,6 @@ const GistOption = ({
       UnStarGist();
     }
   };
-
-  
 
   const handleEdit = () => {
     navigate(`/createGist`, { state: { gistId: gistId } });
@@ -126,7 +118,9 @@ const GistOption = ({
                   <div
                     className="gist-option-button"
                     data-testid="gist-option-button-delete"
-                    onClick={()=>{DeleteGist()}}
+                    onClick={() => {
+                      DeleteGist();
+                    }}
                   >
                     <PlainText> Delete</PlainText>
                     <DeleteIcon color="info" fontSize="inherit" />

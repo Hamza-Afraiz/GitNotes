@@ -20,10 +20,9 @@ const GistPage = (props: GistPageProps) => {
   const location: any = useLocation();
   //Gist Page component can be used for different purpose.It can be called as a component.And can be navigated to this component
   //thats why we have to handle different scenarios
-
   const gistData = location?.state?.item ? location.state.item : props.gistData;
-
-  const starValue = useStarStatus(gistData.gistId);
+  const starValue = useStarStatus(gistData?.gistId);
+  
   return (
     <div>
       <div className="gistPageContainer" data-testid='gist-page'>

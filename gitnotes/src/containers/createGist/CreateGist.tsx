@@ -30,7 +30,7 @@ const CreateGist = () => {
   
 
   const { data: userGistsData } = useUserGistsData();
-  console.log("Data  is", userGistsData);
+  
 
   const EditingGist = () => {
     if (location?.state?.gistId) {

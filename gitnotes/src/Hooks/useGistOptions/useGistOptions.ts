@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "react-query";
+
 import { createGist } from "../../types/createGist";
 import { GistData } from "../../types/gistData";
 import { request } from "../../utils/axios-utils";
@@ -16,11 +17,25 @@ export const useStarGist = (
     onSuccess: onStarGist,
     onError: onError,
     onMutate: onMutate,
+
     onSettled: () => {
-      queryClient.invalidateQueries("starredGists");
+      // queryClient.invalidateQueries("starredGists");
+      const gistData: GistData[] | undefined = queryClient.getQueryData(
+        gistType === "user" ? "userGists" : "publicGists"
+      );
+      const starGistData = gistData?.find((gistData) => gistData.id === gistId);
+
+      const starredGists: GistData[] | undefined =
+        queryClient.getQueryData("starredGists");
+
+      queryClient.setQueryData(
+        "starredGists",
+        starredGists ? [...starredGists, starGistData] : [starredGists]
+      );
     },
   });
 };
+
 export const useDeleteGist = (
   gistId: string | undefined,
   onDeleteGist: () => void,
@@ -37,19 +52,11 @@ export const useDeleteGist = (
     onMutate: onMutate,
 
     onSettled: () => {
-      console.log("validating");
-      queryClient.invalidateQueries("userGists");
+      const gistData: GistData[] | undefined =
+        queryClient.getQueryData("userGists");
+      const userGists = gistData?.filter((gistData) => gistData.id !== gistId);
 
-      queryClient.setQueryData("userGists", ({ oldQueryData }) => {
-        return {
-          ...oldQueryData,
-          data: [
-            oldQueryData?.filter(
-              (GistData: GistData) => GistData.id !== gistId
-            ),
-          ],
-        };
-      });
+      queryClient.setQueryData("userGists", userGists);
     },
   });
 };
@@ -81,7 +88,11 @@ export const useUnStarGist = (
     onError: onError,
     onMutate: onMutate,
     onSettled: () => {
-      queryClient.invalidateQueries("starredGists");
+      const gistData: GistData[] | undefined =
+        queryClient.getQueryData("starredGists");
+      const userGists = gistData?.filter((gistData) => gistData.id !== gistId);
+
+      queryClient.setQueryData("starredGists", userGists);
     },
   });
 };

@@ -1,4 +1,4 @@
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 import React from "react";
 //src
 import { GistPage, LoadingSpinner } from "../../components";
@@ -9,14 +9,9 @@ import { CustomButton } from "../../styledComponents";
 import { GistData } from "../../types/gistData";
 import "./userProfile.css";
 
-
-
 const UserProfile = () => {
   const userData = useAppSelector((state) => state.user.userData);
-  const {data :userGistDataArray,isLoading,isFetching} = useUserGistsData()
-  console.log('refetcging',isFetching,"data",userGistDataArray)
-
-
+  const { data: userGistDataArray, isLoading, isFetching } = useUserGistsData();
 
   return (
     <div className="container">
@@ -38,18 +33,18 @@ const UserProfile = () => {
           </CustomButton>
         </div>
       </div>
-      <div className="gistContainer" data-testid='gist-container'>
+      <div className="gistContainer" data-testid="gist-container">
         <div className="gistPage">
           {isFetching && (
-            <LoadingSpinner width="30%" height="10%" color="blue"/>
+            <LoadingSpinner width="30%" height="10%" color="blue" />
           )}
-          { !isLoading && userGistDataArray?.map((item:GistData, index:number) => (
-            <div key={index}>
-                 <GistPage key={index} gistData={item} gistType="user" />
-            <Divider />
-            </div>
-         
-          ))}
+          {!isLoading &&
+            userGistDataArray?.map((item: GistData, index: number) => (
+              <div key={index}>
+                <GistPage key={index} gistData={item} gistType="user" />
+                <Divider />
+              </div>
+            ))}
         </div>
       </div>
     </div>
