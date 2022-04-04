@@ -54,6 +54,13 @@ const MenuItems = ({
         </MenuItem>
         <MenuItem
           onClick={() => {
+            closeMenu("public");
+          }}
+        >
+          Public Gists
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
             closeMenu("starred");
           }}
         >

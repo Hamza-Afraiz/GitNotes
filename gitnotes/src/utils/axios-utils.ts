@@ -1,9 +1,9 @@
 import axios from "axios";
-
+import {token} from './personalAccessToken'
 const client = axios.create({ baseURL: "https://api.github.com" });
 export const request = ({ ...options }) => {
   client.defaults.headers.common.Authorization =
-    "Bearer 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";
+    `Bearer ${token}`;
   const onSuccess = (response: any) => {
     return response;
   };

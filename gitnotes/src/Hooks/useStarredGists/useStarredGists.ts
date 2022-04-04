@@ -1,8 +1,8 @@
 import React from "react";
 
 const useStarredGists = () => {
-  const [starredGists, setStarredGists] = React.useState(false);
-  return { setStarredGists: setStarredGists, starredGists };
+  const [starredGists, showStarredGists] = React.useState(false);
+  return {  showStarredGists, starredGists };
 };
 
 export default useStarredGists;

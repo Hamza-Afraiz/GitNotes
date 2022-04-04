@@ -11,7 +11,7 @@ import { CreateGist, Gists, UserProfile } from "./containers";
 import { RequireAuth } from "./routes/ProtectedRoute";
 
 function App() {
-  const { setStarredGists, starredGists } = useStarredGists();
+  const { showStarredGists, starredGists } = useStarredGists();
   const { setSearchQueryValue, searchQuery } = useSearchQuery();
 
   return (
@@ -19,7 +19,7 @@ function App() {
       <Router>
         <div>
           <Header
-            setStarredGists={setStarredGists}
+            showStarredGists={showStarredGists}
             setSearchQueryValue={setSearchQueryValue}
           />
           <div className="App">
