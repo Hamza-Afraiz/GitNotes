@@ -1,6 +1,5 @@
-import { useStarredGistsData } from "../../Hooks";
-import { GistData } from "../../types/gistData";
 import { useQueryClient } from "react-query";
+import { GistData } from "../../types/gistData";
 export function useStarStatus(currentGistId: number | undefined) {
   const queryClient = useQueryClient();
 
