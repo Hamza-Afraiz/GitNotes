@@ -7,7 +7,7 @@ export function usePublicGistsData() {
   return useQuery("publicGists", fetchPublicGists);
 }
 export function useStarredGistsData() {
-  return useQuery('starredGists', GetStarredGists);
+  return useQuery("starredGists", GetStarredGists);
 }
 export function useUserGistsData() {
   return useQuery("userGists", GetUserGists);
@@ -68,8 +68,10 @@ export const GistsData = async (GistsData: any) => {
         creationDate: dateAndTime.format("MMM DD YYYY"),
         content: res.split("\n"),
       };
+
       gistsDataArray.push(temp);
     }
   }
+
   return gistsDataArray;
 };

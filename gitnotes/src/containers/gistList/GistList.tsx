@@ -20,12 +20,12 @@ export default function GistList({ gistsData }: GistDataList) {
   const listData = gistsData?.map((item, index) => {
     return {
       id: index,
-      name: item.ownerName,
-      date: item.creationDate,
-      noteBookName: item.fileName,
-      avatar_url: item.ownerAvatar,
-      keyword: item.gistId,
-      time: item.time,
+      name: item?.ownerName,
+      date: item?.creationDate,
+      noteBookName: item?.fileName,
+      avatar_url: item?.ownerAvatar,
+      keyword: item?.gistId,
+      time: item?.time,
     };
   });
 

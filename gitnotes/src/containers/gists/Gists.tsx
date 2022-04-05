@@ -29,14 +29,14 @@ const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
     usePublicGistsData();
   const { data: starredGistData, error: starredGistError } =
     useStarredGistsData( );
-
+  console.log("is starred gists ",isStarredGists)
   
   const gistData =isStarredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (searchQuery) {
       setSearchedData(
         gistData?.filter(function (itm: any) {
@@ -44,8 +44,8 @@ const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
         })
       );
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchQuery]);
+ 
+  }, [searchQuery,isStarredGists,gistData]);
 
   return (
     <div data-testid="gist-container">
