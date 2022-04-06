@@ -12,7 +12,7 @@ import { CreateGist, Gists, UserProfile } from "./containers";
 import { RequireAuth } from "./routes/ProtectedRoute";
 
 function App() {
-  console.log("app recalled");
+  
   const { showStarredGists, isStarredGists } = useStarredGists();
   const { setSearchQueryValue, searchQuery } = useSearchQuery();
 

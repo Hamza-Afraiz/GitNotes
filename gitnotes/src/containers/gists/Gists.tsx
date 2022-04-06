@@ -29,7 +29,7 @@ const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
     usePublicGistsData();
   const { data: starredGistData, error: starredGistError } =
     useStarredGistsData( );
-  console.log("is starred gists ",isStarredGists)
+ 
   
   const gistData =isStarredGists ? starredGistData : publicsGistData;
 

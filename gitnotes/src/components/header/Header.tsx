@@ -18,10 +18,8 @@ import { MenuItems, Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
 
-
 //styles
-import
- {
+import {
   CustomButton,
   SearchContainer,
   StyledInputBase,
@@ -68,9 +66,9 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
       case "starred":
         navigate(`/`);
         showStarredGists(true);
-        break
-      case 'public':
-        navigate('/')
+        break;
+      case "public":
+        navigate("/");
         showStarredGists(false);
         break;
       case "createGist":
@@ -84,7 +82,7 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
   React.useEffect(() => {
     if (userState) {
       setLoading(false);
-       
+      showStarredGists(true);
       setLogInNotification(userState);
     }
   }, [userState, dispatch, showStarredGists]);
@@ -105,8 +103,6 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
   };
   const LogoutUser = () => {
     dispatch(LoggedOut());
-   
-    
   };
 
   return (
@@ -118,16 +114,15 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
       <AppBar sx={{ backgroundColor: theme.color.primary }} position="static">
         <Toolbar>
           <ArrowBackIcon
-          className="arrow-back-icon"
+            className="arrow-back-icon"
             onClick={() => {
               navigate(-1);
             }}
           />
           <HomeIcon
-           className="home-back-icon"
+            className="home-back-icon"
             onClick={() => {
               navigate("/", { replace: true });
-              
             }}
           />
 
@@ -144,7 +139,11 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
 
           {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>
-            <div className="searchIconWrapper" data-testid='search-button' onClick={SearchGist}>
+            <div
+              className="searchIconWrapper"
+              data-testid="search-button"
+              onClick={SearchGist}
+            >
               <SearchIcon />
             </div>
 
@@ -156,6 +155,9 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
                 event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
               ) => {
                 setSearchQuery(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                if (event.key === "Enter") SearchGist();
               }}
             />
             {searchQuery && (
@@ -173,7 +175,7 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
               <CircularProgress color="success" />
             </div>
           ) : userState === true ? (
-            <div className="profilePicDiv" >
+            <div className="profilePicDiv">
               <img
                 className="userPic"
                 src={userData.ownerAvatar}

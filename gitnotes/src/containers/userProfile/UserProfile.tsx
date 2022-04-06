@@ -38,6 +38,9 @@ const UserProfile = () => {
           {isFetching && (
             <LoadingSpinner width="30%" height="10%" color="blue" />
           )}
+          {userGistDataArray.length === 0 && (
+           <h1>No user gists found.</h1>
+          )}
           {!isLoading &&
             userGistDataArray?.map((item: GistData, index: number) => (
               <div key={index}>
