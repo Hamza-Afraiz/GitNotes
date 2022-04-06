@@ -27,11 +27,11 @@ import {
 import "./header.css";
 
 interface HeaderProps {
-  setSearchQueryValue(query: string): void;
+  setQueryResult(query: string): void;
   showStarredGists(show: boolean): void;
 }
 
-function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
+function Header({ setQueryResult, showStarredGists }: HeaderProps) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -49,9 +49,9 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setMenuElement(event.currentTarget);
   };
-
-  const SearchGist = () => {
-    setSearchQueryValue(searchQuery);
+  const handleSearch = (searchQuery: string) => {
+    setQueryResult(searchQuery);
+    setSearchQuery(searchQuery);
     navigate(`/`);
   };
 
@@ -98,7 +98,7 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
     setLogInNotification(false);
   };
   const ClearSearchQuery = () => {
-    setSearchQueryValue("");
+    setQueryResult("");
     setSearchQuery("");
   };
   const LogoutUser = () => {
@@ -139,11 +139,7 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
 
           {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>
-            <div
-              className="searchIconWrapper"
-              data-testid="search-button"
-              onClick={SearchGist}
-            >
+            <div className="searchIconWrapper" data-testid="search-button">
               <SearchIcon />
             </div>
 
@@ -154,10 +150,7 @@ function Header({ setSearchQueryValue, showStarredGists }: HeaderProps) {
               onChange={(
                 event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
               ) => {
-                setSearchQuery(event.target.value);
-              }}
-              onKeyPress={(event) => {
-                if (event.key === "Enter") SearchGist();
+                handleSearch(event.target.value);
               }}
             />
             {searchQuery && (

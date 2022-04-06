@@ -14,7 +14,7 @@ import { RequireAuth } from "./routes/ProtectedRoute";
 function App() {
   
   const { showStarredGists, isStarredGists } = useStarredGists();
-  const { setSearchQueryValue, searchQuery } = useSearchQuery();
+  const { setQueryResult, searchQuery } = useSearchQuery();
 
   return (
     <ThemeProvider theme={theme}>
@@ -22,7 +22,7 @@ function App() {
         <div>
           <Header
             showStarredGists={showStarredGists}
-            setSearchQueryValue={setSearchQueryValue}
+            setQueryResult={setQueryResult}
           />
           <div className="App">
             <Routes>

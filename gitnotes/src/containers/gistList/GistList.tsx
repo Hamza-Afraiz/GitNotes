@@ -1,6 +1,6 @@
 //lib
 import Box from "@mui/material/Box";
-import React from "react";
+import React,{Suspense} from "react";
 import { useNavigate } from "react-router-dom";
 
 //styles
@@ -38,6 +38,7 @@ export default function GistList({ gistsData }: GistDataList) {
   }
   return (
     <Box className="Box">
+      <Suspense fallback={<div>Loading ... </div>}>
       <GistListContainer
         sx={{
           "&.Mui-checkBox": {
@@ -53,6 +54,7 @@ export default function GistList({ gistsData }: GistDataList) {
         onRowClick={(param) => onGistClick(param.row)}
 
       />
+      </Suspense>
     </Box>
   );
 }

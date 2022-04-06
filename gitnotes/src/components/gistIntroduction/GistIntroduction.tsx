@@ -26,7 +26,7 @@ const GistIntroduction = ({
        </div> 
       <div className="gistDetails">
         <UserNameAndFileName>
-          <div>{ownerName}/</div>
+          <div>{ownerName?.substring(0,10)}/</div>
           <div>{fileName?.substring(0, 10)}</div>
         </UserNameAndFileName>
         <PlainText>{creationDate}</PlainText>

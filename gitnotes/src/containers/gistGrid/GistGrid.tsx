@@ -13,13 +13,18 @@ import { GistData } from "../../types/gistData";
 import { GridGist, GridGistContainer } from "../../styledComponents";
 
 const GistGrid = ({ gistsData }: GistDataList) => {
+  console.log(gistsData,"gists")
   const navigate = useNavigate();
 
-  const [pageNumber, setPageNumber] = React.useState(0);
+  const [pageNumber, setPageNumber] = React.useState(1);
   const [gridData, setGridData] = React.useState<GistData[]>([]);
 
-  const changeGridData = (value: number) => {
-    setGridData(gistsData.slice(value * 9, value * 9 + 9));
+  const changeGridData = (pageNumber: number) => {
+    pageNumber=pageNumber === 1 ? 0 : pageNumber-1;
+    
+    setGridData(gistsData.slice(pageNumber * 9, pageNumber * 9 + 9));
+    console.log('pageNumber',pageNumber)
+    console.log('griddata',gridData)
   };
 
   const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -28,9 +33,11 @@ const GistGrid = ({ gistsData }: GistDataList) => {
   };
 
   useEffect(() => {
+    
     changeGridData(pageNumber);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [gistsData]);
 
   return (
     <GridGistContainer>
@@ -58,7 +65,7 @@ const GistGrid = ({ gistsData }: GistDataList) => {
       </Grid>
       <Stack sx={{ marginTop: "4%" }} spacing={2}>
         <Pagination
-          count={Math.round(gistsData.length / 9)}
+          count={Math.round(gistsData.length / 9)+1}
           page={pageNumber}
           onChange={changePage}
         />
