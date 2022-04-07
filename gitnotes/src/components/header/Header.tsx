@@ -8,23 +8,22 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useTheme } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 //src
 import { MenuItems, Snack } from "../../components";
 import { useAppSelector } from "../../store/hooks";
 import { fetchUserLoginDetails, LoggedOut } from "../../store/slices/user";
-
 //styles
 import {
   CustomButton,
   SearchContainer,
   StyledInputBase,
+  LogoText
 } from "../../styledComponents";
 import "./header.css";
+
 
 interface HeaderProps {
   setQueryResult(query: string): void;
@@ -126,16 +125,7 @@ function Header({ setQueryResult, showStarredGists }: HeaderProps) {
             }}
           />
 
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              display: { md: "block", xs: "none", sm: "none", lg: "block" },
-            }}
-            className="company-name"
-          >
-            EMUMBA
-          </Typography>
+          <LogoText variant="h6">Emumba</LogoText>
 
           {/* SEARCH CONTAINER CONTAINING INPUT ,AND SEARCH HANDLING OPTIONS */}
           <SearchContainer>

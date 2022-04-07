@@ -12,3 +12,4 @@ export {GistInfoContainer} from './GistInfoContainer'
 export {GistCodeLine} from "./GistCodeLine"
 export {GistListContainer} from './GistListContainer'
 export {CustomGridIcon,CustomListIcon} from './CustomIcons'
+export {LogoText} from './LogoText'
