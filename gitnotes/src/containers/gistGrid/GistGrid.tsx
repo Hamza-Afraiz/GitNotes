@@ -64,7 +64,7 @@ const GistGrid = ({ gistsData }: GistDataList) => {
       </Grid>
       <Stack sx={{ marginTop: "4%" }} spacing={2}>
         <Pagination
-          count={Math.round(gistsData.length / 9) + 1}
+          count={Math.ceil(gistsData.length / 9) }
           page={pageNumber}
           onChange={changePage}
         />
