@@ -15,7 +15,7 @@ import {
   useStarGist,
   useUnStarGist,
   useUserState,
-} from "../../Hooks";
+} from "../../hooks";
 import { PlainText } from "../../styledComponents";
 //styles
 import "./gistOptions.css";
@@ -88,7 +88,6 @@ const GistOption = ({
     if (!starType) {
       StarGist();
     }
-
     //handling when we are clicked to Unstar gist
     else {
       UnStarGist();

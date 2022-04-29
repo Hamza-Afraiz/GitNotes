@@ -1,6 +1,5 @@
 import React from "react";
 
-
 //src
 import { GistData } from "../../types/gistData";
 
@@ -17,16 +16,12 @@ const GistIntroduction = ({
 }: GistData) => {
   return (
     <div className="gistInfoContainer">
-     <div  className="gistUserImageDiv">
-     <img
-        className="gistUserImage"
-        src={ownerAvatar}
-        alt="profile"
-      />
-       </div> 
+      <div className="gistUserImageDiv">
+        <img className="gistUserImage" src={ownerAvatar} alt="profile" />
+      </div>
       <div className="gistDetails">
         <UserNameAndFileName>
-          <div>{ownerName?.substring(0,10)}/</div>
+          <div>{ownerName?.substring(0, 10)}/</div>
           <div>{fileName?.substring(0, 10)}</div>
         </UserNameAndFileName>
         <PlainText>{creationDate}</PlainText>

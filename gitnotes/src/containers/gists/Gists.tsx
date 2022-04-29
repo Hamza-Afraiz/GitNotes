@@ -5,7 +5,7 @@ import { Audio as LoadingSpinner } from "react-loader-spinner";
 import { PopUpNotification } from "../../components";
 //hooks
 
-import { usePublicGistsData, useStarredGistsData } from "../../Hooks";
+import { usePublicGistsData, useStarredGistsData } from "../../hooks";
 //css
 import {
   CustomGridIcon,
@@ -19,19 +19,17 @@ import "./gists.css";
 
 //
 interface GistsProps {
- isStarredGists: boolean;
+  isStarredGists: boolean;
   searchQuery: string;
 }
 
-const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
-
+const Gists = ({ isStarredGists, searchQuery }: GistsProps) => {
   const { data: publicsGistData, error: publicGistError } =
     usePublicGistsData();
   const { data: starredGistData, error: starredGistError } =
-    useStarredGistsData( );
- 
-  
-  const gistData =isStarredGists ? starredGistData : publicsGistData;
+    useStarredGistsData();
+
+  const gistData = isStarredGists ? starredGistData : publicsGistData;
 
   const [sortingType, setSortingType] = useState("list");
   const [searchedData, setSearchedData] = useState<GistData[]>([]);
@@ -44,8 +42,7 @@ const Gists = ({isStarredGists, searchQuery }: GistsProps) => {
         })
       );
     }
- 
-  }, [searchQuery,isStarredGists,gistData]);
+  }, [searchQuery, isStarredGists, gistData]);
 
   return (
     <div data-testid="gist-container">

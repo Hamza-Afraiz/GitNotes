@@ -1,12 +1,26 @@
-import { createSlice,PayloadAction } from "@reduxjs/toolkit";
-import githubAuth from "../../config/authMethods";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../../types/user";
+import firebase from "../../config/firebase-config";
 
 // Define the initial state using that typeO
 export const initialState: User = {
   userData: {},
   loggedIn: false,
 };
+
+const githubProvider = new firebase.auth.GithubAuthProvider();
+const githubAuth = () => {
+  return firebase
+    .auth()
+    .signInWithPopup(githubProvider)
+    .then((res) => {
+      return res.user;
+    })
+    .catch((er) => {
+      return er;
+    });
+};
+
 
 export const fetchUserLoginDetails = () => async (dispatch: any) => {
   const response = await getAuthentication();
@@ -30,18 +44,21 @@ export const UserSlice = createSlice({
 
   initialState,
   reducers: {
-    setUserData(state, action:PayloadAction<{ownerName:string,ownerAvatar:string}>) {
+    setUserData(
+      state,
+      action: PayloadAction<{ ownerName: string; ownerAvatar: string }>
+    ) {
       state.userData = action.payload;
       state.loggedIn = true;
     },
     LoggedOut(state) {
       state.loggedIn = false;
     },
-    LoggedIn(state){
-      state.loggedIn=true;
-    }
+    LoggedIn(state) {
+      state.loggedIn = true;
+    },
   },
 });
 
-export const { setUserData, LoggedOut,LoggedIn } = UserSlice.actions;
+export const { setUserData, LoggedOut, LoggedIn } = UserSlice.actions;
 export default UserSlice.reducer;

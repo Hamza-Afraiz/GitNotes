@@ -1,14 +1,10 @@
 //src
 import App from "../App";
-import { gistApiResponse } from "./mockUserResponses/gistsResponse";
 import { mockServer } from "./mockUserResponses/mockApi";
-import { GistData } from "./mockUserResponses/reduxGists";
 import {
-  render,
-  fireEvent,
-  screen,
+  fireEvent, render, screen,
   waitFor,
-  waitForElementToBeRemoved,
+  waitForElementToBeRemoved
 } from "./utils/customRender";
 
 beforeAll(() => mockServer.listen({ onUnhandledRequest: "bypass" }));
@@ -45,12 +41,12 @@ describe("when List Displays", () => {
     //clicking delete button
 
     fireEvent.click(screen.getByTestId("gist-option-button-delete"));
-    await waitForElementToBeRemoved(()=>(screen.getByTestId('loading-spinner')),{timeout:5000})
- 
-    //wait for completion :)
-    expect(screen.getByText('Deleted Successfully')).toBeInTheDocument()
+    await waitForElementToBeRemoved(
+      () => screen.getByTestId("loading-spinner"),
+      { timeout: 5000 }
+    );
 
-    
-   
+    //wait for completion :)
+    expect(screen.getByText("Deleted Successfully")).toBeInTheDocument();
   }, 15000);
 });

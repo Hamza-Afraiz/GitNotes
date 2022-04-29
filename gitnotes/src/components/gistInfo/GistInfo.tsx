@@ -2,16 +2,11 @@
 import Alert from "@mui/material/Alert";
 import React from "react";
 //src
-import {
-  GistIntroduction,
-  GistOption
-} from "../../components";
+import { GistIntroduction, GistOption } from "../../components";
 import { GistInfoContainer } from "../../styledComponents";
 import { GistData } from "../../types/gistData";
 //styles
 import "./gistInfo.css";
-
-
 
 const GistInfo = ({
   ownerName,
@@ -30,8 +25,8 @@ const GistInfo = ({
 
   return (
     <div className="gist-info">
-      {alertValue &&  (
-        <Alert data-testid='gist-option-completion'severity="info">
+      {alertValue && (
+        <Alert data-testid="gist-option-completion" severity="info">
           {alertValue}
         </Alert>
       )}

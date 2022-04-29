@@ -2,7 +2,7 @@ import Divider from "@mui/material/Divider";
 import React from "react";
 //src
 import { GistPage, LoadingSpinner } from "../../components";
-import { useUserGistsData } from "../../Hooks";
+import { useUserGistsData } from "../../hooks";
 import { useAppSelector } from "../../store/hooks";
 //styles
 import { CustomButton } from "../../styledComponents";
@@ -38,9 +38,7 @@ const UserProfile = () => {
           {isFetching && (
             <LoadingSpinner width="30%" height="10%" color="blue" />
           )}
-          {userGistDataArray?.length === 0 && (
-           <h1>No user gists found.</h1>
-          )}
+          {userGistDataArray?.length === 0 && <h1>No user gists found.</h1>}
           {!isLoading &&
             userGistDataArray?.map((item: GistData, index: number) => (
               <div key={index}>

@@ -20,10 +20,9 @@ import {
   CustomButton,
   SearchContainer,
   StyledInputBase,
-  LogoText
+  LogoText,
 } from "../../styledComponents";
 import "./header.css";
-
 
 interface HeaderProps {
   setQueryResult(query: string): void;

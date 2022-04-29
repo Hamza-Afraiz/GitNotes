@@ -5,7 +5,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 //src
 import { LoadingSpinner, PopUpNotification } from "../../components";
-import { useCreateGist, useUpdateGist, useUserGistsData } from "../../Hooks";
+import { useCreateGist, useUpdateGist, useUserGistsData } from "../../hooks";
 import { useAppSelector } from "../../store/hooks";
 //styles
 import { CustomButton } from "../../styledComponents";
@@ -24,13 +24,10 @@ const CreateGist = () => {
   const [gistFiles, setFiles] = React.useState<File[]>([]);
   const [editingGistId, setEditingGistId] = React.useState("");
   const [popUpText, setPopUpText] = React.useState("");
- 
 
   const userState = useAppSelector((state) => state.user.loggedIn);
-  
 
   const { data: userGistsData } = useUserGistsData();
-  
 
   const EditingGist = () => {
     if (location?.state?.gistId) {
@@ -52,21 +49,21 @@ const CreateGist = () => {
     setEditingGistId(gistData?.gistId.toString());
   };
 
- 
-  const { mutate: CreateGist, error: createGistError ,isLoading} = useCreateGist(
-    {
-      files: gistFiles,
-      description: gistDescription,
-    },
-   
-  );
+  const {
+    mutate: CreateGist,
+    error: createGistError,
+    isLoading,
+  } = useCreateGist({
+    files: gistFiles,
+    description: gistDescription,
+  });
+
   const { mutate: UpdateGist, error: updateGistError } = useUpdateGist(
     {
       files: gistFiles,
       description: gistDescription,
     },
-    editingGistId,
-  
+    editingGistId
   );
 
   const AddGist = async () => {

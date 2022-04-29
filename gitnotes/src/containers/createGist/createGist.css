@@ -1,11 +1,9 @@
-.createGistContainer{
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    
-    margin-left: 10%;
-    margin-right: 10%;
-   
-    justify-content: space-between;
-    margin-top: 5%;
+.createGistContainer {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  justify-content: space-between;
+  margin-top: 5%;
 }

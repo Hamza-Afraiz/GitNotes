@@ -1,11 +1,8 @@
-
 //src
 import App from "../App";
 import { gistApiResponse } from "./mockUserResponses/gistsResponse";
 import { mockServer } from "./mockUserResponses/mockApi";
-import { render,fireEvent, screen, waitFor } from "./utils/customRender";
-
-
+import { render, fireEvent, screen, waitFor } from "./utils/customRender";
 
 beforeAll(() => mockServer.listen({ onUnhandledRequest: "bypass" }));
 afterEach(() => {
@@ -15,14 +12,16 @@ afterAll(() => mockServer.close());
 
 describe("when List Displays", () => {
   it("when user Clicks on Some Gist", async () => {
-    render(<App/>);
+    render(<App />);
 
     //waiting for loading to end and show Gists
     expect(screen.getByTestId("loading")).toBeInTheDocument();
-  
-//waiting for gistList to show
-    await waitFor(()=>expect(screen.getByTestId("gist-list")).toBeInTheDocument(),{timeout:5000})
-   
+
+    //waiting for gistList to show
+    await waitFor(
+      () => expect(screen.getByTestId("gist-list")).toBeInTheDocument(),
+      { timeout: 5000 }
+    );
 
     //expecting to see owner name from gist response
     expect(
@@ -37,10 +36,16 @@ describe("when List Displays", () => {
       screen.queryByText(gistApiResponse[0].description)
     ).toBeInTheDocument();
 
-     //clicking star/unstar button 
-    fireEvent.click(screen.getByTestId('gist-option-button-star'));
+    //clicking star/unstar button
+    fireEvent.click(screen.getByTestId("gist-option-button-star"));
     //wait for completion :)
-    
-    await waitFor(()=>expect(screen.getByTestId("gist-option-completion")).toBeInTheDocument(),{timeout:2000})
-  },10000);
+
+    await waitFor(
+      () =>
+        expect(
+          screen.getByTestId("gist-option-completion")
+        ).toBeInTheDocument(),
+      { timeout: 2000 }
+    );
+  }, 10000);
 });

@@ -1,13 +1,12 @@
-export {default as Header} from './header/Header'
-export {default as ProfileImageAndName} from './profileImageAndName/ProfileImageAndName'
-export {default as GistPage} from './gistPage/GistPage'
-export {default as GistCode } from './gistCode/GistCode'
-export {default as GistInfo} from './gistInfo/GistInfo'
-export {default as GistOption} from './gistOption/GistOption'
-export{default as GistIntroduction} from './gistIntroduction/GistIntroduction'
-export {LoadingSpinner} from './loadingSpinner/LoadingSpinner'
-export {AnimatedTextComponent} from './animatedText/AnimatedText'
-export {Snack} from './alert/Alert'
-export {default as PopUpNotification } from './popUpNotification/PopUpNotification'
-export {default as MenuItems}from './menu/Menu'
-
+export { default as Header } from "./header/Header";
+export { default as ProfileImageAndName } from "./profileImageAndName/ProfileImageAndName";
+export { default as GistPage } from "./gistPage/GistPage";
+export { default as GistCode } from "./gistCode/GistCode";
+export { default as GistInfo } from "./gistInfo/GistInfo";
+export { default as GistOption } from "./gistOption/GistOption";
+export { default as GistIntroduction } from "./gistIntroduction/GistIntroduction";
+export { LoadingSpinner } from "./loadingSpinner/LoadingSpinner";
+export { AnimatedTextComponent } from "./animatedText/AnimatedText";
+export { Snack } from "./alert/Alert";
+export { default as PopUpNotification } from "./popUpNotification/PopUpNotification";
+export { default as MenuItems } from "./menu/Menu";

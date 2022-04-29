@@ -49,7 +49,7 @@ export const GistsListHeading: GridColDef[] = [
     headerClassName: "colored",
 
     sortable: false,
-    width: 260,
+    width: 160,
   },
   {
     field: "icon",
@@ -59,19 +59,11 @@ export const GistsListHeading: GridColDef[] = [
     width: 110,
     editable: true,
     renderCell: () => (
-      <IconsRow >
+      <IconsRow>
         <ForkIcon sx={{ color: "#5ACBA1" }} />
         <StarIcon sx={{ color: "#5ACBA1" }} />
       </IconsRow>
     ),
-  },
-  {
-    field: "ownerAvatar",
-    headerName: "",
-    headerClassName: "ownerAvatar",
-
-    sortable: false,
-    width: 0,
   },
 ];
 const IconsRow = styled("div")(() => ({

@@ -8,12 +8,10 @@ export const GistCodeContainer = styled("div")(() => ({
   marginTop: "1%",
   backgroundColor: "#FFFFFF",
   padding: "0%",
-  flex:"1",
-
+  flex: "1",
   border: "1px solid lightgray",
   borderRadius: "1%",
   overflow: "hidden",
   marginBottom: "5%",
-
   boxShadow: "1px 1px 1px 0px lightgrey",
 }));

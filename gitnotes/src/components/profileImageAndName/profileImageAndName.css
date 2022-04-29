@@ -3,21 +3,16 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
   width: 100%;
   height: 100%;
 }
-.container  .profilePic {
-  
+.container .profilePic {
   min-width: 100%;
   height: 40px;
   border-radius: 50%;
- 
 }
-.owner-name{
+.owner-name {
   display: flex;
   height: 100%;
- 
   align-items: center;
-
 }

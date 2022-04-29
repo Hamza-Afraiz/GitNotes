@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { GistData } from "../../types/gistData";
 import { request } from "../../utils/axios-utils";
 

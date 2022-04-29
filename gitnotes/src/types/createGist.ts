@@ -1,12 +1,9 @@
-  export interface File {
+export interface File {
   fileContent: string;
   fileDescription: string;
-  fileName:string
+  fileName: string;
 }
 export interface createGist {
-  
-  files:File[];
-  description:string
-
-
+  files: File[];
+  description: string;
 }

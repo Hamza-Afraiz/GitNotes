@@ -132,7 +132,7 @@ export const UpdateGist = async (gistData: createGist, gistId: string) => {
   });
 
   const filesObject = convertArrayToObject(filesArray, "fileName");
-
+ 
   return await request({
     url: `/gists/${gistId}`,
     method: "patch",
@@ -150,8 +150,8 @@ export const CreateGist = async (gistData: createGist) => {
   });
 
   const filesObject = convertArrayToObject(filesArray, "fileName");
-
-  //okay ! Dispatching(1) means we are not working(star,unstar ) on some gists.we are just ending the loading
+  
+ 
 
   return await request({
     url: "/gists",

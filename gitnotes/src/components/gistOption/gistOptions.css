@@ -1,23 +1,20 @@
+.gistOption {
+  width: 50%;
 
-.gistOption
-{
-    width: 50%;
-   
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-    justify-content: flex-end;
-    align-items: center;
-   
-    margin-right: 2%;
+  justify-content: flex-end;
+  align-items: center;
+
+  margin-right: 2%;
 }
-.gist-option-button{
-   
-    color:'blue';
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
+.gist-option-button {
+  color: "blue";
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-.gist-option-button:hover{
-    cursor: pointer;
+.gist-option-button:hover {
+  cursor: pointer;
 }

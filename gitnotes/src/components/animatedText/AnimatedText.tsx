@@ -1,7 +1,6 @@
 import React from "react";
 import AnimatedText from "react-animated-text-content";
 
-
 export const AnimatedTextComponent = (props: any) => {
   return (
     <div>

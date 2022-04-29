@@ -1,11 +1,8 @@
-  // Import the functions you need from the SDKs you need
-  import firebase from 'firebase/compat/app';
-  import 'firebase/compat/auth';
-  import 'firebase/compat/database';
-  
- 
-  
-  
+// Import the functions you need from the SDKs you need
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/database";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -19,12 +16,9 @@ const firebaseConfig = {
   messagingSenderId: "917080503422",
   appId: "1:917080503422:web:75c27fbe764c0e625e542f",
   measurementId: "G-QTPQC37CTT",
-  providerId:"Github"
+  providerId: "Github",
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 export default firebase;
-
-
-

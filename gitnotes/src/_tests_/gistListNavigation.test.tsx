@@ -1,6 +1,5 @@
 //lib
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-
 //src
 import App from "../App";
 import { gistApiResponse } from "./mockUserResponses/gistsResponse";
@@ -16,13 +15,16 @@ afterAll(() => mockServer.close());
 
 describe("when List Displays", () => {
   it("when user Clicks on Some Gist,Gist details should be displayed", async () => {
-    render(<App/>);
+    render(<App />);
 
     //waiting for loading to end and show Gists
     // await screen.findByTestId("gist-list");
-    await waitFor(() => {
-      expect(screen.getByTestId("gist-list")).toBeInTheDocument();
-    },{timeout:5000});
+    await waitFor(
+      () => {
+        expect(screen.getByTestId("gist-list")).toBeInTheDocument();
+      },
+      { timeout: 5000 }
+    );
 
     //expecting to see owner name from gist response
     expect(

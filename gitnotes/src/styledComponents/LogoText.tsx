@@ -2,8 +2,6 @@ import Typography from "@mui/material/Typography";
 import { styled, alpha } from "@mui/material/styles";
 import { TypographyProps } from "@mui/material";
 
-
-
 export const LogoText = styled(Typography)<TypographyProps>(
   ({ variant, theme }) => ({
     marginLeft: "1%",

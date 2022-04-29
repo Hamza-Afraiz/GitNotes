@@ -13,7 +13,6 @@ import { GistData } from "../../types/gistData";
 import { GridGist, GridGistContainer } from "../../styledComponents";
 
 const GistGrid = ({ gistsData }: GistDataList) => {
-  
   const navigate = useNavigate();
 
   const [pageNumber, setPageNumber] = React.useState(1);
@@ -23,7 +22,6 @@ const GistGrid = ({ gistsData }: GistDataList) => {
     pageNumber = pageNumber === 1 ? 0 : pageNumber - 1;
 
     setGridData(gistsData.slice(pageNumber * 9, pageNumber * 9 + 9));
-    
   };
 
   const changePage = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -39,7 +37,7 @@ const GistGrid = ({ gistsData }: GistDataList) => {
 
   return (
     <GridGistContainer>
-       {gridData.length === 0 && <div>No gist found.</div>}
+      {gridData.length === 0 && <div>No gist found.</div>}
       <Grid container spacing={{ xs: 5 }}>
         {gridData.map((item, index) => (
           <Grid item xs={4} key={index}>
@@ -64,7 +62,7 @@ const GistGrid = ({ gistsData }: GistDataList) => {
       </Grid>
       <Stack sx={{ marginTop: "4%" }} spacing={2}>
         <Pagination
-          count={Math.ceil(gistsData.length / 9) }
+          count={Math.ceil(gistsData.length / 9)}
           page={pageNumber}
           onChange={changePage}
         />

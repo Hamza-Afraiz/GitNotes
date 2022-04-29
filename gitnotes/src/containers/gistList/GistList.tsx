@@ -1,6 +1,6 @@
 //lib
 import Box from "@mui/material/Box";
-import React,{Suspense} from "react";
+import React, { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 
 //styles
@@ -10,11 +10,7 @@ import { GistListContainer, GistsListHeading } from "../../styledComponents";
 import { GistDataList } from "../../types/gistDataList";
 import "./gistList.css";
 
-
-
-
 export default function GistList({ gistsData }: GistDataList) {
-
   const navigate = useNavigate();
 
   const listData = gistsData?.map((item, index) => {
@@ -29,8 +25,6 @@ export default function GistList({ gistsData }: GistDataList) {
     };
   });
 
-
-
   function onGistClick(rowData: any) {
     navigate(`/gistPage`, {
       state: { item: gistsData[rowData.id] },
@@ -39,21 +33,19 @@ export default function GistList({ gistsData }: GistDataList) {
   return (
     <Box className="Box">
       <Suspense fallback={<div>Loading ... </div>}>
-      <GistListContainer
-        sx={{
-          "&.Mui-checkBox": {
-            color: "red",
-          },
-        }}
-        rows={listData}
-        columns={GistsListHeading}
-        pageSize={10}
-        rowsPerPageOptions={[10]}
-        
-        disableSelectionOnClick
-        onRowClick={(param) => onGistClick(param.row)}
-
-      />
+        <GistListContainer
+          sx={{
+            "&.Mui-checkBox": {
+              color: "red",
+            },
+          }}
+          rows={listData}
+          columns={GistsListHeading}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
+          disableSelectionOnClick
+          onRowClick={(param) => onGistClick(param.row)}
+        />
       </Suspense>
     </Box>
   );

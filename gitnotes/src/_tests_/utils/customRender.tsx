@@ -33,7 +33,6 @@ const initialState = {
 export const store = configureStore({
   reducer: {
     user: UserSlice,
-    
   },
   preloadedState: initialState,
 });

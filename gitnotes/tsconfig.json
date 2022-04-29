@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "src/Hooks/useWorkingGistId/.ts"  ]
+, "src/hooks/useWorkingGistId/.ts"  ]
 }

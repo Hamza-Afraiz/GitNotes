@@ -1,6 +1,6 @@
 import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useUserState } from "../Hooks";
+import { useUserState } from "../hooks";
 
 export function RequireAuth({ children }: { children: JSX.Element }) {
   let auth = useUserState();
